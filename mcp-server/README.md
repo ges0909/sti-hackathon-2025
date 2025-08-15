@@ -1,11 +1,36 @@
 # MCP Server
 
-[Building a Basic MCP Server with Python](https://medium.com/data-engineering-with-dremio/building-a-basic-mcp-server-with-python-4c34c41031ed)
+Implements an example mcp serv as described
+in [Building a Basic MCP Server with Python](https://medium.com/data-engineering-with-dremio/building-a-basic-mcp-server-with-python-4c34c41031ed)
 
-```bash
-cd mcp-server
-uv add "mcp[cli]" pandas pyarrow
-#
-uv run 
+```
+uv add "mcp[cli]"
 ```
 
+| `@mcp`     | |
+|------------|-|
+| `tool`     | |
+| `resource` | |
+| `prompt`   | |
+
+## Claude Desktop Integration
+
+```json
+{
+  "mcpServers": {
+    "mix_server": {
+      "command": "uv",
+      "args": [
+        "--directory",
+        "/Users/gerri/Projekte/valantic-hackathon-2025/mcp-server",
+        "run",
+        "main.py"
+      ]
+    }
+  }
+}
+```
+
+How it works?
+
+![Claude Desktop](images/Claude_Desktop.png) 

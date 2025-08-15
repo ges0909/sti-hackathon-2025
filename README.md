@@ -1,12 +1,11 @@
-# Valantic STI Hackathon 2025
+# 🏆 Valantic STI Hackathon 2025
 
-## UV
+## ⚙️ Managing Pythons with `uv`
 
 Install [uv](https://github.com/astral-sh/uv) and restart terminal.
 
 ```powershell
 powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
-uv --version
 ```
 
 Check installation
@@ -15,9 +14,7 @@ Check installation
 uv --version
 ```
 
-## MCP Server
-
-|                             |                                    | 
+| `uv` Command                | Description                        | 
 |-----------------------------|------------------------------------|
 | `uv init mcp-server`        | create new project                 |
 | `uv init mcp-library --lib` |                                    |
@@ -33,22 +30,3 @@ uv --version
 | `uv run main.py`            | execute python script              |
 | `uv python install ...`     | manage python installations        |
 | `uv python use ...`         |                                    |
-
-## Claude Desktop
-
-```json
-{
-  "mcpServers": {
-    "mix_server": {
-      "command": "uv",
-      "args": [
-        "--directory",
-        "/Users/gerri/Projekte/valantic-hackathon-2025/mcp-server",
-        "run",
-        "main.py"
-      ]
-    }
-  }
-}
-
-```
