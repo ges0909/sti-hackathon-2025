@@ -1,4 +1,10 @@
-#    
+#       
+
+```bash
+.\.venv\Scripts\activate
+ruff format
+ruff linter
+```
 
 How to build?
 

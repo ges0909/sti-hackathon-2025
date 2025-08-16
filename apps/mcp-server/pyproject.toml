@@ -11,12 +11,9 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-    "ruff",
-    "black",
-    "mypy", 
-    "pytest",
-    "pytest-cov"
+    "dev-tools",
 ]
 
 [tool.uv.sources]
+utils = { workspace = true }
 dev-tools = { workspace = true }
