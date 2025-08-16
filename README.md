@@ -30,3 +30,12 @@ uv --version
 | `uv run main.py`            | execute python script              |
 | `uv python install ...`     | manage python installations        |
 | `uv python use ...`         |                                    |
+
+## Project
+
+```
+uv pip install -e ./apps/quickstart[dev] -e ./apps/mcp-server[dev] -e ./dev-tools -e ./libs/utils
+```
+
+The command indicates `uv`, each of your four packages in the "Editable" mode in one, central `.venv` in the root
+directory to install and also the [DEV] dependencies for quickstart and MCP server take into account.

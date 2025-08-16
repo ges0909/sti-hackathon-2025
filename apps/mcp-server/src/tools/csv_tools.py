@@ -1,5 +1,5 @@
-from server import mcp
-from utils.file_reader import read_csv_summary
+from src.server import mcp
+from src.utils.file_reader import read_csv_summary
 
 
 @mcp.tool()

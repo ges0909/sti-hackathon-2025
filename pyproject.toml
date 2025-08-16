@@ -1,4 +1,7 @@
 [tool.uv.workspace]
-# members = [
-#    "mcp-server"
-# ]
+members = [
+    "apps/quickstart",
+    "apps/mcp-server",
+    "dev-tools",
+    "libs/utils"
+]

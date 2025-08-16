@@ -33,4 +33,4 @@ uv add "mcp[cli]"
 
 How it works?
 
-![Claude Desktop](images/Claude_Desktop.png) 
+![Claude Desktop](img/Claude_Desktop.png) 

@@ -1,0 +1,22 @@
+[project]
+name = "mcp-server"
+version = "0.1.0"
+description = "The MCP server application."
+requires-python = ">=3.13"
+dependencies = [
+    "mcp",
+    "pandas",
+    "utils>=0.1.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff",
+    "black",
+    "mypy", 
+    "pytest",
+    "pytest-cov"
+]
+
+[tool.uv.sources]
+dev-tools = { workspace = true }

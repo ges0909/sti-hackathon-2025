@@ -1,0 +1,22 @@
+[project]
+name = "quickstart"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "mcp[cli]>=1.13.0",
+    "utils",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff",
+    "black", 
+    "mypy",
+    "pytest",
+    "pytest-cov"
+]
+
+[tool.uv.sources]
+dev-tools = { workspace = true }
