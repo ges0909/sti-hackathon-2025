@@ -1,5 +1,5 @@
 [project]
-name = "mcp-server"
+name = "mix-server"
 version = "0.1.0"
 description = "The MCP server application."
 requires-python = ">=3.13"

@@ -22,7 +22,7 @@ uv add "mcp[cli]"
       "command": "uv",
       "args": [
         "--directory",
-        "/Users/gerri/Projekte/valantic-hackathon-2025/mcp-server",
+        "/Users/gerri/Projekte/valantic-hackathon-2025/mix-server",
         "run",
         "main.py"
       ]

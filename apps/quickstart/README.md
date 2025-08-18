@@ -1,13 +1,7 @@
 # Quickstart
 
-How to add `dev-tools` once?
+## Add server to Claude config
 
-```bash
-uv pip install -e .[dev]
-```
-
-How to format?
-
-```
-uv run ruff format
+```powershell
+uv run mcp install src/main.py
 ```

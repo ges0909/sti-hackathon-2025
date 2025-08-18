@@ -1,7 +1,8 @@
 [tool.uv.workspace]
 members = [
-    "apps/quickstart",
     "apps/mcp-server",
+    "apps/quickstart",
+    "apps/lifesapn-support",
     "dev-tools",
-    "libs/utils"
+    "libs/utils",
 ]
