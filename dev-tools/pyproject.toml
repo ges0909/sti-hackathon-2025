@@ -4,10 +4,10 @@ version = "0.1.0"
 description = "Project-specific development and linting tools."
 requires-python = ">=3.13"
 dependencies = [
-    "ruff",
-    "mypy",
-    "pytest",
-    "pytest-cov"
+    "mypy>=1.17.1",
+    "pytest>=8.4.1",
+    "pytest-cov>=6.2.1",
+    "ruff>=0.12.9",
 ]
 
 [tool.ruff]

@@ -4,8 +4,8 @@ version = "0.1.0"
 description = "The MCP server application."
 requires-python = ">=3.13"
 dependencies = [
-    "mcp",
-    "pandas",
+    "mcp[cli]>=1.13.0",
+    "panda>=0.3.1",
     "utils>=0.1.0",
 ]
 
@@ -15,5 +15,5 @@ dev = [
 ]
 
 [tool.uv.sources]
-utils = { workspace = true }
-dev-tools = { workspace = true }
+utils = { path = "../../libs/utils" }
+dev-tools = { path = "../../dev-tools" }

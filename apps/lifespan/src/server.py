@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from mcp.server.fastmcp import Context, FastMCP
 from mcp.server.session import ServerSession
 
+from sqlalchemy import create_engine
 
 # Mock database class for example
 class Database:
@@ -15,7 +16,7 @@ class Database:
     @classmethod
     async def connect(cls) -> "Database":
         """Connect to database."""
-        return cls()
+        return create_engine('sqlite:///example.db')
 
     async def disconnect(self) -> None:
         """Disconnect from database."""

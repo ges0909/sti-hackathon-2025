@@ -1,8 +1,0 @@
-[tool.uv.workspace]
-members = [
-    "apps/mcp-server",
-    "apps/quickstart",
-    "apps/lifesapn-support",
-    "dev-tools",
-    "libs/utils",
-]
