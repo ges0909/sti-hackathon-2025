@@ -8,7 +8,7 @@ cd to the `examples/snippets/clients` directory and run:
 from mcp.server.fastmcp import FastMCP
 
 # Create an MCP server
-mcp = FastMCP("quickstart")
+mcp = FastMCP("Quick Start")
 
 
 # Add an addition tool

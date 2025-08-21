@@ -7,24 +7,9 @@ from dataclasses import dataclass
 from mcp.server.fastmcp import Context, FastMCP
 from mcp.server.session import ServerSession
 
-from sqlalchemy import create_engine
-
-# Mock database class for example
-class Database:
-    """Mock database class for example."""
-
-    @classmethod
-    async def connect(cls) -> "Database":
-        """Connect to database."""
-        return create_engine('sqlite:///example.db')
-
-    async def disconnect(self) -> None:
-        """Disconnect from database."""
-        pass
-
-    def query(self) -> str:
-        """Execute a query."""
-        return "Query result"
+from database import repository, schemas
+from database.connection import Database
+from database.models.user import User
 
 
 @dataclass
@@ -37,22 +22,41 @@ class AppContext:
 @asynccontextmanager
 async def app_lifespan(server: FastMCP) -> AsyncIterator[AppContext]:
     """Manage application lifecycle with type-safe context."""
-    # Initialize on startup
     db = await Database.connect()
+    # Initialize on startup
+    async with db.get_session() as session:
+        await repository.add_user(session, name="gerrit", email="gerrit@mail.de", age=65)
+        await repository.add_user(session, name="heike", email="heike@mail.de", age=60)
     try:
         yield AppContext(db=db)
     finally:
         # Cleanup on shutdown
+        async with db.engine.begin() as conn:
+            await conn.run_sync(User.metadata.drop_all)
         await db.disconnect()
 
 
 # Pass lifespan to server
-mcp = FastMCP("My App", lifespan=app_lifespan)
+mcp = FastMCP("lifespan_demo", lifespan=app_lifespan)
 
 
 # Access type-safe lifespan context in tools
 @mcp.tool()
-def query_db(ctx: Context[ServerSession, AppContext]) -> str:
+async def query_db(ctx: Context[ServerSession, AppContext]) -> schemas.User | None:
     """Tool that uses initialized resources."""
     db = ctx.request_context.lifespan_context.db
-    return db.query()
+    async with db.get_session() as session:
+        user = await repository.get_user(session)
+        if user:
+            return schemas.User.model_validate(user)
+        return None
+
+
+@mcp.tool()
+async def add_user(
+    ctx: Context[ServerSession, AppContext], user: schemas.UserBase
+) -> None:
+    """Tool that uses initialized resources."""
+    db = ctx.request_context.lifespan_context.db
+    async with db.get_session() as session:
+        await repository.add_user(session, **user.model_dump())
