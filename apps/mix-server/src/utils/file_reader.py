@@ -1,8 +1,8 @@
 # utils/file_reader.py
 
-import pandas as pd
 from pathlib import Path
 
+import pandas as pd
 
 # Base directory where our data lives
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"

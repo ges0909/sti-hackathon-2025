@@ -2,6 +2,11 @@ from sqlalchemy.orm import DeclarativeBase
 
 
 class Base(DeclarativeBase):
-    """Abstract basic class for all database models"""
+    """
+    Base class for all SQLAlchemy ORM models.
 
-    __abstract__ = True
+    It provides the basic declarative functionality. Models should inherit from this
+    class to be automatically discovered by tools like `metadata.create_all`.
+    """
+
+    pass
