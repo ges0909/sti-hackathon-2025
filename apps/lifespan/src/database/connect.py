@@ -11,7 +11,9 @@ class Database:
         """Connect to database."""
         print("🔌 Start SQLAlchemy Engine...")
         cls.engine = create_async_engine(settings.database_url, echo=True)
-        cls.AsyncSessionLocal = async_sessionmaker(bind=cls.engine, expire_on_commit=False)
+        cls.AsyncSessionLocal = async_sessionmaker(
+            bind=cls.engine, expire_on_commit=False
+        )
         return cls()
 
     async def disconnect(self) -> None:

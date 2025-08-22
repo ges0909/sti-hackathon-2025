@@ -8,6 +8,7 @@ from mcp.server.fastmcp import Context, FastMCP
 from mcp.server.session import ServerSession
 
 from database import repository
+from schemas import UserDto
 from database.connect import Database
 from database.models.user import User
 
@@ -63,18 +64,18 @@ mcp = FastMCP("Lifespan Demo", lifespan=app_lifespan)
 
 # Access type-safe lifespan context in tools
 @mcp.tool()
-async def query_db(ctx: Context[ServerSession, AppContext]):
+async def query_db(ctx: Context[ServerSession, AppContext]) -> UserDto | None:
     """Tool that uses initialized resources."""
     db = ctx.request_context.lifespan_context.db
     async with db.get_async_session() as session:
         user = await repository.get_user(session)
         if user:
-            return user
+            return UserDto.model_validate(user)
         return None
 
 
 @mcp.tool()
-async def add_user(ctx: Context[ServerSession, AppContext], user) -> None:
+async def add_user(ctx: Context[ServerSession, AppContext], user: UserDto) -> None:
     """Tool that uses initialized resources."""
     db = ctx.request_context.lifespan_context.db
     async with db.get_async_session() as session:
