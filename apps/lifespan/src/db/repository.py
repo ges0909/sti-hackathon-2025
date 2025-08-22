@@ -1,11 +1,11 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
-from database.models.user import User
+from db.models.user import User
 
 
 async def add_user(session: AsyncSession, name: str, email: str, age: int) -> None:
-    """Add a new user to the database."""
+    """Add a new user to the db."""
     try:
         user = User(name=name, email=email, age=age)
         session.add(user)
@@ -16,6 +16,6 @@ async def add_user(session: AsyncSession, name: str, email: str, age: int) -> No
 
 
 async def get_user(session: AsyncSession) -> User | None:
-    """Get the first user from the database."""
+    """Get the first user from the db."""
     result = await session.execute(select(User))
     return result.scalars().first()

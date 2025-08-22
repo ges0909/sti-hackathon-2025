@@ -1,5 +1,5 @@
 """Example showing lifespan support for startup/shutdown with strong typing."""
-
+from asyncio import CancelledError
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from dataclasses import dataclass
@@ -7,10 +7,10 @@ from dataclasses import dataclass
 from mcp.server.fastmcp import Context, FastMCP
 from mcp.server.session import ServerSession
 
-from database import repository
+from db import repository
 from schemas import UserDto
-from database.connect import Database
-from database.models.user import User
+from db.connect import Database
+from db.models.user import User
 
 import os
 
@@ -50,8 +50,10 @@ async def app_lifespan(server: FastMCP) -> AsyncIterator[AppContext]:
 
     try:
         yield AppContext(db=db)
+    except CancelledError:
+        print("⚠️ Server interrupted by user")
     finally:
-        print("🧹 Cleaning up database...")
+        print("🧹 Cleaning up db...")
         async with db.engine.begin() as conn:
             await conn.run_sync(User.metadata.drop_all)
         print("✅ Database cleaned up")
