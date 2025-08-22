@@ -13,6 +13,7 @@ from db.connect import Database
 from db.models.user import User
 
 import os
+import sys
 
 
 @dataclass
@@ -28,36 +29,44 @@ async def app_lifespan(server: FastMCP) -> AsyncIterator[AppContext]:
 
     # Ensure data directory exists (important when using 'sqlite')
     os.makedirs("data", exist_ok=True)
-    print("📁 Data directory created")
+    print("📁 Data directory created", file=sys.stderr)
 
     db = await Database.connect()
-    print("🔗 Database connected")
+    print("🔗 Database connected", file=sys.stderr)
 
     # Create tables
-    print("📋 Creating tables...")
+    print("📋 Creating tables...", file=sys.stderr)
     async with db.engine.begin() as conn:
         await conn.run_sync(User.metadata.create_all)
-    print("✅ Tables created")
+    print("✅ Tables created", file=sys.stderr)
 
     # Add initial data in separate transaction
-    print("👥 Adding initial users...")
+    print("👥 Adding initial users...", file=sys.stderr)
     async with db.get_async_session() as session:
         user1 = User(name="gerrit", email="gerrit@mail.de", age=65)
         user2 = User(name="heike", email="heike@mail.de", age=60)
         session.add_all([user1, user2])
         await session.commit()
-    print("✅ Initial users added")
+    print("✅ Initial users added", file=sys.stderr)
 
     try:
         yield AppContext(db=db)
     except CancelledError:
-        print("⚠️ Server interrupted by user")
+        print("⚠️ Server interrupted by user", file=sys.stderr)
     finally:
-        print("🧹 Cleaning up db...")
-        async with db.engine.begin() as conn:
-            await conn.run_sync(User.metadata.drop_all)
-        print("✅ Database cleaned up")
-        await db.disconnect()
+        print("🧹 Cleaning up db...", file=sys.stderr)
+        try:
+            async with db.engine.begin() as conn:
+                await conn.run_sync(User.metadata.drop_all)
+            print("✅ Database tables dropped", file=sys.stderr)
+        except (CancelledError, Exception):
+            print("⚠️ Cleanup cancelled or failed", file=sys.stderr)
+        
+        try:
+            await db.disconnect()
+            print("✅ Database disconnected", file=sys.stderr)
+        except (CancelledError, Exception):
+            print("⚠️ Disconnect cancelled or failed", file=sys.stderr)
 
 
 # Pass lifespan to server

@@ -1,3 +1,4 @@
+import sys
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 
 from config import settings
@@ -9,8 +10,8 @@ class Database:
     @classmethod
     async def connect(cls) -> "Database":
         """Connect to db."""
-        print("🔌 Start SQLAlchemy Engine...")
-        cls.engine = create_async_engine(settings.database_url, echo=True)
+        print("🔌 Start SQLAlchemy Engine...", file=sys.stderr)
+        cls.engine = create_async_engine(settings.database_url, echo=False)
         cls.AsyncSessionLocal = async_sessionmaker(
             bind=cls.engine, expire_on_commit=False
         )
@@ -18,7 +19,7 @@ class Database:
 
     async def disconnect(self) -> None:
         """Disconnect from db."""
-        print("🧹 Close SQLAlchemy Engine...")
+        print("🧹 Close SQLAlchemy Engine...", file=sys.stderr)
         if self.engine:
             await self.engine.dispose()
 
