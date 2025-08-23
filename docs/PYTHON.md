@@ -1,16 +1,15 @@
 # Manage Python
 
-## How to install `uv`
+Install [uv](https://github.com/astral-sh/uv), "_an extremely fast Python package and project manager, written in
+Rust_".
 
-See [uv](https://github.com/astral-sh/uv), "_an extremely fast Python package and project manager, written in Rust_".
-
-```powershell
-powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+```bash
+winget install astral-sh.uv
 ```
 
 Restart terminal and check installation.
 
-```powershell
+```bash
 uv --version
 ```
 

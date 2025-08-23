@@ -1,7 +1,7 @@
+from database.models.user import User
+from sqlalchemy import delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-
-from database.models.user import User
 
 
 async def get_all_users(session: AsyncSession) -> list[User]:
@@ -22,6 +22,28 @@ async def add_user(session: AsyncSession, name: str, email: str, age: int) -> No
         user = User(name=name, email=email, age=age)
         session.add(user)
         await session.commit()
+    except Exception:
+        await session.rollback()
+        raise
+
+
+async def delete_user_by_name(session: AsyncSession, name: str) -> bool:
+    """Delete a user by name from the database."""
+    try:
+        result = await session.execute(delete(User).where(User.name == name))
+        await session.commit()
+        return result.rowcount > 0
+    except Exception:
+        await session.rollback()
+        raise
+
+
+async def delete_all_users(session: AsyncSession) -> int:
+    """Deletes all users from the database."""
+    try:
+        result = await session.execute(delete(User))
+        await session.commit()
+        return result.rowcount
     except Exception:
         await session.rollback()
         raise

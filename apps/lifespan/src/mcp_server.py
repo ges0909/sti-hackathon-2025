@@ -44,40 +44,40 @@ async def app_lifespan(server: FastMCP) -> AsyncIterator[AppContext]:
     logger.info("✅ Tables created")
 
     # Add initial data in separate transaction
-    logger.info("👥 Adding initial users...")
-    async with db.get_async_session() as session:
-        user1 = User(name="gerrit", email="gerrit@mail.de", age=65)
-        user2 = User(name="heike", email="heike@mail.de", age=60)
-        session.add_all([user1, user2])
-        await session.commit()
-    logger.info("✅ Initial users added")
+    # logger.info("👥 Adding initial users...")
+    # async with db.get_async_session() as session:
+    #     user1 = User(name="gerrit", email="gerrit@mail.de", age=65)
+    #     user2 = User(name="heike", email="heike@mail.de", age=60)
+    #     session.add_all([user1, user2])
+    #     await session.commit()
+    # logger.info("✅ Initial users added")
 
     try:
         yield AppContext(db=db)
     except CancelledError:
         logger.warning("⚠️ Server interrupted by user")
-    finally:
-        logger.info("🧹 Cleaning up database...")
-        try:
-            async with db.engine.begin() as conn:
-                await conn.run_sync(User.metadata.drop_all)
-            logger.info("✅ Database tables dropped")
-        except (CancelledError, Exception):
-            logger.warning("⚠️ Cleanup cancelled or failed")
-
-        try:
-            await db.disconnect()
-            logger.info("✅ Database disconnected")
-        except (CancelledError, Exception):
-            logger.warning("⚠️ Disconnect cancelled or failed")
+    # finally:
+    #     logger.info("🧹 Cleaning up database...")
+    #     try:
+    #         async with db.engine.begin() as conn:
+    #             await conn.run_sync(User.metadata.drop_all)
+    #         logger.info("✅ Database tables dropped")
+    #     except (CancelledError, Exception):
+    #         logger.warning("⚠️ Cleanup cancelled or failed")
+    #
+    #     try:
+    #         await db.disconnect()
+    #         logger.info("✅ Database disconnected")
+    #     except (CancelledError, Exception):
+    #         logger.warning("⚠️ Disconnect cancelled or failed")
 
 
 # Pass lifespan to server
 mcp = FastMCP("Lifespan Demo", lifespan=app_lifespan)
 
 
-@mcp.tool()
-async def get_all_users(ctx: Context[ServerSession, AppContext]) -> list[UserDto]:
+@mcp.tool(name="Find all users", description="Get all users from database.")
+async def find_all_users(ctx: Context[ServerSession, AppContext]) -> list[UserDto]:
     """Get all users from database."""
     db = ctx.request_context.lifespan_context.db
     async with db.get_async_session() as session:
@@ -85,9 +85,8 @@ async def get_all_users(ctx: Context[ServerSession, AppContext]) -> list[UserDto
         return [UserDto.model_validate(user) for user in users]
 
 
-# Access type-safe lifespan context in mcp_tools
-@mcp.tool()
-async def get_user_by_name(
+@mcp.tool(name="Find user by name", description="Get an user by name.")
+async def find_user_by_name(
     ctx: Context[ServerSession, AppContext], name: str
 ) -> UserDto | None:
     """Get user by name."""
@@ -96,12 +95,42 @@ async def get_user_by_name(
         user = await user_repository.get_user_by_name(session, name)
         if user:
             return UserDto.model_validate(user)
-        return None  #
+        return None
 
 
-@mcp.tool()
-async def add_user(ctx: Context[ServerSession, AppContext], user: UserDto) -> None:
+@mcp.tool(
+    name="Add a user",
+    description="Add a user with name, email and age to the database.",
+)
+async def add_user(
+    ctx: Context[ServerSession, AppContext], name: str, email: str, age: int
+) -> None:
     """Tool that uses initialized resources."""
     db = ctx.request_context.lifespan_context.db
     async with db.get_async_session() as session:
-        await user_repository.add_user(session, **user.model_dump())
+        await user_repository.add_user(session, name=name, email=email, age=age)
+        logger.info(f"✅ User '{name}' added.")
+
+
+@mcp.tool(name="Delete user by name", description="Delete a user by name from the database.")
+async def delete_user_by_name(ctx: Context[ServerSession, AppContext], name: str) -> str:
+    """Delete a user by name from the database."""
+    db = ctx.request_context.lifespan_context.db
+    async with db.get_async_session() as session:
+        deleted = await user_repository.delete_user_by_name(session, name)
+        if deleted:
+            logger.info(f"✅ User '{name}' deleted.")
+            return f"User '{name}' deleted"
+        else:
+            logger.info(f"⚠️ User '{name}' not found.")
+            return f"User '{name}' not found"
+
+
+@mcp.tool(name="Delete all users", description="Deletes all users from the database.")
+async def delete_all_users(ctx: Context[ServerSession, AppContext]) -> str:
+    """Deletes all users from the database."""
+    db = ctx.request_context.lifespan_context.db
+    async with db.get_async_session() as session:
+        deleted_count = await user_repository.delete_all_users(session)
+        logger.info(f"✅ {deleted_count} users have been deleted.")
+        return f"{deleted_count} users deleted"
