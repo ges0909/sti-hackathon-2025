@@ -13,7 +13,7 @@ from database.models.user import User
 from logger import setup_logging
 from mcp.server.fastmcp import Context, FastMCP
 from mcp.server.session import ServerSession
-from mcp_tools.schemas import UserDto
+from schemas import UserDto
 
 # Setup logging
 logger = setup_logging(settings.log_level)
