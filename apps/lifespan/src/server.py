@@ -1,4 +1,5 @@
 """Example showing lifespan support for startup/shutdown with strong typing."""
+
 from asyncio import CancelledError
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
@@ -7,10 +8,10 @@ from dataclasses import dataclass
 from mcp.server.fastmcp import Context, FastMCP
 from mcp.server.session import ServerSession
 
-from db import repository
-from schemas import UserDto
-from db.connect import Database
-from db.models.user import User
+from database import repository
+from mcp_tools.schemas import UserDto
+from database.connect import Database
+from database.models.user import User
 
 import os
 import sys
@@ -54,14 +55,14 @@ async def app_lifespan(server: FastMCP) -> AsyncIterator[AppContext]:
     except CancelledError:
         print("⚠️ Server interrupted by user", file=sys.stderr)
     finally:
-        print("🧹 Cleaning up db...", file=sys.stderr)
+        print("🧹 Cleaning up database...", file=sys.stderr)
         try:
             async with db.engine.begin() as conn:
                 await conn.run_sync(User.metadata.drop_all)
             print("✅ Database tables dropped", file=sys.stderr)
         except (CancelledError, Exception):
             print("⚠️ Cleanup cancelled or failed", file=sys.stderr)
-        
+
         try:
             await db.disconnect()
             print("✅ Database disconnected", file=sys.stderr)
@@ -73,16 +74,27 @@ async def app_lifespan(server: FastMCP) -> AsyncIterator[AppContext]:
 mcp = FastMCP("Lifespan Demo", lifespan=app_lifespan)
 
 
-# Access type-safe lifespan context in tools
 @mcp.tool()
-async def query_db(ctx: Context[ServerSession, AppContext]) -> UserDto | None:
-    """Tool that uses initialized resources."""
+async def get_all_users(ctx: Context[ServerSession, AppContext]) -> list[UserDto]:
+    """Get all users from database."""
     db = ctx.request_context.lifespan_context.db
     async with db.get_async_session() as session:
-        user = await repository.get_user(session)
+        users = await repository.get_all_users(session)
+        return [UserDto.model_validate(user) for user in users]
+
+
+# Access type-safe lifespan context in mcp_tools
+@mcp.tool()
+async def get_user_by_name(
+    ctx: Context[ServerSession, AppContext], name: str
+) -> UserDto | None:
+    """Get user by name."""
+    db = ctx.request_context.lifespan_context.db
+    async with db.get_async_session() as session:
+        user = await repository.get_user_by_name(session, name)
         if user:
             return UserDto.model_validate(user)
-        return None
+        return None  #
 
 
 @mcp.tool()

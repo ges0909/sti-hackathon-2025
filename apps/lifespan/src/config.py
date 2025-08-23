@@ -1,12 +1,15 @@
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
+# 'BaseSettings' adds env variable support
 class Settings(BaseSettings):
     """Application settings."""
 
-    database_url: str = "sqlite+aiosqlite:///./data/user.db"
+    database_url: str = ""  # "sqlite+aiosqlite:///./data/user.db"
+    log_level: str = "INFO"
 
-    # model_config = SettingsConfigDict(env_file=".env")
+    model_config = SettingsConfigDict(env_file="./.env")
 
 
+# Singleton instance for the entire application
 settings = Settings()

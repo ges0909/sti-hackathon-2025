@@ -9,7 +9,7 @@ class Database:
 
     @classmethod
     async def connect(cls) -> "Database":
-        """Connect to db."""
+        """Connect to database."""
         print("🔌 Start SQLAlchemy Engine...", file=sys.stderr)
         cls.engine = create_async_engine(settings.database_url, echo=False)
         cls.AsyncSessionLocal = async_sessionmaker(
@@ -18,11 +18,11 @@ class Database:
         return cls()
 
     async def disconnect(self) -> None:
-        """Disconnect from db."""
+        """Disconnect from database."""
         print("🧹 Close SQLAlchemy Engine...", file=sys.stderr)
         if self.engine:
             await self.engine.dispose()
 
     def get_async_session(self) -> AsyncSession:
-        """Get a db session."""
+        """Get a database session."""
         return self.AsyncSessionLocal()

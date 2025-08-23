@@ -3,8 +3,8 @@ import logging
 from server import mcp
 
 # Suppress SQLAlchemy connection termination errors
-logging.getLogger('sqlalchemy.pool').setLevel(logging.CRITICAL)
-logging.getLogger('sqlalchemy.engine').setLevel(logging.WARNING)
+logging.getLogger("sqlalchemy.pool").setLevel(logging.CRITICAL)
+logging.getLogger("sqlalchemy.engine").setLevel(logging.WARNING)
 
 
 def main():
