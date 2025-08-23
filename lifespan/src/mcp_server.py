@@ -27,7 +27,7 @@ class AppContext:
 
 
 @asynccontextmanager
-async def app_lifespan(server: FastMCP) -> AsyncIterator[AppContext]:
+async def server_lifespan(server: FastMCP) -> AsyncIterator[AppContext]:
     """Manage application lifecycle with type-safe context."""
 
     # Ensure data directory exists (important when using 'sqlite')
@@ -73,7 +73,7 @@ async def app_lifespan(server: FastMCP) -> AsyncIterator[AppContext]:
 
 
 # Pass lifespan to server
-mcp = FastMCP("Lifespan Demo", lifespan=app_lifespan)
+mcp = FastMCP("Lifespan Demo", lifespan=server_lifespan)
 
 
 @mcp.tool(name="Find all users", description="Get all users from database.")
@@ -112,8 +112,12 @@ async def add_user(
         logger.info(f"✅ User '{name}' added.")
 
 
-@mcp.tool(name="Delete user by name", description="Delete a user by name from the database.")
-async def delete_user_by_name(ctx: Context[ServerSession, AppContext], name: str) -> str:
+@mcp.tool(
+    name="Delete user by name", description="Delete a user by name from the database."
+)
+async def delete_user_by_name(
+    ctx: Context[ServerSession, AppContext], name: str
+) -> str:
     """Delete a user by name from the database."""
     db = ctx.request_context.lifespan_context.db
     async with db.get_async_session() as session:
@@ -134,3 +138,17 @@ async def delete_all_users(ctx: Context[ServerSession, AppContext]) -> str:
         deleted_count = await user_repository.delete_all_users(session)
         logger.info(f"✅ {deleted_count} users have been deleted.")
         return f"{deleted_count} users deleted"
+
+
+# Resources are static content. If you need dynamic data in resources, you have to define the URI with parameters.
+@mcp.resource("user://database/stats")
+async def user_stats() -> str:
+    """Resource providing user database statistics."""
+    return "Total users: Dynamic\nDatabase: SQLite\nStatus: Active"
+
+
+# Prompts are templates with parameters.
+@mcp.prompt("analyze-user")
+async def analyze_user_prompt(name: str) -> str:
+    """Prompt template for analyzing a specific user."""
+    return f"Analyze this user profile for: {name}\n\nPlease provide insights on:\n- User behavior patterns\n- Engagement metrics\n- Recommendations"

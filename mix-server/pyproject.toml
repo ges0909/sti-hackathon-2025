@@ -15,5 +15,5 @@ dev = [
 ]
 
 [tool.uv.sources]
-utils = { path = "../../libs/utils" }
-dev-tools = { path = "../../dev-tools" }
+utils = { path = "../libs/utils" }
+dev-tools = { path = "../dev-tools" }

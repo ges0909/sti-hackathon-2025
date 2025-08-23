@@ -32,7 +32,7 @@ async def delete_user_by_name(session: AsyncSession, name: str) -> bool:
     try:
         result = await session.execute(delete(User).where(User.name == name))
         await session.commit()
-        return result.rowcount > 0
+        return True if result else False
     except Exception:
         await session.rollback()
         raise
@@ -43,7 +43,7 @@ async def delete_all_users(session: AsyncSession) -> int:
     try:
         result = await session.execute(delete(User))
         await session.commit()
-        return result.rowcount
+        return result.rowcount if result else 0
     except Exception:
         await session.rollback()
         raise
