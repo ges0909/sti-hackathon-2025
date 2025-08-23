@@ -1,20 +1,22 @@
 """Example showing lifespan support for startup/shutdown with strong typing."""
 
+import os
 from asyncio import CancelledError
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from dataclasses import dataclass
 
-from mcp.server.fastmcp import Context, FastMCP
-from mcp.server.session import ServerSession
-
+from config import settings
 from database import repository
-from mcp_tools.schemas import UserDto
 from database.connect import Database
 from database.models.user import User
+from logger import setup_logging
+from mcp.server.fastmcp import Context, FastMCP
+from mcp.server.session import ServerSession
+from mcp_tools.schemas import UserDto
 
-import os
-import sys
+# Setup logging
+logger = setup_logging(settings.log_level)
 
 
 @dataclass
@@ -30,44 +32,44 @@ async def app_lifespan(server: FastMCP) -> AsyncIterator[AppContext]:
 
     # Ensure data directory exists (important when using 'sqlite')
     os.makedirs("data", exist_ok=True)
-    print("📁 Data directory created", file=sys.stderr)
+    logger.info("📁 Data directory created")
 
     db = await Database.connect()
-    print("🔗 Database connected", file=sys.stderr)
+    logger.info("🔗 Database connected")
 
     # Create tables
-    print("📋 Creating tables...", file=sys.stderr)
+    logger.info("📋 Creating tables...")
     async with db.engine.begin() as conn:
         await conn.run_sync(User.metadata.create_all)
-    print("✅ Tables created", file=sys.stderr)
+    logger.info("✅ Tables created")
 
     # Add initial data in separate transaction
-    print("👥 Adding initial users...", file=sys.stderr)
+    logger.info("👥 Adding initial users...")
     async with db.get_async_session() as session:
         user1 = User(name="gerrit", email="gerrit@mail.de", age=65)
         user2 = User(name="heike", email="heike@mail.de", age=60)
         session.add_all([user1, user2])
         await session.commit()
-    print("✅ Initial users added", file=sys.stderr)
+    logger.info("✅ Initial users added")
 
     try:
         yield AppContext(db=db)
     except CancelledError:
-        print("⚠️ Server interrupted by user", file=sys.stderr)
+        logger.warning("⚠️ Server interrupted by user")
     finally:
-        print("🧹 Cleaning up database...", file=sys.stderr)
+        logger.info("🧹 Cleaning up database...")
         try:
             async with db.engine.begin() as conn:
                 await conn.run_sync(User.metadata.drop_all)
-            print("✅ Database tables dropped", file=sys.stderr)
+            logger.info("✅ Database tables dropped")
         except (CancelledError, Exception):
-            print("⚠️ Cleanup cancelled or failed", file=sys.stderr)
+            logger.warning("⚠️ Cleanup cancelled or failed")
 
         try:
             await db.disconnect()
-            print("✅ Database disconnected", file=sys.stderr)
+            logger.info("✅ Database disconnected")
         except (CancelledError, Exception):
-            print("⚠️ Disconnect cancelled or failed", file=sys.stderr)
+            logger.warning("⚠️ Disconnect cancelled or failed")
 
 
 # Pass lifespan to server

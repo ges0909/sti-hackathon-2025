@@ -1,23 +1,22 @@
 import pytest
 import pytest_asyncio
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
-
-from database.repository import get_all_users, add_user
 from database.models.user import User
+from database.repository import add_user, get_all_users
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
 
 @pytest_asyncio.fixture
 async def db_session():
     """Create test database session."""
     engine = create_async_engine("sqlite+aiosqlite:///:memory:")
-    
+
     # Create tables
     async with engine.begin() as conn:
         await conn.run_sync(User.metadata.create_all)
-    
+
     async_session_local = async_sessionmaker(bind=engine, expire_on_commit=False)
     session = async_session_local()
-    
+
     try:
         yield session
     finally:
@@ -38,9 +37,9 @@ async def test_get_all_users(db_session: AsyncSession):
     # Add test users
     await add_user(db_session, "alice", "alice@test.com", 25)
     await add_user(db_session, "bob", "bob@test.com", 30)
-    
+
     users = await get_all_users(db_session)
-    
+
     assert len(users) == 2
     assert users[0].name == "alice"
     assert users[1].name == "bob"

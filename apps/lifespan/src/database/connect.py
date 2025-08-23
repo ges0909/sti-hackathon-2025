@@ -1,7 +1,10 @@
-import sys
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 
 from config import settings
+from logger import setup_logging
+
+# Setup logging
+logger = setup_logging(settings.log_level)
 
 
 class Database:
@@ -10,7 +13,7 @@ class Database:
     @classmethod
     async def connect(cls) -> "Database":
         """Connect to database."""
-        print("🔌 Start SQLAlchemy Engine...", file=sys.stderr)
+        logger.info("🔌 Start SQLAlchemy Engine...")
         cls.engine = create_async_engine(settings.database_url, echo=False)
         cls.AsyncSessionLocal = async_sessionmaker(
             bind=cls.engine, expire_on_commit=False
@@ -19,7 +22,7 @@ class Database:
 
     async def disconnect(self) -> None:
         """Disconnect from database."""
-        print("🧹 Close SQLAlchemy Engine...", file=sys.stderr)
+        logger.info("🧹 Close SQLAlchemy Engine...")
         if self.engine:
             await self.engine.dispose()
 
