@@ -7,7 +7,7 @@ from contextlib import asynccontextmanager
 from dataclasses import dataclass
 
 from config import settings
-from database import repository
+from database import user_repository
 from database.connect import Database
 from database.models.user import User
 from logger import setup_logging
@@ -81,7 +81,7 @@ async def get_all_users(ctx: Context[ServerSession, AppContext]) -> list[UserDto
     """Get all users from database."""
     db = ctx.request_context.lifespan_context.db
     async with db.get_async_session() as session:
-        users = await repository.get_all_users(session)
+        users = await user_repository.get_all_users(session)
         return [UserDto.model_validate(user) for user in users]
 
 
@@ -93,7 +93,7 @@ async def get_user_by_name(
     """Get user by name."""
     db = ctx.request_context.lifespan_context.db
     async with db.get_async_session() as session:
-        user = await repository.get_user_by_name(session, name)
+        user = await user_repository.get_user_by_name(session, name)
         if user:
             return UserDto.model_validate(user)
         return None  #
@@ -104,4 +104,4 @@ async def add_user(ctx: Context[ServerSession, AppContext], user: UserDto) -> No
     """Tool that uses initialized resources."""
     db = ctx.request_context.lifespan_context.db
     async with db.get_async_session() as session:
-        await repository.add_user(session, **user.model_dump())
+        await user_repository.add_user(session, **user.model_dump())

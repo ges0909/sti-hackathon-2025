@@ -1,12 +1,10 @@
 # Access type-safe lifespan context in mcp_tools
+from dataclasses import dataclass
+
+from database.connect import Database
 from mcp.server.fastmcp import Context
 from mcp.server.session import ServerSession
-
-from database import repository
 from schemas import UserDto
-from server import mcp
-from dataclasses import dataclass
-from database.connect import Database
 
 
 @dataclass
@@ -16,7 +14,6 @@ class AppContext:
     db: Database
 
 
-@mcp.tool()
 async def get_all_users(ctx: Context[ServerSession, AppContext]) -> list[UserDto]:
     """Get all users from database."""
     db = ctx.request_context.lifespan_context.db
@@ -25,7 +22,6 @@ async def get_all_users(ctx: Context[ServerSession, AppContext]) -> list[UserDto
         return [UserDto.model_validate(user) for user in users]
 
 
-@mcp.tool()
 async def get_user_by_name(
     ctx: Context[ServerSession, AppContext], name: str
 ) -> UserDto | None:
@@ -38,7 +34,6 @@ async def get_user_by_name(
         return None
 
 
-@mcp.tool()
 async def add_user(ctx: Context[ServerSession, AppContext], user: UserDto) -> None:
     """Tool that uses initialized resources."""
     db = ctx.request_context.lifespan_context.db

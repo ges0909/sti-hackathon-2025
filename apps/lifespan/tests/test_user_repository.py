@@ -1,7 +1,7 @@
 import pytest
 import pytest_asyncio
+from database import user_repository
 from database.models.user import User
-from database.repository import add_user, get_all_users
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
 
@@ -27,7 +27,7 @@ async def db_session():
 @pytest.mark.asyncio
 async def test_get_all_users_empty(db_session: AsyncSession):
     """Test get_all_users with empty database."""
-    users = await get_all_users(db_session)
+    users = await user_repository.get_all_users(db_session)
     assert users == []
 
 
@@ -35,10 +35,10 @@ async def test_get_all_users_empty(db_session: AsyncSession):
 async def test_get_all_users(db_session: AsyncSession):
     """Test get_all_users with existing users."""
     # Add test users
-    await add_user(db_session, "alice", "alice@test.com", 25)
-    await add_user(db_session, "bob", "bob@test.com", 30)
+    await user_repository.add_user(db_session, "alice", "alice@test.com", 25)
+    await user_repository.add_user(db_session, "bob", "bob@test.com", 30)
 
-    users = await get_all_users(db_session)
+    users = await user_repository.get_all_users(db_session)
 
     assert len(users) == 2
     assert users[0].name == "alice"
