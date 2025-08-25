@@ -44,32 +44,32 @@ async def server_lifespan(server: FastMCP) -> AsyncIterator[AppContext]:
     logger.info("✅ Tables created")
 
     # Add initial data in separate transaction
-    # logger.info("👥 Adding initial users...")
-    # async with db.get_async_session() as session:
-    #     user1 = User(name="gerrit", email="gerrit@mail.de", age=65)
-    #     user2 = User(name="heike", email="heike@mail.de", age=60)
-    #     session.add_all([user1, user2])
-    #     await session.commit()
-    # logger.info("✅ Initial users added")
+    logger.info("👥 Adding initial users...")
+    async with db.get_async_session() as session:
+        user1 = User(name="gerrit", email="gerrit@mail.de", age=65)
+        user2 = User(name="heike", email="heike@mail.de", age=60)
+        session.add_all([user1, user2])
+        await session.commit()
+    logger.info("✅ Initial users added")
 
     try:
         yield AppContext(db=db)
     except CancelledError:
         logger.warning("⚠️ Server interrupted by user")
-    # finally:
-    #     logger.info("🧹 Cleaning up database...")
-    #     try:
-    #         async with db.engine.begin() as conn:
-    #             await conn.run_sync(User.metadata.drop_all)
-    #         logger.info("✅ Database tables dropped")
-    #     except (CancelledError, Exception):
-    #         logger.warning("⚠️ Cleanup cancelled or failed")
-    #
-    #     try:
-    #         await db.disconnect()
-    #         logger.info("✅ Database disconnected")
-    #     except (CancelledError, Exception):
-    #         logger.warning("⚠️ Disconnect cancelled or failed")
+    finally:
+        logger.info("🧹 Cleaning up database...")
+        try:
+            async with db.engine.begin() as conn:
+                await conn.run_sync(User.metadata.drop_all)
+            logger.info("✅ Database tables dropped")
+        except (CancelledError, Exception):
+            logger.warning("⚠️ Cleanup cancelled or failed")
+
+        try:
+            await db.disconnect()
+            logger.info("✅ Database disconnected")
+        except (CancelledError, Exception):
+            logger.warning("⚠️ Disconnect cancelled or failed")
 
 
 # Pass lifespan to server
