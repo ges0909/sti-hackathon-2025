@@ -2,7 +2,7 @@ import logging
 import sys
 
 from config import settings
-from mcp_server import mcp
+from server import mcp
 from logger import setup_logging
 
 # Setup logging

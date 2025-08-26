@@ -15,4 +15,4 @@ wheels/
 # VS Code
 .vscode
 
-*.db
+data/

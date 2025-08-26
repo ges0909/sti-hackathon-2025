@@ -1,5 +1,3 @@
-"""Example showing lifespan support for startup/shutdown with strong typing."""
-
 import os
 from asyncio import CancelledError
 from collections.abc import AsyncIterator
@@ -72,7 +70,7 @@ async def server_lifespan(server: FastMCP) -> AsyncIterator[AppContext]:
             logger.warning("⚠️ Disconnect cancelled or failed")
 
 
-# Pass lifespan to server
+# Pass mcp-server to server
 mcp = FastMCP("Lifespan Demo", lifespan=server_lifespan)
 
 
