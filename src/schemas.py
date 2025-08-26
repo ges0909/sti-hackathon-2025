@@ -2,7 +2,8 @@ from pydantic import BaseModel
 
 
 class UserBase(BaseModel):
-    name: str
+    first_name: str
+    last_name: str
     email: str
     age: int | None = None
 

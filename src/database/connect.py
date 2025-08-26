@@ -8,6 +8,7 @@ from config import settings
 
 logger = logging.getLogger(__name__)
 
+
 class Database:
     """Database connection manager."""
 

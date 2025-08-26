@@ -20,9 +20,10 @@ class User(Base):
     # Option 4: Manual control (no auto-generation)
     # id: Mapped[int] = mapped_column(primary_key=True, autoincrement=False)
 
-    name: Mapped[str] = mapped_column(String(255))
+    first_name: Mapped[str] = mapped_column(String(255))
+    last_name: Mapped[str] = mapped_column(String(255))
     email: Mapped[str] = mapped_column(String(255), unique=True)
     age: Mapped[int | None] = mapped_column(nullable=True)
 
     def __repr__(self):
-        return f"<User(name={self.name}, email={self.email}, age={self.age})>"
+        return f"<User(first_name={self.first_name}, last_name={self.last_name}, email={self.email}, age={self.age})>"
