@@ -1,7 +1,7 @@
 # 🏆 Valantic STI Hackathon 2025
 
-This project demonstrates the use of a `FastMCP` server with lifespan management
-to interact with a user database.
+This project demonstrates the use of a `FastMCP` server with _lifespan_
+management to interact with a user database.
 
 ## Description
 
@@ -28,11 +28,12 @@ startup, and to clean up the database on shutdown.
 
 * **analyze-user**: A prompt template for analyzing a specific user.
 
-## How to install `uv`?
+## Project
 
-Install [uv](https://github.com/astral-sh/uv), "_an extremely fast Python
-package and project manager, written in
-Rust_".
+### Install `uv`
+
+Install [uv](https://github.com/astral-sh/uv?tab=readme-ov-file#installation), "
+_an extremely fast Python package and project manager, written in Rust_".
 
 ```bash
 winget install astral-sh.uv
@@ -44,34 +45,39 @@ Restart terminal and check installation.
 uv --version
 ```
 
-## How to build?
-
-Synchronizes your env with _lock_ file only, i.e. without dev dependencies.
+Update `uv`.
 
 ```bash
-uv sync
+uv self update
 ```
 
-Install dev dependencies generally by `uv pip install -e .[extra-name]`.
+### Get project
 
 ```bash
-uv pip install -e .[dev]
+git clone git@github.com:ges0909/sti-hackathon-2025.git
 ```
 
-## How to format?
+### Manage dependencies
 
-```bash
-uvx ruff format
-```
+| Command               | Description                  |
+|-----------------------|------------------------------|
+| `uv sync`             | Install project dependencies |
+| `uv sync --extra dev` | Include `dev` dependencies   |
+| `uv add fastmcp`      | Add new dependency           |
+| `uv remove mcp`       | Remove dependency            |
+| `uvx ruff format`     | Format codebase              |
 
-## How to run?
+### Run MCP server
 
 ```bash
 cd mcp-server
 uv run src/main.py
 ```
 
-## How to run tests?
+### Run tests
 
 ```bash
 ```
+
+## Gemini CLI
+

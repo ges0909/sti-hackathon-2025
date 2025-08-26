@@ -1,4 +1,3 @@
-import os
 from asyncio import CancelledError
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
@@ -27,10 +26,6 @@ class AppContext:
 @asynccontextmanager
 async def server_lifespan(server: FastMCP) -> AsyncIterator[AppContext]:
     """Manage application lifecycle with type-safe context."""
-
-    # Ensure data directory exists (important when using 'sqlite')
-    os.makedirs("data", exist_ok=True)
-    logger.info("📁 Data directory created")
 
     db = await Database.connect()
     logger.info("🔗 Database connected")
