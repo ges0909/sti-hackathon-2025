@@ -13,20 +13,20 @@ startup, and to clean up the database on shutdown.
 
 ### Tools
 
-* **Find all users**: Retrieves all users from the database.
-* **Find user by name**: Retrieves a specific user by their name.
-* **Add a user**: Adds a new user to the database with a name, email, and age.
-* **Delete user by name**: Deletes a user from the database by their name.
-* **Delete all users**: Deletes all users from the database.
+- **Find all users**: Retrieves all users from the database.
+- **Find user by name**: Retrieves a specific user by their name.
+- **Add a user**: Adds a new user to the database with a name, email, and age.
+- **Delete user by name**: Deletes a user from the database by their name.
+- **Delete all users**: Deletes all users from the database.
 
 ### Resources
 
-* **user://database/stats**: A static resource that provides statistics about
+- **user://database/stats**: A static resource that provides statistics about
   the user database.
 
 ### Prompts
 
-* **analyze-user**: A prompt template for analyzing a specific user.
+- **analyze-user**: A prompt template for analyzing a specific user.
 
 ## Project
 
@@ -60,7 +60,7 @@ uv self update
 ### Manage dependencies
 
 | Command                         | Description                    |
-|---------------------------------|--------------------------------|
+| ------------------------------- | ------------------------------ |
 | `uv sync`                       | Install dependencies ...       |
 | `uv sync --extra dev`           | ... include `dev` dependencies |
 | `uv add fastmcp`                | Add new dependency             |
@@ -79,6 +79,7 @@ uv run src/main.py
 ### Run tests
 
 ```bash
+
 ```
 
 ## Gemini CLI
@@ -94,10 +95,7 @@ Add following snippet to `$HOME/.gimini/settings.json`.
   "mcpServers": {
     "STI valantic Hackathon MCP Demo": {
       "command": "uv",
-      "args": [
-        "run",
-        "src/main.py"
-      ],
+      "args": ["run", "src/main.py"],
       "cwd": "$HOME/PycharmProjects/sti-hackathon-2025",
       "timeout": 30000,
       "trust": true
@@ -107,6 +105,11 @@ Add following snippet to `$HOME/.gimini/settings.json`.
 ```
 
 | Command | Description                |
-|---------|----------------------------|
+| ------- | -------------------------- |
 | `/mcp`  | List connected MCP servers |
 | `/quit` | Quit _Gemini_              |
+
+### Prompts
+
+1. füge mehr als 10 nutzer ein und generiere die daten zufällig dafür
+2.
