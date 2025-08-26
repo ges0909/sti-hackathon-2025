@@ -10,16 +10,16 @@ async def get_all_users(session: AsyncSession) -> list[User]:
     return list(result.scalars().all())
 
 
-async def get_user_by_name(session: AsyncSession, name: str) -> User | None:
-    """Get user by name from the database."""
-    result = await session.execute(select(User).where(User.name == name))
+async def get_user_by_last_name(session: AsyncSession, last_name: str) -> User | None:
+    """Get user by last name from the database."""
+    result = await session.execute(select(User).where(User.last_name == last_name))
     return result.scalars().first()
 
 
-async def add_user(session: AsyncSession, name: str, email: str, age: int) -> None:
+async def add_user(session: AsyncSession, first_name: str, last_name: str, email: str, age: int) -> None:
     """Add a new user to the database."""
     try:
-        user = User(name=name, email=email, age=age)
+        user = User(first_name=first_name, last_name=last_name, email=email, age=age)
         session.add(user)
         await session.commit()
     except Exception:
@@ -27,10 +27,10 @@ async def add_user(session: AsyncSession, name: str, email: str, age: int) -> No
         raise
 
 
-async def delete_user_by_name(session: AsyncSession, name: str) -> bool:
+async def delete_user_by_last_name(session: AsyncSession, last_name: str) -> bool:
     """Delete a user by name from the database."""
     try:
-        result = await session.execute(delete(User).where(User.name == name))
+        result = await session.execute(delete(User).where(User.last_name == last_name))
         await session.commit()
         return result.rowcount == 1 if result else False
     except Exception:

@@ -83,7 +83,7 @@ async def find_user_by_name(
     """Get user by name."""
     db = ctx.request_context.lifespan_context.db
     async with db.get_async_session() as session:
-        user = await user_repository.get_user_by_name(session, name)
+        user = await user_repository.get_user_by_last_name(session, name)
         if user:
             return UserDto.model_validate(user)
         return None
@@ -94,31 +94,31 @@ async def find_user_by_name(
     description="Add a user with name, email and age to the database.",
 )
 async def add_user(
-    ctx: Context[ServerSession, AppContext], name: str, email: str, age: int
+    ctx: Context[ServerSession, AppContext], first_name: str, last_name: str, email: str, age: int
 ) -> None:
     """Tool that uses initialized resources."""
     db = ctx.request_context.lifespan_context.db
     async with db.get_async_session() as session:
-        await user_repository.add_user(session, name=name, email=email, age=age)
-        logger.info(f"✅ User '{name}' added.")
+        await user_repository.add_user(session, first_name=first_name, last_name=last_name, email=email, age=age)
+        logger.info(f"✅ User '{first_name} {last_name}' added.")
 
 
 @mcp.tool(
-    name="Delete user by name", description="Delete a user by name from the database."
+    name="Delete user by last name", description="Delete a user by last name from the database."
 )
-async def delete_user_by_name(
-    ctx: Context[ServerSession, AppContext], name: str
+async def delete_user_by_last_name(
+    ctx: Context[ServerSession, AppContext], last_name: str
 ) -> str:
-    """Delete a user by name from the database."""
+    """Delete a user by last name from the database."""
     db = ctx.request_context.lifespan_context.db
     async with db.get_async_session() as session:
-        deleted = await user_repository.delete_user_by_name(session, name)
+        deleted = await user_repository.delete_user_by_last_name(session, last_name)
         if deleted:
-            logger.info(f"✅ User '{name}' deleted.")
-            return f"User '{name}' deleted"
+            logger.info(f"✅ User '{last_name}' deleted.")
+            return f"User '{last_name}' deleted"
         else:
-            logger.info(f"⚠️ User '{name}' not found.")
-            return f"User '{name}' not found"
+            logger.info(f"⚠️ User '{last_name}' not found.")
+            return f"User '{last_name}' not found"
 
 
 @mcp.tool(name="Delete all users", description="Deletes all users from the database.")
