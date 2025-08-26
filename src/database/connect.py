@@ -1,14 +1,12 @@
+import logging
 from pathlib import Path
 from urllib.parse import urlparse
 
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 
 from config import settings
-from logger import setup_logging
 
-# Setup logging
-logger = setup_logging(settings.log_level)
-
+logger = logging.getLogger(__name__)
 
 class Database:
     """Database connection manager."""

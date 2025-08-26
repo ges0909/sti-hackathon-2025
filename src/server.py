@@ -1,19 +1,17 @@
+import logging
 from asyncio import CancelledError
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from dataclasses import dataclass
 
-from config import settings
 from database import user_repository
 from database.connect import Database
 from database.models.user import User
-from logger import setup_logging
 from mcp.server.fastmcp import Context, FastMCP
 from mcp.server.session import ServerSession
 from schemas import UserDto
 
-# Setup logging
-logger = setup_logging(settings.log_level)
+logger = logging.getLogger(__name__)
 
 
 @dataclass

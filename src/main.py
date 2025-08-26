@@ -3,10 +3,14 @@ import sys
 
 from config import settings
 from server import mcp
-from logger import setup_logging
 
 # Setup logging
-logger = setup_logging(settings.log_level)
+logging.basicConfig(
+    level=settings.log_level,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+)
+
+logger = logging.getLogger(__name__)
 
 # Suppress SQLAlchemy connection termination errors
 logging.getLogger("sqlalchemy.pool").setLevel(logging.CRITICAL)
