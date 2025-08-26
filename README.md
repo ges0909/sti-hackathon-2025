@@ -79,7 +79,7 @@ uv run src/main.py
 ### Run tests
 
 ```bash
-
+uv run pytest --verbose
 ```
 
 ## Gemini CLI

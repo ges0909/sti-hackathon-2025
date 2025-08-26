@@ -16,7 +16,9 @@ async def get_user_by_last_name(session: AsyncSession, last_name: str) -> User |
     return result.scalars().first()
 
 
-async def add_user(session: AsyncSession, first_name: str, last_name: str, email: str, age: int) -> None:
+async def add_user(
+    session: AsyncSession, first_name: str, last_name: str, email: str, age: int
+) -> None:
     """Add a new user to the database."""
     try:
         user = User(first_name=first_name, last_name=last_name, email=email, age=age)

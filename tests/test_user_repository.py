@@ -2,7 +2,6 @@ import pytest
 import pytest_asyncio
 from database import user_repository
 from database.models.base import Base
-from database.user_repository import add_user, delete_user_by_name, get_user_by_name
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 from sqlalchemy.ext.asyncio.session import AsyncSession
 
@@ -31,41 +30,50 @@ async def async_db_session():
 
 @pytest.mark.asyncio
 async def test_add_and_get_user(async_db_session):
-    """Test adding a user and retrieving them by name."""
+    """Test adding a user and retrieving them by last name."""
     await user_repository.add_user(
-        async_db_session, name="test_user", email="test@example.com", age=30
+        async_db_session,
+        first_name="John",
+        last_name="Doe",
+        email="test@example.com",
+        age=30,
     )
 
-    user = await user_repository.get_user_by_name(async_db_session, "test_user")
+    user = await user_repository.get_user_by_last_name(async_db_session, "Doe")
     assert user is not None
-    assert user.name == "test_user"
+    assert user.first_name == "John"
+    assert user.last_name == "Doe"
     assert user.email == "test@example.com"
 
 
 @pytest.mark.asyncio
-async def test_delete_user_by_name_success(async_db_session: AsyncSession):
-    """Test deleting an existing user by name."""
+async def test_delete_user_by_last_name_success(async_db_session: AsyncSession):
+    """Test deleting an existing user by last name."""
     # Add test user
-    await add_user(async_db_session, "test_user", "test@example.com", 25)
+    await user_repository.add_user(
+        async_db_session, "John", "Smith", "test@example.com", 25
+    )
 
     # Verify user exists
-    user = await get_user_by_name(async_db_session, "test_user")
+    user = await user_repository.get_user_by_last_name(async_db_session, "Smith")
     assert user is not None
 
     # Delete user
-    deleted = await delete_user_by_name(async_db_session, "test_user")
+    deleted = await user_repository.delete_user_by_last_name(async_db_session, "Smith")
     assert deleted is True
 
     # Verify user is gone
-    user = await get_user_by_name(async_db_session, "test_user")
+    user = await user_repository.get_user_by_last_name(async_db_session, "Smith")
     assert user is None
 
 
 @pytest.mark.asyncio
-async def test_delete_user_by_name_not_found(async_db_session: AsyncSession):
-    """Test deleting a non-existing user by name."""
+async def test_delete_user_by_last_name_not_found(async_db_session: AsyncSession):
+    """Test deleting a non-existing user by last name."""
     # Try to delete non-existing user
-    deleted = await delete_user_by_name(async_db_session, "nonexistent_user")
+    deleted = await user_repository.delete_user_by_last_name(
+        async_db_session, "NonExistent"
+    )
     assert deleted is False
 
 
@@ -74,10 +82,18 @@ async def test_delete_all_users(async_db_session):
     """Test deleting all users from the database."""
     # Add some users first
     await user_repository.add_user(
-        async_db_session, name="user_to_delete1", email="delete1@example.com", age=40
+        async_db_session,
+        first_name="Alice",
+        last_name="Johnson",
+        email="delete1@example.com",
+        age=40,
     )
     await user_repository.add_user(
-        async_db_session, name="user_to_delete2", email="delete2@example.com", age=50
+        async_db_session,
+        first_name="Bob",
+        last_name="Wilson",
+        email="delete2@example.com",
+        age=50,
     )
 
     # Verify they were added
@@ -85,7 +101,8 @@ async def test_delete_all_users(async_db_session):
     assert len(users_before_delete) == 2
 
     # Perform the deletion
-    await user_repository.delete_all_users(async_db_session)
+    deleted_count = await user_repository.delete_all_users(async_db_session)
+    assert deleted_count == 2
 
     # Verify the database is empty
     users_after_delete = await user_repository.get_all_users(async_db_session)

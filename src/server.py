@@ -94,17 +94,24 @@ async def find_user_by_name(
     description="Add a user with name, email and age to the database.",
 )
 async def add_user(
-    ctx: Context[ServerSession, AppContext], first_name: str, last_name: str, email: str, age: int
+    ctx: Context[ServerSession, AppContext],
+    first_name: str,
+    last_name: str,
+    email: str,
+    age: int,
 ) -> None:
     """Tool that uses initialized resources."""
     db = ctx.request_context.lifespan_context.db
     async with db.get_async_session() as session:
-        await user_repository.add_user(session, first_name=first_name, last_name=last_name, email=email, age=age)
+        await user_repository.add_user(
+            session, first_name=first_name, last_name=last_name, email=email, age=age
+        )
         logger.info(f"✅ User '{first_name} {last_name}' added.")
 
 
 @mcp.tool(
-    name="Delete user by last name", description="Delete a user by last name from the database."
+    name="Delete user by last name",
+    description="Delete a user by last name from the database.",
 )
 async def delete_user_by_last_name(
     ctx: Context[ServerSession, AppContext], last_name: str
