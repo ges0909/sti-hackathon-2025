@@ -19,7 +19,7 @@ def main():
         mcp.run()
     except Exception as e:
         if "UnicodeDecodeError" in str(e) or "ExceptionGroup" in str(type(e).__name__):
-            logger.warning("✅ MCP Server shutdown complete")
+            logger.info("✅ MCP Server shutdown complete")
             sys.exit(0)
         raise
 

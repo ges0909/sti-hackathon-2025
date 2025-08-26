@@ -30,6 +30,12 @@ startup, and to clean up the database on shutdown.
 
 ## Project
 
+### Get the project
+
+```bash
+git clone git@github.com:ges0909/sti-hackathon-2025.git
+```
+
 ### Install `uv`
 
 Install [uv](https://github.com/astral-sh/uv?tab=readme-ov-file#installation), "
@@ -51,21 +57,17 @@ Update `uv`.
 uv self update
 ```
 
-### Get project
-
-```bash
-git clone git@github.com:ges0909/sti-hackathon-2025.git
-```
-
 ### Manage dependencies
 
-| Command               | Description                  |
-|-----------------------|------------------------------|
-| `uv sync`             | Install project dependencies |
-| `uv sync --extra dev` | Include `dev` dependencies   |
-| `uv add fastmcp`      | Add new dependency           |
-| `uv remove mcp`       | Remove dependency            |
-| `uvx ruff format`     | Format codebase              |
+| Command                         | Description                    |
+|---------------------------------|--------------------------------|
+| `uv sync`                       | Install dependencies ...       |
+| `uv sync --extra dev`           | ... include `dev` dependencies |
+| `uv add fastmcp`                | Add new dependency             |
+| `uv remove mcp`                 | Remove dependency              |
+| `uv sync --upgrade`             | Upgrade dependencies ...       |
+| `uv sync --upgrade --extra dev` | ... include `dev` dependencies |
+| `uvx ruff format`               | Format codebase                |
 
 ### Run MCP server
 
@@ -81,3 +83,30 @@ uv run src/main.py
 
 ## Gemini CLI
 
+Install [Gemini CLI](https://github.com/google-gemini/gemini-cli?tab=readme-ov-file#-installation).
+
+Test installation by trying command `gemini`.
+
+Add following snippet to `$HOME/.gimini/settings.json`.
+
+```json
+{
+  "mcpServers": {
+    "STI valantic Hackathon MCP Demo": {
+      "command": "uv",
+      "args": [
+        "run",
+        "src/main.py"
+      ],
+      "cwd": "$HOME/PycharmProjects/sti-hackathon-2025",
+      "timeout": 30000,
+      "trust": true
+    }
+  }
+}
+```
+
+| Command | Description                |
+|---------|----------------------------|
+| `/mcp`  | List connected MCP servers |
+| `/quit` | Quit _Gemini_              |
