@@ -4,6 +4,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 from database.models.base import Base
 from database.models.user import User
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
+from sqlalchemy.future import select
 from mcp.server.session import ServerSession
 from server import (
     AppContext,
@@ -99,10 +100,8 @@ async def test_add_user_success(mock_context, async_db_session):
     await add_user(mock_context, "John", "Doe", "john@test.com", 30)
 
     # Verify user was added
-    result = await async_db_session.execute(
-        "SELECT * FROM users WHERE last_name = 'Doe'"
-    )
-    user = result.fetchone()
+    result = await async_db_session.execute(select(User).where(User.last_name == "Doe"))
+    user = result.scalars().first()
     assert user is not None
 
 

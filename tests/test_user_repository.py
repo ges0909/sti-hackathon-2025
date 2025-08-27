@@ -116,7 +116,7 @@ async def test_add_user_duplicate_email(async_db_session):
     await user_repository.add_user(
         async_db_session, "John", "Doe", "test@example.com", 30
     )
-    
+
     with pytest.raises(ValueError, match="Email already exists"):
         await user_repository.add_user(
             async_db_session, "Jane", "Smith", "test@example.com", 25

@@ -49,13 +49,9 @@ def test_user_id_autoincrement():
 def test_user_with_id():
     """Test User model with explicit ID."""
     user = User(
-        id=1,
-        first_name="Test", 
-        last_name="User", 
-        email="test@test.com",
-        age=25
+        id=1, first_name="Test", last_name="User", email="test@test.com", age=25
     )
-    
+
     assert user.id == 1
     assert user.first_name == "Test"
     assert user.last_name == "User"
