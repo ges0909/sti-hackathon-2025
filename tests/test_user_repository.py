@@ -1,5 +1,6 @@
 import pytest
 import pytest_asyncio
+from unittest.mock import patch
 from database import user_repository
 from database.models.base import Base
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
@@ -107,3 +108,30 @@ async def test_delete_all_users(async_db_session):
     # Verify the database is empty
     users_after_delete = await user_repository.get_all_users(async_db_session)
     assert len(users_after_delete) == 0
+
+
+@pytest.mark.asyncio
+async def test_add_user_duplicate_email(async_db_session):
+    """Test adding user with duplicate email raises ValueError."""
+    await user_repository.add_user(
+        async_db_session, "John", "Doe", "test@example.com", 30
+    )
+    
+    with pytest.raises(ValueError, match="Email already exists"):
+        await user_repository.add_user(
+            async_db_session, "Jane", "Smith", "test@example.com", 25
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_user_by_last_name_not_found(async_db_session):
+    """Test getting user by last name when not found."""
+    user = await user_repository.get_user_by_last_name(async_db_session, "NotFound")
+    assert user is None
+
+
+@pytest.mark.asyncio
+async def test_delete_all_users_empty_database(async_db_session):
+    """Test deleting all users from empty database."""
+    deleted_count = await user_repository.delete_all_users(async_db_session)
+    assert deleted_count == 0
