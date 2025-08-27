@@ -83,8 +83,8 @@ async def find_all_users(ctx: Context[ServerSession, AppContext]) -> list[UserDt
         return [UserDto.model_validate(user) for user in users]
 
 
-@mcp.tool(name="Find user by name", description="Get an user by name.")
-async def find_user_by_name(
+@mcp.tool(name="Find user by last name", description="Get an user by name.")
+async def find_user_by_last_name(
     ctx: Context[ServerSession, AppContext], name: str
 ) -> UserDto | None:
     """Get user by name."""
@@ -146,10 +146,14 @@ async def delete_all_users(ctx: Context[ServerSession, AppContext]) -> str:
 
 
 # Resources are static content. If you need dynamic data in resources, you have to define the URI with parameters.
-@mcp.resource("user://database/stats")
-async def user_stats() -> str:
-    """Resource providing user database statistics."""
-    return "Total users: Dynamic\nDatabase: SQLite\nStatus: Active"
+@mcp.tool(name="Get database stats", description="Get current database statistics.")
+async def get_database_stats(ctx: Context[ServerSession, AppContext]) -> str:
+    """Get current database statistics."""
+    db = ctx.request_context.lifespan_context.db
+    async with db.get_async_session() as session:
+        users = await user_repository.get_all_users(session)
+        count = len(users)
+    return f"Total users: {count}\nDatabase: SQLite\nStatus: Active"
 
 
 # Prompts are templates with parameters.

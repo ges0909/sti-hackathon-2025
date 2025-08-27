@@ -15,4 +15,8 @@ wheels/
 # VS Code
 .vscode
 
+# Pytest coverage
+.coverage
+htmlcov/
+
 data/

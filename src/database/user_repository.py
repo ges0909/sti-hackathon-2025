@@ -1,5 +1,6 @@
 from database.models.user import User
 from sqlalchemy import delete
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
@@ -24,6 +25,9 @@ async def add_user(
         user = User(first_name=first_name, last_name=last_name, email=email, age=age)
         session.add(user)
         await session.commit()
+    except IntegrityError:
+        await session.rollback()
+        raise ValueError("Email already exists")
     except Exception:
         await session.rollback()
         raise
