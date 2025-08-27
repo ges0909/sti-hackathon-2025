@@ -5,8 +5,8 @@ class Base(DeclarativeBase):
     """
     Base class for all SQLAlchemy ORM models.
 
-    It provides the basic declarative functionality. Models should inherit from this
-    class to be automatically discovered by mcp_tools like `metadata.create_all`.
+    Models should inherit from this class to be automatically discovered by
+    mcp_tools like `metadata.create_all`.
     """
 
     pass

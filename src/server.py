@@ -11,6 +11,8 @@ from mcp.server.fastmcp import Context, FastMCP
 from mcp.server.session import ServerSession
 from schemas import UserDto
 
+from faker import Faker
+
 logger = logging.getLogger(__name__)
 
 
@@ -34,33 +36,38 @@ async def server_lifespan(server: FastMCP) -> AsyncIterator[AppContext]:
         await conn.run_sync(User.metadata.create_all)
     logger.info("✅ Tables created")
 
-    # Add initial data in separate transaction
-    # logger.info("👥 Adding initial users...")
-    # async with db.get_async_session() as session:
-    #     user1 = User(name="gerrit", email="gerrit@mail.de", age=65)
-    #     user2 = User(name="heike", email="heike@mail.de", age=60)
-    #     session.add_all([user1, user2])
-    #     await session.commit()
-    # logger.info("✅ Initial users added")
+    # Add initial data
+    logger.info("👥 Adding initial users...")
+    async with db.get_async_session() as session:
+        fake = Faker()
+        users = []
+        for _ in range(10):
+            user = User(
+                first_name=fake.first_name(),
+                last_name=fake.last_name(),
+                email=fake.email(),
+                age=fake.random_int(18, 80),
+            )
+            users.append(user)
+        session.add_all(users)
+        await session.commit()
+    logger.info("✅ Initial users added")
 
     try:
         yield AppContext(db=db)
-    except CancelledError:
+    except (CancelledError, Exception):
         logger.warning("⚠️ Server interrupted by user")
-        # finally:
-        #     logger.info("🧹 Cleaning up database...")
-        #     try:
-        #         async with db.engine.begin() as conn:
-        #             await conn.run_sync(User.metadata.drop_all)
-        #         logger.info("✅ Database tables dropped")
-        #     except (CancelledError, Exception):
-        #         logger.warning("⚠️ Cleanup cancelled or failed")
 
+        logger.info("🧹 Cleaning up database...")
         try:
-            await db.disconnect()
-            logger.info("✅ Database disconnected")
+            async with db.engine.begin() as conn:
+                await conn.run_sync(User.metadata.drop_all)
         except (CancelledError, Exception):
-            logger.warning("⚠️ Disconnect cancelled or failed")
+            logger.warning("⚠️ Cleanup cancelled or failed")
+        logger.info("✅ Database tables dropped")
+
+        await db.disconnect()
+        logger.info("✅ Database disconnected")
 
 
 # Pass mcp-server to server

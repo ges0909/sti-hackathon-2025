@@ -9,6 +9,7 @@ dependencies = [
     "sqlalchemy>=2.0.43",
     "pydantic-settings>=2.3.4",
     "aiosqlite>=0.20.0",
+    "faker>=37.6.0",
 ]
 
 [project.optional-dependencies]
@@ -22,3 +23,23 @@ dev = [
 [tool.pytest.ini_options]
 pythonpath = ["src"]
 testpaths = ["tests"]
+
+[tool.ruff]
+exclude = ["venv", ".git", "__pycache__", ".pytest_cache", ".run", ".vscode", "data"]
+line-length = 88
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["E", "F", "B"]
+ignore = ["E501"]
+fixable = ["ALL"]
+unfixable = []
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["E402"]
+"tests/*" = ["E402"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"

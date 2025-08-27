@@ -17,10 +17,6 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
-# Suppress SQLAlchemy connection termination errors
-logging.getLogger("sqlalchemy.pool").setLevel(logging.CRITICAL)
-logging.getLogger("sqlalchemy.engine").setLevel(logging.WARNING)
-
 
 def main():
     logger.info("🚀 MCP Server starting...")

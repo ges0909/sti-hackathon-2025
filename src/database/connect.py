@@ -19,7 +19,7 @@ class Database:
         # Ensure data directory exists, which is important when using 'sqlite'
         extract_and_create_path_from_url(settings.database_url)
         cls.engine = create_async_engine(settings.database_url, echo=False)
-        cls.AsyncSessionLocal = async_sessionmaker(
+        cls.async_session_local = async_sessionmaker(
             bind=cls.engine, expire_on_commit=False
         )
         return cls()
@@ -32,7 +32,7 @@ class Database:
 
     def get_async_session(self) -> AsyncSession:
         """Get a database session."""
-        return self.AsyncSessionLocal()
+        return self.async_session_local()
 
 
 def extract_and_create_path_from_url(db_url: str) -> None:

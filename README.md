@@ -106,10 +106,17 @@ Add following snippet to `$HOME/.gimini/settings.json`.
 
 | Command | Description                |
 | ------- | -------------------------- |
-| `/mcp`  | List connected MCP servers |
+| `/mcp`  | Show connected MCP servers |
 | `/quit` | Quit _Gemini_              |
 
-### Prompts
+### Example Prompts
 
-1. füge mehr als 10 nutzer ein und generiere die daten zufällig dafür
-2.
+1. > How many user are stored in the user database?
+2. > Show me all users in user database with the leading id!
+3. > Delete user with id 10!
+4. > Add a new user with randomly assigned user data!
+5. > Add at least 3 users with randomly assigned user data!
+6. > Add a new user Max Mustermann, max.mustermann@mail.de, 20 years old!
+7. > Add a new user Maria Mustermann, maria.mustermann@mail.de!
+8. > Delete all users!
+9. > How many user are stored in the user database?
