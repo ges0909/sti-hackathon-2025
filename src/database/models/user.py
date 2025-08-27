@@ -1,6 +1,6 @@
 from database.models.base import Base
 from sqlalchemy import String
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 
 class User(Base):
@@ -8,22 +8,16 @@ class User(Base):
 
     __tablename__ = "users"
 
-    # Option 1: Auto-increment (default)
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-
-    # Option 2: Identity column (PostgreSQL 10+, SQL Server)
-    # id: Mapped[int] = mapped_column(Identity(start=1, increment=1), primary_key=True)
-
-    # Option 3: Sequence (PostgreSQL, Oracle)
-    # id: Mapped[int] = mapped_column(Sequence('user_id_seq'), primary_key=True)
-
-    # Option 4: Manual control (no auto-generation)
-    # id: Mapped[int] = mapped_column(primary_key=True, autoincrement=False)
-
     first_name: Mapped[str] = mapped_column(String(255))
     last_name: Mapped[str] = mapped_column(String(255))
     email: Mapped[str] = mapped_column(String(255), unique=True)
     age: Mapped[int | None] = mapped_column(nullable=True)
+
+    # Relationship to address (one-to-one)
+    address: Mapped["Address"] = relationship(
+        "Address", back_populates="user", uselist=False
+    )
 
     def __repr__(self):
         return f"<User(first_name={self.first_name}, last_name={self.last_name}, email={self.email}, age={self.age})>"

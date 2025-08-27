@@ -7,6 +7,9 @@ from dataclasses import dataclass
 from database import user_repository
 from database.connect import Database
 from database.models.user import User
+from database.models.address import Address
+from database.models.base import Base
+from config import settings
 from mcp.server.fastmcp import Context, FastMCP
 from mcp.server.session import ServerSession
 from schemas import UserDto
@@ -33,7 +36,7 @@ async def server_lifespan(server: FastMCP) -> AsyncIterator[AppContext]:
     # Create tables
     logger.info("📋 Creating tables...")
     async with db.engine.begin() as conn:
-        await conn.run_sync(User.metadata.create_all)
+        await conn.run_sync(Base.metadata.create_all)
     logger.info("✅ Tables created")
 
     # Add initial data
@@ -41,17 +44,23 @@ async def server_lifespan(server: FastMCP) -> AsyncIterator[AppContext]:
     async with db.get_async_session() as session:
         fake = Faker()
         users = []
-        for _ in range(10):
+        for _ in range(settings.initial_users_count):
             user = User(
                 first_name=fake.first_name(),
                 last_name=fake.last_name(),
                 email=fake.email(),
                 age=fake.random_int(18, 80),
+                address=Address(
+                    street=fake.street_address(),
+                    city=fake.city(),
+                    postal_code=fake.postcode(),
+                    country=fake.country(),
+                ),
             )
             users.append(user)
         session.add_all(users)
         await session.commit()
-    logger.info("✅ Initial users added")
+    logger.info(f"✅ {len(users)} users added")
 
     try:
         yield AppContext(db=db)
