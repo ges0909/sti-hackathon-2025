@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from database.repository.user_repository import user_repository
-from database.repository.address_repository import address_repository
+from repositories.user_repository import user_repository
+from repositories.address_repository import address_repository
 
 
 class StatsService:

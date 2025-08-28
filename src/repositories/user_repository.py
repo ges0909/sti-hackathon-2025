@@ -1,5 +1,5 @@
-from database.model.user_model import User
-from database.repository.base_repository import BaseRepository
+from models.user import User
+from repositories.base_repository import BaseRepository
 from sqlalchemy import delete, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession

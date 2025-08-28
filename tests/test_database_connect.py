@@ -1,14 +1,14 @@
 import pytest
 from unittest.mock import patch, MagicMock, AsyncMock
-from database.connect import Database
+from connect import Database
 
 
 @pytest.mark.asyncio
 async def test_database_connect():
     """Test Database.connect method."""
     with (
-        patch("database.connect.create_async_engine") as mock_engine,
-        patch("database.connect.async_sessionmaker") as mock_sessionmaker,
+        patch("connect.create_async_engine") as mock_engine,
+        patch("connect.async_sessionmaker") as mock_sessionmaker,
     ):
         mock_engine.return_value = MagicMock()
         mock_sessionmaker.return_value = MagicMock()

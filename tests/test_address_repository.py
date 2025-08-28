@@ -1,7 +1,7 @@
 import pytest
 import pytest_asyncio
-from database.repository.address_repository import address_repository
-from database.model import Base
+from repositories.address_repository import address_repository
+from models import Base
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
 TEST_DATABASE_URL = "sqlite+aiosqlite:///:memory:"

@@ -4,9 +4,9 @@ from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from dataclasses import dataclass
 
-from database.connect import Database
-from database.model import User, Address, Base
-from database.model.user_model import Gender
+from connect import Database
+from models import User, Address, Base
+from models import Gender
 from config import settings
 from mcp.server.fastmcp import Context, FastMCP
 from mcp.server.session import ServerSession

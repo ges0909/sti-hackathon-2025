@@ -1,5 +1,5 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from database.repository.address_repository import address_repository
+from repositories.address_repository import address_repository
 from schemas import AddressDto
 
 

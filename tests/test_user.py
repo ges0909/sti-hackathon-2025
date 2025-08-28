@@ -1,8 +1,8 @@
-from database.model.user_model import User
+from models import User
 
 
 def test_user_creation():
-    """Test User model creation with all fields."""
+    """Test User models creation with all fields."""
     user = User(first_name="John", last_name="Doe", email="john@test.com", age=30)
 
     assert user.first_name == "John"
@@ -12,7 +12,7 @@ def test_user_creation():
 
 
 def test_user_creation_without_age():
-    """Test User model creation with nullable age field."""
+    """Test User models creation with nullable age field."""
     user = User(first_name="Jane", last_name="Smith", email="jane@test.com")
 
     assert user.first_name == "Jane"
@@ -22,12 +22,12 @@ def test_user_creation_without_age():
 
 
 def test_user_tablename():
-    """Test User model table name."""
+    """Test User models table name."""
     assert User.__tablename__ == "users"
 
 
 def test_user_id_autoincrement():
-    """Test User model has auto-increment primary key."""
+    """Test User models has auto-increment primary key."""
     user = User(first_name="Test", last_name="User", email="test@test.com")
 
     # ID should be None before saving to database
@@ -35,7 +35,7 @@ def test_user_id_autoincrement():
 
 
 def test_user_with_id():
-    """Test User model with explicit ID."""
+    """Test User models with explicit ID."""
     user = User(
         id=1, first_name="Test", last_name="User", email="test@test.com", age=25
     )

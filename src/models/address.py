@@ -2,12 +2,12 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from database.model.base_model import Base
+from models.base import Base
 from sqlalchemy import String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 if TYPE_CHECKING:
-    from database.model.user_model import User
+    from models.user import User
 
 
 class Address(Base):

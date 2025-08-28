@@ -1,5 +1,5 @@
-from database.model.address_model import Address
-from database.repository.base_repository import BaseRepository
+from models.address import Address
+from repositories.base_repository import BaseRepository
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
