@@ -10,7 +10,7 @@ class UserService:
 
     async def get_user_by_last_name(
         self, session: AsyncSession, last_name: str
-    ) -> UserDto | None:
+    ) -> UserDto:
         user = await user_repository.get_by_last_name(session, last_name)
         return UserDto.model_validate(user) if user else None
 

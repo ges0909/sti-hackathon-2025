@@ -10,12 +10,14 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file="./.env")
 
     @field_validator("database_url")
+    @classmethod
     def validate_database_url(cls, value: str) -> str:
         if not value.strip():
             raise ValueError("DATABASE_URL must be set and non-empty")
         return value
 
     @field_validator("log_level")
+    @classmethod
     def validate_log_level(cls, value: str) -> str:
         valid_levels = {"DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"}
         upper_value = value.upper()
@@ -24,6 +26,7 @@ class Settings(BaseSettings):
         return upper_value
 
     @field_validator("initial_users_count")
+    @classmethod
     def validate_initial_users_count(cls, value: int) -> int:
         if not 0 <= value <= 1000:
             raise ValueError("INITIAL_USERS_COUNT must be between 0 and 1000")

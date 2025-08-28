@@ -10,7 +10,7 @@ class AddressService:
 
     async def get_address_by_id(
         self, session: AsyncSession, address_id: int
-    ) -> AddressDto | None:
+    ) -> AddressDto:
         address = await address_repository.get_by_id(session, address_id)
         return AddressDto.model_validate(address) if address else None
 
