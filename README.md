@@ -52,13 +52,13 @@ INITIAL_USERS_COUNT=10
 ## Run MCP server
 
 ```bash
-uv run src/main.py
+uv run people/src/main.py
 ```
 
 ## Run tests
 
 ```bash
-uv run pytest
+uv run pytest people
 ```
 
 ## Formatting
@@ -92,7 +92,7 @@ Add the following snippet to `$HOME/.gemini/settings.json`.
         "run",
         "src/main.py"
       ],
-      "cwd": "$HOME/PycharmProjects/sti-hackathon-2025",
+      "cwd": "$HOME/PycharmProjects/sti-hackathon-2025/people",
       "timeout": 30000,
       "trust": true
     }

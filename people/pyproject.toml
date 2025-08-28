@@ -1,0 +1,61 @@
+[project]
+name = "mcp-server-demo"
+version = "0.1.0"
+description = "MCP Server showcase with local database access"
+readme = "README.md"
+requires-python = ">=3.13"
+
+dependencies = [
+    "fastmcp>=2.11.3",
+    "pydantic-settings>=2.3.4",
+    "sqlalchemy>=2.0.43",
+    "aiosqlite>=0.20.0",
+    "faker>=37.6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.4.1",
+    "pytest-asyncio>=1.1.0",
+    "pytest-cov>=6.0.0",
+    "mypy>=1.17.1",
+    "ruff>=0.12.9",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = [
+    #    "--verbose",
+    #    "--cov=src",
+    #    "--cov-report=term-missing",
+    #    "--cov-report=html",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py39"
+exclude = [
+    "venv",
+    ".git",
+    "__pycache__",
+    ".pytest_cache",
+    ".run",
+    ".vscode",
+    "data"
+]
+
+[tool.ruff.lint]
+select = ["F", "E", "W", "B", "SIM"]
+ignore = ["E501"]
+fixable = ["ALL"]
+unfixable = []
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["E402"]
+"tests/*" = ["E402"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
