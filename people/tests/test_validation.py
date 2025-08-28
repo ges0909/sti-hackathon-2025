@@ -8,10 +8,10 @@ def test_create_user_request_valid():
     """Test valid CreateUserRequest."""
     request = CreateUserRequest(
         first_name="John",
-        last_name="Doe", 
+        last_name="Doe",
         email="john@example.com",
         age=30,
-        gender="male"
+        gender="male",
     )
     assert request.first_name == "John"
     assert request.gender == Gender.MALE
@@ -22,9 +22,9 @@ def test_create_user_request_gender_case_insensitive():
     request = CreateUserRequest(
         first_name="Jane",
         last_name="Doe",
-        email="jane@example.com", 
+        email="jane@example.com",
         age=25,
-        gender="FEMALE"
+        gender="FEMALE",
     )
     assert request.gender == Gender.FEMALE
 
@@ -32,10 +32,7 @@ def test_create_user_request_gender_case_insensitive():
 def test_create_user_request_gender_none():
     """Test gender can be None."""
     request = CreateUserRequest(
-        first_name="Alex",
-        last_name="Smith",
-        email="alex@example.com",
-        age=28
+        first_name="Alex", last_name="Smith", email="alex@example.com", age=28
     )
     assert request.gender is None
 
@@ -48,18 +45,14 @@ def test_create_user_request_invalid_gender():
             last_name="Doe",
             email="john@example.com",
             age=30,
-            gender="invalid"
+            gender="invalid",
         )
     assert "Invalid gender 'invalid'" in str(exc_info.value)
 
 
 def test_update_user_request_valid():
     """Test valid UpdateUserRequest."""
-    request = UpdateUserRequest(
-        last_name="Doe",
-        first_name="Johnny",
-        gender="other"
-    )
+    request = UpdateUserRequest(last_name="Doe", first_name="Johnny", gender="other")
     assert request.last_name == "Doe"
     assert request.first_name == "Johnny"
     assert request.gender == Gender.OTHER
@@ -76,10 +69,7 @@ def test_update_user_request_partial():
 def test_update_user_request_invalid_gender():
     """Test invalid gender in UpdateUserRequest."""
     with pytest.raises(ValidationError) as exc_info:
-        UpdateUserRequest(
-            last_name="Doe",
-            gender="wrong"
-        )
+        UpdateUserRequest(last_name="Doe", gender="wrong")
     assert "Invalid gender 'wrong'" in str(exc_info.value)
 
 
@@ -91,6 +81,6 @@ def test_all_gender_values():
             last_name="User",
             email="test@example.com",
             age=25,
-            gender=gender_value
+            gender=gender_value,
         )
         assert request.gender == Gender[gender_value.upper()]

@@ -10,8 +10,8 @@ members = [
     "people"
 ]
 
-[tool.uv]
-dev-dependencies = [
+[project.optional-dependencies]
+dev = [
     "pytest>=8.4.1",
     "pytest-asyncio>=1.1.0",
     "pytest-cov>=6.0.0",
@@ -22,16 +22,16 @@ dev-dependencies = [
 [tool.pytest.ini_options]
 pythonpath = ["people/src"]
 testpaths = ["people/tests"]
-addopts = [
-    #    "--verbose",
-    #    "--cov=src",
-    #    "--cov-report=term-missing",
-    #    "--cov-report=html",
-]
+#addopts = [
+#    "--verbose",
+#    "--cov=people",
+#    "--cov-report=term-missing",
+#    "--cov-report=html",
+#]
 
 [tool.ruff]
 line-length = 88
-target-version = "py39"
+target-version = "py313"
 exclude = [
     "venv",
     ".git",

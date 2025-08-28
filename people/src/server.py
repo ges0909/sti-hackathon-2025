@@ -111,11 +111,16 @@ async def add_user(
             last_name=last_name,
             email=email,
             age=age,
-            gender=gender
+            gender=gender,
         )
         async with _get_db(ctx).get_async_session() as session:
             result = await user_service.create_user(
-                session, request.first_name, request.last_name, request.email, request.age, request.gender
+                session,
+                request.first_name,
+                request.last_name,
+                request.email,
+                request.age,
+                request.gender,
             )
             logger.info(f"✅ {result}")
             return result
@@ -143,11 +148,16 @@ async def update_user(
             first_name=first_name,
             email=email,
             age=age,
-            gender=gender
+            gender=gender,
         )
         async with _get_db(ctx).get_async_session() as session:
             result = await user_service.update_user(
-                session, request.last_name, request.first_name, request.email, request.age, request.gender
+                session,
+                request.last_name,
+                request.first_name,
+                request.email,
+                request.age,
+                request.gender,
             )
             if "updated" in result:
                 logger.info(f"✅ {result}")
