@@ -11,10 +11,12 @@ from config.app import settings
 from mcp.server.fastmcp import Context, FastMCP
 from mcp.server.session import ServerSession
 from schemas import UserDto, AddressDto
+from validation import CreateUserRequest, UpdateUserRequest
 from services.user_service import user_service
 from services.address_service import address_service
 from services.stats_service import stats_service
 from faker import Faker
+from pydantic import ValidationError
 
 logger = logging.getLogger(__name__)
 
@@ -92,7 +94,8 @@ async def find_user_by_last_name(
 
 @mcp.tool(
     name="Add a user",
-    description="Add a user with name, email, age and gender to the database.",
+    description="""
+    Add a user with name, email, age and gender (male/female/other) to the database.""",
 )
 async def add_user(
     ctx: Context[ServerSession, AppContext],
@@ -103,20 +106,28 @@ async def add_user(
     gender: str = None,
 ) -> str:
     try:
+        request = CreateUserRequest(
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            age=age,
+            gender=gender
+        )
         async with _get_db(ctx).get_async_session() as session:
             result = await user_service.create_user(
-                session, first_name, last_name, email, age, gender
+                session, request.first_name, request.last_name, request.email, request.age, request.gender
             )
             logger.info(f"✅ {result}")
             return result
-    except ValueError as e:
+    except (ValidationError, ValueError) as e:
         logger.error(str(e))
         return str(e)
 
 
 @mcp.tool(
     name="Update user",
-    description="Update a user by last name with optional new values.",
+    description="""
+    Update a user by last name with optional new values. Gender options: male/female/other.""",
 )
 async def update_user(
     ctx: Context[ServerSession, AppContext],
@@ -127,16 +138,23 @@ async def update_user(
     gender: str = None,
 ) -> str:
     try:
+        request = UpdateUserRequest(
+            last_name=last_name,
+            first_name=first_name,
+            email=email,
+            age=age,
+            gender=gender
+        )
         async with _get_db(ctx).get_async_session() as session:
             result = await user_service.update_user(
-                session, last_name, first_name, email, age, gender
+                session, request.last_name, request.first_name, request.email, request.age, request.gender
             )
             if "updated" in result:
                 logger.info(f"✅ {result}")
             else:
                 logger.warning(f"⚠️ {result}")
             return result
-    except ValueError as e:
+    except (ValidationError, ValueError) as e:
         logger.error(str(e))
         return str(e)
 
