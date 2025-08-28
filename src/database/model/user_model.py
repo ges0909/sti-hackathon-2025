@@ -2,12 +2,12 @@ from __future__ import annotations
 from enum import Enum
 from typing import TYPE_CHECKING
 
-from database.model.base import Base
+from database.model.base_model import Base
 from sqlalchemy import String, Enum as SQLEnum
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 if TYPE_CHECKING:
-    from database.model.address import Address
+    from database.model.address_model import Address
 
 
 class Gender(Enum):

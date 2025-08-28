@@ -1,13 +1,12 @@
 import pytest
 import pytest_asyncio
-from database.model.base import Base
-from database.model.user import User, Gender
-from database.model.address import Address
+from database.model.base_model import Base
+from database.model.user_model import User
+from database.model.address_model import Address
 from services.user_service import user_service
 from services.address_service import address_service
 from services.stats_service import stats_service
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
-from pydantic import ValidationError
 
 TEST_DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 

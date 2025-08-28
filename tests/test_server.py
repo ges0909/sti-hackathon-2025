@@ -1,8 +1,8 @@
 import pytest
 import pytest_asyncio
 from unittest.mock import MagicMock
-from database.model.base import Base
-from database.model.user import User
+from database.model.base_model import Base
+from database.model.user_model import User
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 from sqlalchemy.future import select
 from server import (
@@ -22,8 +22,8 @@ from server import (
     analyze_user_prompt,
 )
 from schemas import UserDto, AddressDto
-from database.model.address import Address
-from database.model.user import Gender
+from database.model.address_model import Address
+from database.model.user_model import Gender
 
 TEST_DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 

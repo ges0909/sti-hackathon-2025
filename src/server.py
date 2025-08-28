@@ -6,7 +6,7 @@ from dataclasses import dataclass
 
 from database.connect import Database
 from database.model import User, Address, Base
-from database.model.user import Gender
+from database.model.user_model import Gender
 from config import settings
 from mcp.server.fastmcp import Context, FastMCP
 from mcp.server.session import ServerSession

@@ -2,7 +2,7 @@ import pytest
 import pytest_asyncio
 from database.repository.user_repository import user_repository
 from database.model import Base
-from database.model.user import Gender
+from database.model.user_model import Gender
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 from sqlalchemy.ext.asyncio.session import AsyncSession
 

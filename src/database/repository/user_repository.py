@@ -1,4 +1,4 @@
-from database.model.user import User
+from database.model.user_model import User
 from database.repository.base_repository import BaseRepository
 from sqlalchemy import delete, select
 from sqlalchemy.exc import IntegrityError
