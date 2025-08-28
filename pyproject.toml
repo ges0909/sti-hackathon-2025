@@ -20,8 +20,8 @@ dev = [
 ]
 
 [tool.pytest.ini_options]
-pythonpath = ["src"]
-testpaths = ["tests"]
+pythonpath = ["people/src"]
+testpaths = ["people/tests"]
 addopts = [
     #    "--verbose",
     #    "--cov=src",
