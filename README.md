@@ -53,6 +53,7 @@ INITIAL_USERS_COUNT=10
 
 ```bash
 uv run people/src/main.py
+uv run --package people-database-mcp-server people/src/main.py
 ```
 
 ## Run tests
