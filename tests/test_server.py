@@ -57,7 +57,9 @@ async def test_add_user_success(mock_context, async_db_session):
     result = await add_user(mock_context, "John", "Doe", "john@test.com", 30)
     assert "added" in result
 
-    db_result = await async_db_session.execute(select(User).where(User.last_name == "Doe"))
+    db_result = await async_db_session.execute(
+        select(User).where(User.last_name == "Doe")
+    )
     user = db_result.scalars().first()
     assert user is not None
 
@@ -75,7 +77,13 @@ async def test_find_user_by_last_name_found(mock_context, async_db_session):
 
 @pytest.mark.asyncio
 async def test_update_user_success(mock_context, async_db_session):
-    user = User(first_name="John", last_name="Doe", email="john@test.com", age=30, gender=Gender.MALE)
+    user = User(
+        first_name="John",
+        last_name="Doe",
+        email="john@test.com",
+        age=30,
+        gender=Gender.MALE,
+    )
     async_db_session.add(user)
     await async_db_session.commit()
 
@@ -101,10 +109,14 @@ async def test_find_all_addresses_empty(mock_context):
 
 @pytest.mark.asyncio
 async def test_add_address_success(mock_context, async_db_session):
-    result = await add_address(mock_context, "123 Main St", "Test City", "12345", "Test Country", 1)
+    result = await add_address(
+        mock_context, "123 Main St", "Test City", "12345", "Test Country", 1
+    )
     assert "added" in result
 
-    db_result = await async_db_session.execute(select(Address).where(Address.street == "123 Main St"))
+    db_result = await async_db_session.execute(
+        select(Address).where(Address.street == "123 Main St")
+    )
     address = db_result.scalars().first()
     assert address is not None
 
@@ -113,10 +125,10 @@ async def test_add_address_success(mock_context, async_db_session):
 async def test_find_address_by_id_found(mock_context, async_db_session):
     address = Address(
         street="123 Main St",
-        city="Test City", 
+        city="Test City",
         postal_code="12345",
         country="Test Country",
-        user_id=1
+        user_id=1,
     )
     async_db_session.add(address)
     await async_db_session.commit()
@@ -130,7 +142,13 @@ async def test_find_address_by_id_found(mock_context, async_db_session):
 @pytest.mark.asyncio
 async def test_get_database_stats(mock_context, async_db_session):
     user = User(first_name="John", last_name="Doe", email="john@test.com", age=30)
-    address = Address(street="123 Main St", city="Test City", postal_code="12345", country="Test Country", user_id=1)
+    address = Address(
+        street="123 Main St",
+        city="Test City",
+        postal_code="12345",
+        country="Test Country",
+        user_id=1,
+    )
     async_db_session.add_all([user, address])
     await async_db_session.commit()
 

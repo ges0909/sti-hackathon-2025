@@ -66,14 +66,13 @@ async def test_address_service_create_address(async_db_session):
     assert result == "Address '123 Main St, New York' added"
 
 
-
-
-
 @pytest.mark.asyncio
 async def test_stats_service(async_db_session):
     """Test stats service."""
     user = User(first_name="John", last_name="Doe", email="john@example.com", age=30)
-    address = Address(street="123 Main St", city="NYC", postal_code="10001", country="USA", user_id=1)
+    address = Address(
+        street="123 Main St", city="NYC", postal_code="10001", country="USA", user_id=1
+    )
     async_db_session.add_all([user, address])
     await async_db_session.commit()
 

@@ -3,7 +3,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    database_url: str = Field(default="")
+    database_url: str = Field(default="sqlite+aiosqlite:///./data/people.db")
     log_level: str = Field(default="INFO")
     initial_users_count: int = Field(default=10)
 
