@@ -1,7 +1,7 @@
 import pytest
 import pytest_asyncio
-from database.address_repository import address_repository
-from database.models import Base, User, Address
+from database.repository.address_repository import address_repository
+from database.model import Base
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
 TEST_DATABASE_URL = "sqlite+aiosqlite:///:memory:"
@@ -35,7 +35,7 @@ async def test_create_and_get_address(async_db_session):
 
     addresses = await address_repository.get_all(async_db_session)
     assert len(addresses) == 1
-    
+
     address = addresses[0]
     assert address.street == "123 Main St"
     assert address.city == "Test City"

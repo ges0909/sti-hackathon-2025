@@ -4,11 +4,11 @@ from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from dataclasses import dataclass
 
-from database.user_repository import user_repository
-from database.address_repository import address_repository
+from database.repository.user_repository import user_repository
+from database.repository.address_repository import address_repository
 from database.connect import Database
-from database.models import User, Address, Base
-from database.models.user import Gender
+from database.model import User, Address, Base
+from database.model.user import Gender
 from config import settings
 from mcp.server.fastmcp import Context, FastMCP
 from mcp.server.session import ServerSession
@@ -168,7 +168,9 @@ async def delete_all_users(ctx: Context[ServerSession, AppContext]) -> str:
 
 
 @mcp.tool(name="Find all addresses", description="Get all addresses from database.")
-async def find_all_addresses(ctx: Context[ServerSession, AppContext]) -> list[AddressDto]:
+async def find_all_addresses(
+    ctx: Context[ServerSession, AppContext],
+) -> list[AddressDto]:
     async with _get_db(ctx).get_async_session() as session:
         addresses = await address_repository.get_all(session)
         return [AddressDto.model_validate(addr) for addr in addresses]

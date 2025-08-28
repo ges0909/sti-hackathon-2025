@@ -1,5 +1,5 @@
-from database.models.user import User
-from database.base_repository import BaseRepository
+from database.model.user import User
+from database.repository.base_repository import BaseRepository
 from sqlalchemy import delete, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -9,7 +9,9 @@ class UserRepository(BaseRepository[User]):
     def __init__(self):
         super().__init__(User)
 
-    async def get_by_last_name(self, session: AsyncSession, last_name: str) -> User | None:
+    async def get_by_last_name(
+        self, session: AsyncSession, last_name: str
+    ) -> User | None:
         result = await session.execute(select(User).where(User.last_name == last_name))
         return result.scalars().first()
 

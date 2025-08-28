@@ -1,5 +1,5 @@
-from database.models.address import Address
-from database.base_repository import BaseRepository
+from database.model.address import Address
+from database.repository.base_repository import BaseRepository
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -8,8 +8,12 @@ class AddressRepository(BaseRepository[Address]):
     def __init__(self):
         super().__init__(Address)
 
-    async def get_by_user_id(self, session: AsyncSession, user_id: int) -> Address | None:
-        result = await session.execute(select(Address).where(Address.user_id == user_id))
+    async def get_by_user_id(
+        self, session: AsyncSession, user_id: int
+    ) -> Address | None:
+        result = await session.execute(
+            select(Address).where(Address.user_id == user_id)
+        )
         return result.scalars().first()
 
     async def create(

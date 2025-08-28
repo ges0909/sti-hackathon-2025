@@ -1,11 +1,10 @@
 import pytest
 import pytest_asyncio
-from unittest.mock import AsyncMock, MagicMock, patch
-from database.models.base import Base
-from database.models.user import User
+from unittest.mock import MagicMock
+from database.model.base import Base
+from database.model.user import User
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 from sqlalchemy.future import select
-from mcp.server.session import ServerSession
 from server import (
     AppContext,
     find_all_users,
@@ -23,8 +22,8 @@ from server import (
     analyze_user_prompt,
 )
 from schemas import UserDto, AddressDto
-from database.models.address import Address
-from database.models.user import Gender
+from database.model.address import Address
+from database.model.user import Gender
 
 TEST_DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 
@@ -202,7 +201,13 @@ async def test_server_lifespan_context_creation():
 @pytest.mark.asyncio
 async def test_update_user_success(mock_context, async_db_session):
     """Test updating existing user successfully."""
-    user = User(first_name="John", last_name="Doe", email="john@test.com", age=30, gender=Gender.MALE)
+    user = User(
+        first_name="John",
+        last_name="Doe",
+        email="john@test.com",
+        age=30,
+        gender=Gender.MALE,
+    )
     async_db_session.add(user)
     await async_db_session.commit()
 
@@ -222,7 +227,9 @@ async def test_add_user_with_gender(mock_context, async_db_session):
     """Test adding user with gender field."""
     await add_user(mock_context, "Jane", "Smith", "jane@test.com", 25, Gender.FEMALE)
 
-    result = await async_db_session.execute(select(User).where(User.last_name == "Smith"))
+    result = await async_db_session.execute(
+        select(User).where(User.last_name == "Smith")
+    )
     user = result.scalars().first()
     assert user is not None
     assert user.gender == Gender.FEMALE
@@ -238,8 +245,20 @@ async def test_find_all_addresses_empty(mock_context):
 @pytest.mark.asyncio
 async def test_find_all_addresses_with_data(mock_context, async_db_session):
     """Test finding all addresses with existing data."""
-    address1 = Address(street="123 Main St", city="City1", postal_code="12345", country="Country1", user_id=1)
-    address2 = Address(street="456 Oak Ave", city="City2", postal_code="67890", country="Country2", user_id=2)
+    address1 = Address(
+        street="123 Main St",
+        city="City1",
+        postal_code="12345",
+        country="Country1",
+        user_id=1,
+    )
+    address2 = Address(
+        street="456 Oak Ave",
+        city="City2",
+        postal_code="67890",
+        country="Country2",
+        user_id=2,
+    )
     async_db_session.add_all([address1, address2])
     await async_db_session.commit()
 
@@ -254,7 +273,13 @@ async def test_find_all_addresses_with_data(mock_context, async_db_session):
 @pytest.mark.asyncio
 async def test_find_address_by_id_found(mock_context, async_db_session):
     """Test finding address by ID when address exists."""
-    address = Address(street="123 Main St", city="Test City", postal_code="12345", country="Test Country", user_id=1)
+    address = Address(
+        street="123 Main St",
+        city="Test City",
+        postal_code="12345",
+        country="Test Country",
+        user_id=1,
+    )
     async_db_session.add(address)
     await async_db_session.commit()
     await async_db_session.refresh(address)
@@ -277,12 +302,17 @@ async def test_find_address_by_id_not_found(mock_context):
 @pytest.mark.asyncio
 async def test_add_address_success(mock_context, async_db_session):
     """Test adding a new address successfully."""
-    result = await add_address(mock_context, "123 Main St", "Test City", "12345", "Test Country", 1)
+    result = await add_address(
+        mock_context, "123 Main St", "Test City", "12345", "Test Country", 1
+    )
     assert result == "Address '123 Main St, Test City' added"
 
     # Verify address was added
     from sqlalchemy import select
-    result = await async_db_session.execute(select(Address).where(Address.street == "123 Main St"))
+
+    result = await async_db_session.execute(
+        select(Address).where(Address.street == "123 Main St")
+    )
     address = result.scalars().first()
     assert address is not None
 
@@ -290,12 +320,20 @@ async def test_add_address_success(mock_context, async_db_session):
 @pytest.mark.asyncio
 async def test_update_address_success(mock_context, async_db_session):
     """Test updating existing address successfully."""
-    address = Address(street="123 Main St", city="Old City", postal_code="12345", country="Old Country", user_id=1)
+    address = Address(
+        street="123 Main St",
+        city="Old City",
+        postal_code="12345",
+        country="Old Country",
+        user_id=1,
+    )
     async_db_session.add(address)
     await async_db_session.commit()
     await async_db_session.refresh(address)
 
-    result = await update_address(mock_context, address.id, city="New City", country="New Country")
+    result = await update_address(
+        mock_context, address.id, city="New City", country="New Country"
+    )
     assert result == f"Address ID {address.id} updated"
 
 
@@ -309,7 +347,13 @@ async def test_update_address_not_found(mock_context):
 @pytest.mark.asyncio
 async def test_delete_address_by_id_success(mock_context, async_db_session):
     """Test deleting existing address by ID."""
-    address = Address(street="123 Main St", city="Test City", postal_code="12345", country="Test Country", user_id=1)
+    address = Address(
+        street="123 Main St",
+        city="Test City",
+        postal_code="12345",
+        country="Test Country",
+        user_id=1,
+    )
     async_db_session.add(address)
     await async_db_session.commit()
     await async_db_session.refresh(address)
@@ -329,7 +373,13 @@ async def test_delete_address_by_id_not_found(mock_context):
 async def test_get_database_stats_with_addresses(mock_context, async_db_session):
     """Test getting database stats with users and addresses."""
     user = User(first_name="John", last_name="Doe", email="john@test.com", age=30)
-    address = Address(street="123 Main St", city="Test City", postal_code="12345", country="Test Country", user_id=1)
+    address = Address(
+        street="123 Main St",
+        city="Test City",
+        postal_code="12345",
+        country="Test Country",
+        user_id=1,
+    )
     async_db_session.add_all([user, address])
     await async_db_session.commit()
 
@@ -357,7 +407,14 @@ async def test_user_dto_validation():
 @pytest.mark.asyncio
 async def test_address_dto_validation():
     """Test AddressDto model validation with Address data."""
-    address = Address(id=1, street="123 Main St", city="Test City", postal_code="12345", country="Test Country", user_id=1)
+    address = Address(
+        id=1,
+        street="123 Main St",
+        city="Test City",
+        postal_code="12345",
+        country="Test Country",
+        user_id=1,
+    )
     address_dto = AddressDto.model_validate(address)
 
     assert address_dto.id == 1

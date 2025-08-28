@@ -1,9 +1,8 @@
 import pytest
 import pytest_asyncio
-from unittest.mock import patch
-from database.user_repository import user_repository
-from database.models import Base, User, Address
-from database.models.user import Gender
+from database.repository.user_repository import user_repository
+from database.model import Base
+from database.model.user import Gender
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 from sqlalchemy.ext.asyncio.session import AsyncSession
 
@@ -73,9 +72,7 @@ async def test_delete_user_by_last_name_success(async_db_session: AsyncSession):
 async def test_delete_user_by_last_name_not_found(async_db_session: AsyncSession):
     """Test deleting a non-existing user by last name."""
     # Try to delete non-existing user
-    deleted = await user_repository.delete_by_last_name(
-        async_db_session, "NonExistent"
-    )
+    deleted = await user_repository.delete_by_last_name(async_db_session, "NonExistent")
     assert deleted is False
 
 
@@ -152,7 +149,7 @@ async def test_update_user_by_last_name_success(async_db_session):
         last_name="UpdateMe",
         first_name="Johnny",
         age=26,
-        gender=Gender.OTHER
+        gender=Gender.OTHER,
     )
     assert updated is True
 
@@ -168,9 +165,7 @@ async def test_update_user_by_last_name_success(async_db_session):
 async def test_update_user_by_last_name_not_found(async_db_session):
     """Test updating a non-existing user by last name."""
     updated = await user_repository.update_by_last_name(
-        async_db_session,
-        last_name="NonExistent",
-        first_name="New Name"
+        async_db_session, last_name="NonExistent", first_name="New Name"
     )
     assert updated is False
 
@@ -189,9 +184,7 @@ async def test_update_user_duplicate_email(async_db_session):
     # Try to update second user with first user's email
     with pytest.raises(ValueError, match="Email already exists"):
         await user_repository.update_by_last_name(
-            async_db_session,
-            last_name="Two",
-            email="user1@example.com"
+            async_db_session, last_name="Two", email="user1@example.com"
         )
 
 
@@ -204,7 +197,7 @@ async def test_create_user_with_all_fields(async_db_session):
         last_name="User",
         email="complete@example.com",
         age=35,
-        gender=Gender.FEMALE
+        gender=Gender.FEMALE,
     )
 
     user = await user_repository.get_by_last_name(async_db_session, "User")
@@ -224,7 +217,7 @@ async def test_create_user_minimal_fields(async_db_session):
         first_name="Min",
         last_name="User",
         email="min@example.com",
-        age=20
+        age=20,
     )
 
     user = await user_repository.get_by_last_name(async_db_session, "User")
@@ -259,9 +252,7 @@ async def test_partial_update_user(async_db_session):
 
     # Update only age
     updated = await user_repository.update_by_last_name(
-        async_db_session,
-        last_name="Partial",
-        age=31
+        async_db_session, last_name="Partial", age=31
     )
     assert updated is True
 

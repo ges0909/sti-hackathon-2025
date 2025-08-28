@@ -3,7 +3,7 @@ from typing import Generic, TypeVar, Type
 from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-T = TypeVar('T')
+T = TypeVar("T")
 
 
 class BaseRepository(Generic[T], ABC):

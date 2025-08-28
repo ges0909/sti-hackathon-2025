@@ -26,10 +26,10 @@ dev = [
 pythonpath = ["src"]
 testpaths = ["tests"]
 addopts = [
-    "--verbose",
-    "--cov=src",
-    "--cov-report=term-missing",
-    "--cov-report=html",
+    #    "--verbose",
+    #    "--cov=src",
+    #    "--cov-report=term-missing",
+    #    "--cov-report=html",
 ]
 
 [tool.ruff]
