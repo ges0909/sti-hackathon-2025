@@ -9,7 +9,10 @@ class StatsService:
         addresses = await address_repository.get_all(session)
         user_count = len(users)
         address_count = len(addresses)
-        return f"Total users: {user_count}\nTotal addresses: {address_count}\nDatabase: SQLite\nStatus: Active"
+        return f"""Total users: {user_count}
+        Total addresses: {address_count}
+        Database: SQLite
+        Status: Active"""
 
 
 stats_service = StatsService()

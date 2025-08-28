@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from connect import Database
 from models import User, Address, Base
 from models import Gender
-from config.app import settings
+from config import settings
 from mcp.server.fastmcp import Context, FastMCP
 from mcp.server.session import ServerSession
 from schemas import UserDto, AddressDto
@@ -131,8 +131,8 @@ async def add_user(
 
 @mcp.tool(
     name="Update user",
-    description="""
-    Update a user by last name with optional new values. Gender options: male/female/other.""",
+    description="Update a user by last name with optional new values. "
+    "Gender options: male/female/other.",
 )
 async def update_user(
     ctx: Context[ServerSession, AppContext],
@@ -275,4 +275,9 @@ async def get_database_stats(ctx: Context[ServerSession, AppContext]) -> str:
 
 @mcp.prompt("analyze-user")
 async def analyze_user_prompt(name: str) -> str:
-    return f"Analyze this user profile for: {name}\n\nPlease provide insights on:\n- User behavior patterns\n- Engagement metrics\n- Recommendations"
+    return f"""Analyze this user profile for: {name}
+
+    Please provide insights on:
+    User behavior patterns
+    - Engagement metrics
+    - Recommendations"""
