@@ -6,13 +6,13 @@ from dataclasses import dataclass
 
 from database import user_repository, address_repository
 from database.connect import Database
-from database.models.user import User
+from database.models.user import User, Gender
 from database.models.address import Address
 from database.models.base import Base
 from config import settings
 from mcp.server.fastmcp import Context, FastMCP
 from mcp.server.session import ServerSession
-from schemas import UserDto
+from schemas import UserDto, AddressDto
 from faker import Faker
 
 logger = logging.getLogger(__name__)
@@ -26,7 +26,7 @@ class AppContext:
 @asynccontextmanager
 async def server_lifespan(server: FastMCP) -> AsyncIterator[AppContext]:
     db = await Database.connect()
-    logger.info("🔗 Database connected")
+    logger.info("✅ Database connected")
 
     async with db.engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
@@ -40,7 +40,7 @@ async def server_lifespan(server: FastMCP) -> AsyncIterator[AppContext]:
                 last_name=fake.last_name(),
                 email=fake.email(),
                 age=fake.random_int(18, 80),
-                gender=fake.random_element(["male", "female", "other"]),
+                gender=fake.random_element([Gender.MALE, Gender.FEMALE, Gender.OTHER]),
                 address=Address(
                     street=fake.street_address(),
                     city=fake.city(),
@@ -61,6 +61,7 @@ async def server_lifespan(server: FastMCP) -> AsyncIterator[AppContext]:
         try:
             async with db.engine.begin() as conn:
                 await conn.run_sync(User.metadata.drop_all)
+                logger.info("✅ Tables dropped")
         except (CancelledError, Exception):
             pass
         await db.disconnect()
@@ -167,38 +168,19 @@ async def delete_all_users(ctx: Context[ServerSession, AppContext]) -> str:
 
 
 @mcp.tool(name="Find all addresses", description="Get all addresses from database.")
-async def find_all_addresses(ctx: Context[ServerSession, AppContext]) -> list[dict]:
+async def find_all_addresses(ctx: Context[ServerSession, AppContext]) -> list[AddressDto]:
     async with _get_db(ctx).get_async_session() as session:
         addresses = await address_repository.get_all_addresses(session)
-        return [
-            {
-                "id": addr.id,
-                "street": addr.street,
-                "city": addr.city,
-                "postal_code": addr.postal_code,
-                "country": addr.country,
-                "user_id": addr.user_id,
-            }
-            for addr in addresses
-        ]
+        return [AddressDto.model_validate(addr) for addr in addresses]
 
 
 @mcp.tool(name="Find address by ID", description="Get address by ID.")
 async def find_address_by_id(
     ctx: Context[ServerSession, AppContext], address_id: int
-) -> dict | None:
+) -> AddressDto | None:
     async with _get_db(ctx).get_async_session() as session:
         address = await address_repository.get_address_by_id(session, address_id)
-        if address:
-            return {
-                "id": address.id,
-                "street": address.street,
-                "city": address.city,
-                "postal_code": address.postal_code,
-                "country": address.country,
-                "user_id": address.user_id,
-            }
-        return None
+        return AddressDto.model_validate(address) if address else None
 
 
 @mcp.tool(name="Add address", description="Add a new address to the database.")
