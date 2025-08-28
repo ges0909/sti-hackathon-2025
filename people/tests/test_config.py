@@ -1,5 +1,6 @@
 from unittest.mock import patch
-from config import Settings, settings
+
+from config.app import Settings, settings
 
 
 def test_settings_default_values():

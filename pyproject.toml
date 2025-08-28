@@ -1,6 +1,6 @@
 [project]
-name = "valantic-sti-hackathon-mcp-server"
-description = "valantic STI Hackathon MCP Server"
+name = "valantic-sti-hackathon"
+description = "Valantic STI Hackathon 2025"
 version = "0.1.0"
 readme = "README.md"
 requires-python = ">=3.13"
@@ -10,13 +10,13 @@ members = [
     "people"
 ]
 
-[project.optional-dependencies]
-dev = [
+[tool.uv]
+dev-dependencies = [
     "pytest>=8.4.1",
     "pytest-asyncio>=1.1.0",
     "pytest-cov>=6.0.0",
     "mypy>=1.17.1",
-    "ruff>=0.12.9",
+    "ruff>=0.12.11",
 ]
 
 [tool.pytest.ini_options]
@@ -42,17 +42,20 @@ exclude = [
     "data"
 ]
 
+[tool.ruff.format]
+# Use double quotes ("") instead of simple ('') for strings
+quote-style = "double"
+# Use spaces for indentations instead of tabs
+indent-style = "space"
+# Automatically recognize the line format (LF/CRLF) based on the system
+line-ending = "auto"
+
 [tool.ruff.lint]
+# F - Pyflakes errors (undefined names, unused imports, etc.)
+# E - pycodestyle errors (PEP 8 style violations)
+# W - pycodestyle warnings (PEP 8 style warnings)
+# B - flake8-bugbear rules (likely bugs and design problems)
+# SIM - flake8-simplify rules (suggestions for code simplification)
 select = ["F", "E", "W", "B", "SIM"]
-ignore = ["E501"]
 fixable = ["ALL"]
 unfixable = []
-
-[tool.ruff.lint.per-file-ignores]
-"__init__.py" = ["E402"]
-"tests/*" = ["E402"]
-
-[tool.ruff.format]
-quote-style = "double"
-indent-style = "space"
-line-ending = "auto"

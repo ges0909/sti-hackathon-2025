@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from connect import Database
 from models import User, Address, Base
 from models import Gender
-from config import settings
+from config.app import settings
 from mcp.server.fastmcp import Context, FastMCP
 from mcp.server.session import ServerSession
 from schemas import UserDto, AddressDto
