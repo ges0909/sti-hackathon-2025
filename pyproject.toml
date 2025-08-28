@@ -26,14 +26,22 @@ dev = [
 pythonpath = ["src"]
 testpaths = ["tests"]
 addopts = [
-    #    "--verbose",
-    #    "--cov=src",
-    #    "--cov-report=term-missing",
-    #    "--cov-report=html",
+    "--verbose",
+    "--cov=src",
+    "--cov-report=term-missing",
+    "--cov-report=html",
 ]
 
 [tool.ruff]
-exclude = ["venv", ".git", "__pycache__", ".pytest_cache", ".run", ".vscode", "data"]
+exclude = [
+    "venv",
+    ".git",
+    "__pycache__",
+    ".pytest_cache",
+    ".run",
+    ".vscode",
+    "data"
+]
 line-length = 88
 target-version = "py39"
 
