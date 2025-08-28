@@ -104,11 +104,12 @@ async def test_find_user_by_last_name_not_found(mock_context):
 @pytest.mark.asyncio
 async def test_add_user_success(mock_context, async_db_session):
     """Test adding a new user successfully."""
-    await add_user(mock_context, "John", "Doe", "john@test.com", 30)
+    result = await add_user(mock_context, "John", "Doe", "john@test.com", 30)
+    assert "added" in result
 
     # Verify user was added
-    result = await async_db_session.execute(select(User).where(User.last_name == "Doe"))
-    user = result.scalars().first()
+    db_result = await async_db_session.execute(select(User).where(User.last_name == "Doe"))
+    user = db_result.scalars().first()
     assert user is not None
 
 
@@ -225,12 +226,13 @@ async def test_update_user_not_found(mock_context):
 @pytest.mark.asyncio
 async def test_add_user_with_gender(mock_context, async_db_session):
     """Test adding user with gender field."""
-    await add_user(mock_context, "Jane", "Smith", "jane@test.com", 25, Gender.FEMALE)
+    result = await add_user(mock_context, "Jane", "Smith", "jane@test.com", 25, Gender.FEMALE)
+    assert "added" in result
 
-    result = await async_db_session.execute(
+    db_result = await async_db_session.execute(
         select(User).where(User.last_name == "Smith")
     )
-    user = result.scalars().first()
+    user = db_result.scalars().first()
     assert user is not None
     assert user.gender == Gender.FEMALE
 

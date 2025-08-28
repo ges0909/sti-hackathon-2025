@@ -4,8 +4,6 @@ from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from dataclasses import dataclass
 
-from database.repository.user_repository import user_repository
-from database.repository.address_repository import address_repository
 from database.connect import Database
 from database.model import User, Address, Base
 from database.model.user import Gender
@@ -13,6 +11,9 @@ from config import settings
 from mcp.server.fastmcp import Context, FastMCP
 from mcp.server.session import ServerSession
 from schemas import UserDto, AddressDto
+from services.user_service import user_service
+from services.address_service import address_service
+from services.stats_service import stats_service
 from faker import Faker
 
 logger = logging.getLogger(__name__)
@@ -78,8 +79,7 @@ def _get_db(ctx: Context[ServerSession, AppContext]) -> Database:
 @mcp.tool(name="Find all users", description="Get all users from database.")
 async def find_all_users(ctx: Context[ServerSession, AppContext]) -> list[UserDto]:
     async with _get_db(ctx).get_async_session() as session:
-        users = await user_repository.get_all(session)
-        return [UserDto.model_validate(user) for user in users]
+        return await user_service.get_all_users(session)
 
 
 @mcp.tool(name="Find user by last name", description="Get an user by name.")
@@ -87,8 +87,7 @@ async def find_user_by_last_name(
     ctx: Context[ServerSession, AppContext], name: str
 ) -> UserDto | None:
     async with _get_db(ctx).get_async_session() as session:
-        user = await user_repository.get_by_last_name(session, name)
-        return UserDto.model_validate(user) if user else None
+        return await user_service.get_user_by_last_name(session, name)
 
 
 @mcp.tool(
@@ -102,17 +101,17 @@ async def add_user(
     email: str,
     age: int,
     gender: str = None,
-) -> None:
-    async with _get_db(ctx).get_async_session() as session:
-        await user_repository.create(
-            session,
-            first_name=first_name,
-            last_name=last_name,
-            email=email,
-            age=age,
-            gender=gender,
-        )
-        logger.info(f"✅ User '{first_name} {last_name}' added.")
+) -> str:
+    try:
+        async with _get_db(ctx).get_async_session() as session:
+            result = await user_service.create_user(
+                session, first_name, last_name, email, age, gender
+            )
+            logger.info(f"✅ {result}")
+            return result
+    except ValueError as e:
+        logger.error(str(e))
+        return str(e)
 
 
 @mcp.tool(
@@ -127,20 +126,19 @@ async def update_user(
     age: int = None,
     gender: str = None,
 ) -> str:
-    async with _get_db(ctx).get_async_session() as session:
-        updated = await user_repository.update_by_last_name(
-            session,
-            last_name=last_name,
-            first_name=first_name,
-            email=email,
-            age=age,
-            gender=gender,
-        )
-        if updated:
-            logger.info(f"✅ User '{last_name}' updated.")
-            return f"User '{last_name}' updated"
-        logger.warning(f"⚠️ User '{last_name}' not found.")
-        return f"User '{last_name}' not found"
+    try:
+        async with _get_db(ctx).get_async_session() as session:
+            result = await user_service.update_user(
+                session, last_name, first_name, email, age, gender
+            )
+            if "updated" in result:
+                logger.info(f"✅ {result}")
+            else:
+                logger.warning(f"⚠️ {result}")
+            return result
+    except ValueError as e:
+        logger.error(str(e))
+        return str(e)
 
 
 @mcp.tool(
@@ -151,20 +149,20 @@ async def delete_user_by_last_name(
     ctx: Context[ServerSession, AppContext], last_name: str
 ) -> str:
     async with _get_db(ctx).get_async_session() as session:
-        deleted = await user_repository.delete_by_last_name(session, last_name)
-        if deleted:
-            logger.info(f"✅ User '{last_name}' deleted.")
-            return f"User '{last_name}' deleted"
-        logger.info(f"⚠️ User '{last_name}' not found.")
-        return f"User '{last_name}' not found"
+        result = await user_service.delete_user_by_last_name(session, last_name)
+        if "deleted" in result:
+            logger.info(f"✅ {result}")
+        else:
+            logger.warning(f"⚠️ {result}")
+        return result
 
 
 @mcp.tool(name="Delete all users", description="Deletes all users from the database.")
 async def delete_all_users(ctx: Context[ServerSession, AppContext]) -> str:
     async with _get_db(ctx).get_async_session() as session:
-        deleted_count = await user_repository.delete_all(session)
-        logger.info(f"✅ {deleted_count} users have been deleted.")
-        return f"{deleted_count} users deleted"
+        result = await user_service.delete_all_users(session)
+        logger.info(f"✅ {result}")
+        return result
 
 
 @mcp.tool(name="Find all addresses", description="Get all addresses from database.")
@@ -172,8 +170,7 @@ async def find_all_addresses(
     ctx: Context[ServerSession, AppContext],
 ) -> list[AddressDto]:
     async with _get_db(ctx).get_async_session() as session:
-        addresses = await address_repository.get_all(session)
-        return [AddressDto.model_validate(addr) for addr in addresses]
+        return await address_service.get_all_addresses(session)
 
 
 @mcp.tool(name="Find address by ID", description="Get address by ID.")
@@ -181,8 +178,7 @@ async def find_address_by_id(
     ctx: Context[ServerSession, AppContext], address_id: int
 ) -> AddressDto | None:
     async with _get_db(ctx).get_async_session() as session:
-        address = await address_repository.get_by_id(session, address_id)
-        return AddressDto.model_validate(address) if address else None
+        return await address_service.get_address_by_id(session, address_id)
 
 
 @mcp.tool(name="Add address", description="Add a new address to the database.")
@@ -194,17 +190,16 @@ async def add_address(
     country: str,
     user_id: int,
 ) -> str:
-    async with _get_db(ctx).get_async_session() as session:
-        await address_repository.create(
-            session,
-            street=street,
-            city=city,
-            postal_code=postal_code,
-            country=country,
-            user_id=user_id,
-        )
-        logger.info(f"✅ Address '{street}, {city}' added.")
-        return f"Address '{street}, {city}' added"
+    try:
+        async with _get_db(ctx).get_async_session() as session:
+            result = await address_service.create_address(
+                session, street, city, postal_code, country, user_id
+            )
+            logger.info(f"✅ {result}")
+            return result
+    except ValueError as e:
+        logger.error(str(e))
+        return str(e)
 
 
 @mcp.tool(name="Update address", description="Update an address by ID.")
@@ -216,20 +211,19 @@ async def update_address(
     postal_code: str = None,
     country: str = None,
 ) -> str:
-    async with _get_db(ctx).get_async_session() as session:
-        updated = await address_repository.update_by_id(
-            session,
-            address_id=address_id,
-            street=street,
-            city=city,
-            postal_code=postal_code,
-            country=country,
-        )
-        if updated:
-            logger.info(f"✅ Address ID {address_id} updated.")
-            return f"Address ID {address_id} updated"
-        logger.warning(f"⚠️ Address ID {address_id} not found.")
-        return f"Address ID {address_id} not found"
+    try:
+        async with _get_db(ctx).get_async_session() as session:
+            result = await address_service.update_address(
+                session, address_id, street, city, postal_code, country
+            )
+            if "updated" in result:
+                logger.info(f"✅ {result}")
+            else:
+                logger.warning(f"⚠️ {result}")
+            return result
+    except ValueError as e:
+        logger.error(str(e))
+        return str(e)
 
 
 @mcp.tool(name="Delete address by ID", description="Delete an address by ID.")
@@ -237,22 +231,18 @@ async def delete_address_by_id(
     ctx: Context[ServerSession, AppContext], address_id: int
 ) -> str:
     async with _get_db(ctx).get_async_session() as session:
-        deleted = await address_repository.delete_by_id(session, address_id)
-        if deleted:
-            logger.info(f"✅ Address ID {address_id} deleted.")
-            return f"Address ID {address_id} deleted"
-        logger.warning(f"⚠️ Address ID {address_id} not found.")
-        return f"Address ID {address_id} not found"
+        result = await address_service.delete_address_by_id(session, address_id)
+        if "deleted" in result:
+            logger.info(f"✅ {result}")
+        else:
+            logger.warning(f"⚠️ {result}")
+        return result
 
 
 @mcp.tool(name="Get database stats", description="Get current database statistics.")
 async def get_database_stats(ctx: Context[ServerSession, AppContext]) -> str:
     async with _get_db(ctx).get_async_session() as session:
-        users = await user_repository.get_all(session)
-        addresses = await address_repository.get_all(session)
-        user_count = len(users)
-        address_count = len(addresses)
-    return f"Total users: {user_count}\nTotal addresses: {address_count}\nDatabase: SQLite\nStatus: Active"
+        return await stats_service.get_database_stats(session)
 
 
 @mcp.prompt("analyze-user")
