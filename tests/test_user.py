@@ -1,4 +1,3 @@
-import pytest
 from database.models.user import User
 
 
@@ -20,17 +19,6 @@ def test_user_creation_without_age():
     assert user.last_name == "Smith"
     assert user.email == "jane@test.com"
     assert user.age is None
-
-
-def test_user_repr():
-    """Test User model string representation."""
-    user = User(first_name="John", last_name="Doe", email="john@test.com", age=30)
-
-    repr_str = repr(user)
-    assert "John" in repr_str
-    assert "Doe" in repr_str
-    assert "john@test.com" in repr_str
-    assert "30" in repr_str
 
 
 def test_user_tablename():

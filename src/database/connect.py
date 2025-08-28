@@ -10,14 +10,10 @@ logger = logging.getLogger(__name__)
 
 
 class Database:
-    """Database connection manager."""
-
     @classmethod
     async def connect(cls) -> "Database":
-        """Connect to database."""
         logger.info("🔌 Start SQLAlchemy Engine...")
-        # Ensure data directory exists, which is important when using 'sqlite'
-        extract_and_create_path_from_url(settings.database_url)
+        _create_db_directory(settings.database_url)
         cls.engine = create_async_engine(settings.database_url, echo=False)
         cls.async_session_local = async_sessionmaker(
             bind=cls.engine, expire_on_commit=False
@@ -25,32 +21,15 @@ class Database:
         return cls()
 
     async def disconnect(self) -> None:
-        """Disconnect from database."""
         logger.info("🧹 Close SQLAlchemy Engine...")
         if self.engine:
             await self.engine.dispose()
 
     def get_async_session(self) -> AsyncSession:
-        """Get a database session."""
         return self.async_session_local()
 
 
-def extract_and_create_path_from_url(db_url: str) -> None:
-    parsed = urlparse(db_url)
-    file_path = parsed.path
-
-    # Remove leading slashes for relative paths
-    if file_path.startswith("/"):
-        file_path = file_path[1:]
-
-    # Determine the directory of the database file
-    db_directory = Path(file_path).parent
-
-    # Create the directory if it does not exist
-    try:
-        db_directory.mkdir(parents=True, exist_ok=True)
-        logger.info("📁 Data directory exists or created")
-
-    except Exception as e:
-        print(f"⚠️ Failed to data create directory '{db_directory}': {e}")
-        raise
+def _create_db_directory(db_url: str) -> None:
+    file_path = urlparse(db_url).path.lstrip("/")
+    Path(file_path).parent.mkdir(parents=True, exist_ok=True)
+    logger.info("📁 Data directory exists or created")

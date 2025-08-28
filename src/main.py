@@ -4,7 +4,6 @@ import sys
 from config import settings
 from server import mcp
 
-# Setup logging
 logging.basicConfig(
     level=settings.log_level,
     format="[%(asctime)s] %(levelname)-8s %(message)s",
@@ -23,7 +22,7 @@ def main():
     try:
         mcp.run()
     except Exception as e:
-        if "UnicodeDecodeError" in str(e) or "ExceptionGroup" in str(type(e).__name__):
+        if "UnicodeDecodeError" in str(e) or "ExceptionGroup" in type(e).__name__:
             logger.info("✅ MCP Server shutdown complete")
             sys.exit(0)
         raise

@@ -1,18 +1,15 @@
 from database.models.user import User
-from sqlalchemy import delete
+from sqlalchemy import delete, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
 
 
 async def get_all_users(session: AsyncSession) -> list[User]:
-    """Get all users from the database."""
     result = await session.execute(select(User))
     return list(result.scalars().all())
 
 
 async def get_user_by_last_name(session: AsyncSession, last_name: str) -> User | None:
-    """Get user by last name from the database."""
     result = await session.execute(select(User).where(User.last_name == last_name))
     return result.scalars().first()
 
@@ -20,7 +17,6 @@ async def get_user_by_last_name(session: AsyncSession, last_name: str) -> User |
 async def add_user(
     session: AsyncSession, first_name: str, last_name: str, email: str, age: int
 ) -> None:
-    """Add a new user to the database."""
     try:
         user = User(first_name=first_name, last_name=last_name, email=email, age=age)
         session.add(user)
@@ -28,28 +24,41 @@ async def add_user(
     except IntegrityError:
         await session.rollback()
         raise ValueError("Email already exists")
-    except Exception:
+
+
+async def update_user(
+    session: AsyncSession,
+    last_name: str,
+    first_name: str = None,
+    email: str = None,
+    age: int = None,
+) -> bool:
+    user = await get_user_by_last_name(session, last_name)
+    if not user:
+        return False
+
+    if first_name is not None:
+        user.first_name = first_name
+    if email is not None:
+        user.email = email
+    if age is not None:
+        user.age = age
+
+    try:
+        await session.commit()
+        return True
+    except IntegrityError:
         await session.rollback()
-        raise
+        raise ValueError("Email already exists")
 
 
 async def delete_user_by_last_name(session: AsyncSession, last_name: str) -> bool:
-    """Delete a user by name from the database."""
-    try:
-        result = await session.execute(delete(User).where(User.last_name == last_name))
-        await session.commit()
-        return result.rowcount == 1 if result else False
-    except Exception:
-        await session.rollback()
-        raise
+    result = await session.execute(delete(User).where(User.last_name == last_name))
+    await session.commit()
+    return result.rowcount > 0
 
 
 async def delete_all_users(session: AsyncSession) -> int:
-    """Deletes all users from the database."""
-    try:
-        result = await session.execute(delete(User))
-        await session.commit()
-        return result.rowcount if result else 0
-    except Exception:
-        await session.rollback()
-        raise
+    result = await session.execute(delete(User))
+    await session.commit()
+    return result.rowcount

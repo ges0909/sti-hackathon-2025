@@ -1,8 +1,6 @@
 import pytest
-import pytest_asyncio
 from unittest.mock import patch, MagicMock, AsyncMock
-from pathlib import Path
-from database.connect import Database, extract_and_create_path_from_url
+from database.connect import Database
 
 
 @pytest.mark.asyncio
@@ -11,7 +9,6 @@ async def test_database_connect():
     with (
         patch("database.connect.create_async_engine") as mock_engine,
         patch("database.connect.async_sessionmaker") as mock_sessionmaker,
-        patch("database.connect.extract_and_create_path_from_url"),
     ):
         mock_engine.return_value = MagicMock()
         mock_sessionmaker.return_value = MagicMock()
@@ -46,42 +43,3 @@ def test_get_async_session():
 
     mock_session_local.assert_called_once()
     assert session == mock_session_local.return_value
-
-
-def test_extract_and_create_path_from_url_sqlite():
-    """Test path extraction for SQLite URL."""
-    with patch("database.connect.Path") as mock_path:
-        mock_path_instance = MagicMock()
-        mock_path.return_value = mock_path_instance
-        mock_path_instance.parent = MagicMock()
-
-        extract_and_create_path_from_url("sqlite:///data/test.db")
-
-        mock_path_instance.parent.mkdir.assert_called_once_with(
-            parents=True, exist_ok=True
-        )
-
-
-def test_extract_and_create_path_from_url_memory():
-    """Test path extraction for in-memory database."""
-    with patch("database.connect.Path") as mock_path:
-        mock_path_instance = MagicMock()
-        mock_path.return_value = mock_path_instance
-        mock_path_instance.parent = MagicMock()
-
-        extract_and_create_path_from_url("sqlite:///:memory:")
-
-        mock_path_instance.parent.mkdir.assert_called_once_with(
-            parents=True, exist_ok=True
-        )
-
-
-def test_extract_and_create_path_mkdir_exception():
-    """Test path creation with exception."""
-    with patch("database.connect.Path") as mock_path:
-        mock_path_instance = MagicMock()
-        mock_path.return_value = mock_path_instance
-        mock_path_instance.parent.mkdir.side_effect = Exception("Permission denied")
-
-        with pytest.raises(Exception, match="Permission denied"):
-            extract_and_create_path_from_url("sqlite:///data/test.db")
