@@ -40,6 +40,7 @@ async def server_lifespan(server: FastMCP) -> AsyncIterator[AppContext]:
                 last_name=fake.last_name(),
                 email=fake.email(),
                 age=fake.random_int(18, 80),
+                gender=fake.random_element(["male", "female", "other"]),
                 address=Address(
                     street=fake.street_address(),
                     city=fake.city(),
@@ -91,7 +92,7 @@ async def find_user_by_last_name(
 
 @mcp.tool(
     name="Add a user",
-    description="Add a user with name, email and age to the database.",
+    description="Add a user with name, email, age and gender to the database.",
 )
 async def add_user(
     ctx: Context[ServerSession, AppContext],
@@ -99,10 +100,16 @@ async def add_user(
     last_name: str,
     email: str,
     age: int,
+    gender: str = None,
 ) -> None:
     async with _get_db(ctx).get_async_session() as session:
         await user_repository.add_user(
-            session, first_name=first_name, last_name=last_name, email=email, age=age
+            session,
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            age=age,
+            gender=gender,
         )
         logger.info(f"✅ User '{first_name} {last_name}' added.")
 
@@ -117,10 +124,16 @@ async def update_user(
     first_name: str = None,
     email: str = None,
     age: int = None,
+    gender: str = None,
 ) -> str:
     async with _get_db(ctx).get_async_session() as session:
         updated = await user_repository.update_user(
-            session, last_name=last_name, first_name=first_name, email=email, age=age
+            session,
+            last_name=last_name,
+            first_name=first_name,
+            email=email,
+            age=age,
+            gender=gender,
         )
         if updated:
             logger.info(f"✅ User '{last_name}' updated.")
@@ -157,15 +170,34 @@ async def delete_all_users(ctx: Context[ServerSession, AppContext]) -> str:
 async def find_all_addresses(ctx: Context[ServerSession, AppContext]) -> list[dict]:
     async with _get_db(ctx).get_async_session() as session:
         addresses = await address_repository.get_all_addresses(session)
-        return [{"id": addr.id, "street": addr.street, "city": addr.city, "postal_code": addr.postal_code, "country": addr.country, "user_id": addr.user_id} for addr in addresses]
+        return [
+            {
+                "id": addr.id,
+                "street": addr.street,
+                "city": addr.city,
+                "postal_code": addr.postal_code,
+                "country": addr.country,
+                "user_id": addr.user_id,
+            }
+            for addr in addresses
+        ]
 
 
 @mcp.tool(name="Find address by ID", description="Get address by ID.")
-async def find_address_by_id(ctx: Context[ServerSession, AppContext], address_id: int) -> dict | None:
+async def find_address_by_id(
+    ctx: Context[ServerSession, AppContext], address_id: int
+) -> dict | None:
     async with _get_db(ctx).get_async_session() as session:
         address = await address_repository.get_address_by_id(session, address_id)
         if address:
-            return {"id": address.id, "street": address.street, "city": address.city, "postal_code": address.postal_code, "country": address.country, "user_id": address.user_id}
+            return {
+                "id": address.id,
+                "street": address.street,
+                "city": address.city,
+                "postal_code": address.postal_code,
+                "country": address.country,
+                "user_id": address.user_id,
+            }
         return None
 
 
@@ -179,7 +211,14 @@ async def add_address(
     user_id: int,
 ) -> str:
     async with _get_db(ctx).get_async_session() as session:
-        await address_repository.add_address(session, street=street, city=city, postal_code=postal_code, country=country, user_id=user_id)
+        await address_repository.add_address(
+            session,
+            street=street,
+            city=city,
+            postal_code=postal_code,
+            country=country,
+            user_id=user_id,
+        )
         logger.info(f"✅ Address '{street}, {city}' added.")
         return f"Address '{street}, {city}' added"
 
@@ -195,7 +234,12 @@ async def update_address(
 ) -> str:
     async with _get_db(ctx).get_async_session() as session:
         updated = await address_repository.update_address(
-            session, address_id=address_id, street=street, city=city, postal_code=postal_code, country=country
+            session,
+            address_id=address_id,
+            street=street,
+            city=city,
+            postal_code=postal_code,
+            country=country,
         )
         if updated:
             logger.info(f"✅ Address ID {address_id} updated.")
@@ -205,7 +249,9 @@ async def update_address(
 
 
 @mcp.tool(name="Delete address by ID", description="Delete an address by ID.")
-async def delete_address_by_id(ctx: Context[ServerSession, AppContext], address_id: int) -> str:
+async def delete_address_by_id(
+    ctx: Context[ServerSession, AppContext], address_id: int
+) -> str:
     async with _get_db(ctx).get_async_session() as session:
         deleted = await address_repository.delete_address_by_id(session, address_id)
         if deleted:

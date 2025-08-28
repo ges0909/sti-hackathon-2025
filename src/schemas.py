@@ -7,6 +7,7 @@ class UserBase(BaseModel):
     last_name: Annotated[str, Field(min_length=1, max_length=255)]
     email: EmailStr
     age: Annotated[int, Field(ge=0, le=150)] | None = None
+    gender: str | None = None
 
 
 class UserDto(UserBase):

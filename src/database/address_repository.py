@@ -19,10 +19,19 @@ async def get_address_by_user_id(session: AsyncSession, user_id: int) -> Address
 
 
 async def add_address(
-    session: AsyncSession, street: str, city: str, postal_code: str, country: str, user_id: int
+    session: AsyncSession,
+    street: str,
+    city: str,
+    postal_code: str,
+    country: str,
+    user_id: int,
 ) -> None:
     address = Address(
-        street=street, city=city, postal_code=postal_code, country=country, user_id=user_id
+        street=street,
+        city=city,
+        postal_code=postal_code,
+        country=country,
+        user_id=user_id,
     )
     session.add(address)
     await session.commit()

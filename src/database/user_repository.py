@@ -15,10 +15,21 @@ async def get_user_by_last_name(session: AsyncSession, last_name: str) -> User |
 
 
 async def add_user(
-    session: AsyncSession, first_name: str, last_name: str, email: str, age: int
+    session: AsyncSession,
+    first_name: str,
+    last_name: str,
+    email: str,
+    age: int,
+    gender: str = None,
 ) -> None:
     try:
-        user = User(first_name=first_name, last_name=last_name, email=email, age=age)
+        user = User(
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            age=age,
+            gender=gender,
+        )
         session.add(user)
         await session.commit()
     except IntegrityError:
@@ -32,6 +43,7 @@ async def update_user(
     first_name: str = None,
     email: str = None,
     age: int = None,
+    gender: str = None,
 ) -> bool:
     user = await get_user_by_last_name(session, last_name)
     if not user:
@@ -43,6 +55,8 @@ async def update_user(
         user.email = email
     if age is not None:
         user.age = age
+    if gender is not None:
+        user.gender = gender
 
     try:
         await session.commit()
