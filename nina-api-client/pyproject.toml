@@ -1,5 +1,5 @@
 [project]
-name = "bundesamt-f-ü-r-bev-ö-lkerungsschutz-nina-api-client"
+name = "nina-api-client"
 version = "1.0.0"
 description = "A client library for accessing Bundesamt für Bevölkerungsschutz: NINA API"
 authors = []
@@ -12,7 +12,7 @@ dependencies = [
 ]
 
 [tool.uv.build-backend]
-module-name = "bundesamt_f_ü_r_bev_ö_lkerungsschutz_nina_api_client"
+module-name = "nina_api_client"
 module-root = ""
 data = [
     "CHANGELOG.md",

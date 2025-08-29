@@ -1,7 +1,7 @@
 from typing import Optional
-from bundesamt_f_ü_r_bev_ö_lkerungsschutz_nina_api_client import Client
-from bundesamt_f_ü_r_bev_ö_lkerungsschutz_nina_api_client.api.warnings import get_dashboard, get_warning
-from bundesamt_f_ü_r_bev_ö_lkerungsschutz_nina_api_client.api.covid import get_ars_covid_rules
+from nina_api_client import Client
+from nina_api_client.api.warnings import get_dashboard, get_warning
+from nina_api_client.api.covid import get_ars_covid_rules
 
 
 class NinaClient:
