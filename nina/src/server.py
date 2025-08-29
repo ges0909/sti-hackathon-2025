@@ -3,14 +3,13 @@ from nina_client import nina_client
 
 mcp = FastMCP("NINA Notfall-Informations- und Nachrichten-App")
 
-
 @mcp.tool(
-    name="Alle Warnungen abrufen",
-    description="Ruft alle aktuellen Katastrophenschutz-Warnungen von NINA ab",
+    name="Regionale Warnungen abrufen",
+    description="Ruft Warnungen für eine bestimmte Region ab (ARS-Code erforderlich)",
 )
-async def get_all_warnings() -> list[dict]:
-    """Alle aktuellen Warnungen von NINA."""
-    return await nina_client.get_all_warnings()
+async def get_regional_warnings(region_code: str) -> dict | None:
+    """Regionale Warnungen nach ARS-Code."""
+    return await nina_client.get_regional_warnings(region_code)
 
 
 @mcp.tool(
@@ -23,31 +22,12 @@ async def get_warning_details(warning_id: str) -> dict | None:
 
 
 @mcp.tool(
-    name="Regionale Warnungen",
-    description="Warnungen für eine bestimmte Region (Regionscode erforderlich)",
+    name="Corona Regelungen",
+    description="Corona Regelungen für eine bestimmte Region (ARS-Code erforderlich)",
 )
-async def get_regional_warnings(region_code: str) -> list[dict]:
-    """Regionale Warnungen nach Regionscode."""
-    return await nina_client.get_regional_warnings(region_code)
-
-
-@mcp.tool(
-    name="Unwetterwarnungen",
-    description="Unwetterwarnungen vom Deutschen Wetterdienst (DWD)",
-)
-async def get_weather_warnings() -> list[dict]:
-    """Unwetterwarnungen vom DWD."""
-    return await nina_client.get_weather_warnings()
-
-
-@mcp.tool(
-    name="Warnungen nach Schweregrad filtern",
-    description="Filtert Warnungen nach Schweregrad (Minor, Moderate, Severe, Extreme)",
-)
-async def filter_by_severity(severity: str) -> list[dict]:
-    """Warnungen nach Schweregrad filtern."""
-    warnings = await nina_client.get_all_warnings()
-    return [w for w in warnings if w.get("severity", "").lower() == severity.lower()]
+async def get_covid_rules(region_code: str) -> dict | None:
+    """Corona Regelungen nach ARS-Code."""
+    return await nina_client.get_covid_rules(region_code)
 
 
 @mcp.resource("nina://status")

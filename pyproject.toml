@@ -13,10 +13,11 @@ dev = [
     "pytest-cov>=6.0.0",
     "mypy>=1.17.1",
     "ruff>=0.12.11",
+    "openapi-python-client>=0.26.0",
 ]
 
 [tool.uv.workspace]
-members = ["people", "nina"]
+members = ["people", "nina", "nina-api-client"]
 exclude = []
 
 # Default groups to be inluded when using run/sync
