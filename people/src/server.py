@@ -281,3 +281,14 @@ async def analyze_user_prompt(name: str) -> str:
     User behavior patterns
     - Engagement metrics
     - Recommendations"""
+
+
+@mcp.prompt("zeige-alle-datenbank-nutzer")
+async def list_database() -> str:
+    return """Gebe eine Liste aller Nutzer in der People-Datenbank zurück
+
+    1. Ermittle die Liste aller Nutzer in der People-Datenbank
+    2. Formatiere das Ergebnis so, dass pro Nutzer eine Zeile angezeigt wird,
+       wobei die einzelnen Werte durch Komma voneinander getrennt sein sollen
+    3. Stelle jeder Zeile eine fortlaufende Nummer voran, die rechtsbündig
+       ausgerichtet sein soll"""

@@ -32,14 +32,16 @@ uv self update
 
 ## Manage dependencies
 
-| Command                                       | Description                                    |
-|-----------------------------------------------|------------------------------------------------|
-| `uv sync`                                     | Install dependencies                           |
-| `uv sync --all-packages --extra dev`          | Install all dependencies including workspaces  |
-| `uv add fastmcp`                              | Add new dependency                             |
-| `uv remove mcp`                               | Remove dependency                              |
-| `uv sync --upgrade`                           | Upgrade dependencies                           |
-| `uv sync --upgrade --all-packages --extra de` | Upgrade  all dependencies including workspaces |
+| Command                            | Description                                    |
+|------------------------------------|------------------------------------------------|
+| `uv sync`                          | Install dependencies                           |
+| `uv sync --all-packages`           | Install all dependencies including workspaces  |
+| `uv add fastmcp`                   | Add new dependency                             |
+| `uv remove mcp`                    | Remove dependency                              |
+| `uv add --group dev ruff`          |                                                |
+| `uv remove --group dev ruff`       |                                                |
+| `uv sync --upgrade`                | Upgrade dependencies                           |
+| `uv sync --upgrade --all-packages` | Upgrade  all dependencies including workspaces |
 
 ## `.env` file (optional)
 
@@ -106,3 +108,9 @@ Add the following snippet to `$HOME/.gemini/settings.json`.
 | `/about` | Show information about Gemini |
 | `/mcp`   | Show connected MCP servers    |
 | `/quit`  | Quit _Gemini_                 |
+
+## FastMCP
+
+```bash
+uv run fastmcp version
+```

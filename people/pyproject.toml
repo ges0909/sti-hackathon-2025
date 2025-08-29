@@ -1,5 +1,5 @@
 [project]
-name = "mcp-people-database"
+name = "people-mcp"
 description = "People Database MCP Server"
 version = "0.1.0"
 
