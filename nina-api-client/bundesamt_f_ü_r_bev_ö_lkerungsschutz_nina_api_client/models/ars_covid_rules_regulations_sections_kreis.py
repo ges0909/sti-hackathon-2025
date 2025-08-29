@@ -1,0 +1,109 @@
+import datetime
+from collections.abc import Mapping
+from typing import TYPE_CHECKING, Any, TypeVar, Union
+
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
+from dateutil.parser import isoparse
+
+from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.ars_covid_rules_regulations_sections_kreis_icon import ARSCovidRulesRegulationsSectionsKREISIcon
+
+
+T = TypeVar("T", bound="ARSCovidRulesRegulationsSectionsKREIS")
+
+
+@_attrs_define
+class ARSCovidRulesRegulationsSectionsKREIS:
+    """
+    Attributes:
+        caption (Union[Unset, str]):  Example: Kreisverordnung.
+        url (Union[Unset, str]):  Example: https://www.muenchen.de/rathaus/Stadtverwaltung/Referat-fuer-Gesundheit-und-
+            Umwelt/Infektionsschutz/Neuartiges_Coronavirus.html#AB.
+        valid_from (Union[Unset, datetime.datetime]):  Example: 2021-06-09 00:00:00+02:00.
+        icon (Union[Unset, ARSCovidRulesRegulationsSectionsKREISIcon]):
+    """
+
+    caption: Union[Unset, str] = UNSET
+    url: Union[Unset, str] = UNSET
+    valid_from: Union[Unset, datetime.datetime] = UNSET
+    icon: Union[Unset, "ARSCovidRulesRegulationsSectionsKREISIcon"] = UNSET
+    additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
+
+    def to_dict(self) -> dict[str, Any]:
+        caption = self.caption
+
+        url = self.url
+
+        valid_from: Union[Unset, str] = UNSET
+        if not isinstance(self.valid_from, Unset):
+            valid_from = self.valid_from.isoformat()
+
+        icon: Union[Unset, dict[str, Any]] = UNSET
+        if not isinstance(self.icon, Unset):
+            icon = self.icon.to_dict()
+
+        field_dict: dict[str, Any] = {}
+        field_dict.update(self.additional_properties)
+        field_dict.update({})
+        if caption is not UNSET:
+            field_dict["caption"] = caption
+        if url is not UNSET:
+            field_dict["url"] = url
+        if valid_from is not UNSET:
+            field_dict["validFrom"] = valid_from
+        if icon is not UNSET:
+            field_dict["icon"] = icon
+
+        return field_dict
+
+    @classmethod
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.ars_covid_rules_regulations_sections_kreis_icon import ARSCovidRulesRegulationsSectionsKREISIcon
+
+        d = dict(src_dict)
+        caption = d.pop("caption", UNSET)
+
+        url = d.pop("url", UNSET)
+
+        _valid_from = d.pop("validFrom", UNSET)
+        valid_from: Union[Unset, datetime.datetime]
+        if isinstance(_valid_from, Unset):
+            valid_from = UNSET
+        else:
+            valid_from = isoparse(_valid_from)
+
+        _icon = d.pop("icon", UNSET)
+        icon: Union[Unset, ARSCovidRulesRegulationsSectionsKREISIcon]
+        if isinstance(_icon, Unset):
+            icon = UNSET
+        else:
+            icon = ARSCovidRulesRegulationsSectionsKREISIcon.from_dict(_icon)
+
+        ars_covid_rules_regulations_sections_kreis = cls(
+            caption=caption,
+            url=url,
+            valid_from=valid_from,
+            icon=icon,
+        )
+
+        ars_covid_rules_regulations_sections_kreis.additional_properties = d
+        return ars_covid_rules_regulations_sections_kreis
+
+    @property
+    def additional_keys(self) -> list[str]:
+        return list(self.additional_properties.keys())
+
+    def __getitem__(self, key: str) -> Any:
+        return self.additional_properties[key]
+
+    def __setitem__(self, key: str, value: Any) -> None:
+        self.additional_properties[key] = value
+
+    def __delitem__(self, key: str) -> None:
+        del self.additional_properties[key]
+
+    def __contains__(self, key: str) -> bool:
+        return key in self.additional_properties

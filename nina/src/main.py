@@ -1,4 +1,5 @@
 import logging
+
 from server import mcp
 
 logging.basicConfig(level=logging.INFO)

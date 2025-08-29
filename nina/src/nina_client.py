@@ -1,47 +1,29 @@
-import httpx
 from typing import Optional
+from bundesamt_f_ü_r_bev_ö_lkerungsschutz_nina_api_client import Client
+from bundesamt_f_ü_r_bev_ö_lkerungsschutz_nina_api_client.api.warnings import get_dashboard, get_warning
+from bundesamt_f_ü_r_bev_ö_lkerungsschutz_nina_api_client.api.covid import get_ars_covid_rules
 
 
 class NinaClient:
     """Client für NINA API des Bundesamts für Bevölkerungsschutz"""
 
     def __init__(self):
-        self.base_url = "https://warnung.bund.de/api31"
+        self.client = Client(base_url="https://warnung.bund.de/api31")
 
-    async def get_all_warnings(self) -> list[dict]:
-        """Alle aktuellen Warnungen abrufen."""
-        async with httpx.AsyncClient() as client:
-            response = await client.get(f"{self.base_url}/dashboard/warnings.json")
-            response.raise_for_status()
-            return response.json()
+    async def get_regional_warnings(self, region_code: str) -> Optional[dict]:
+        """Regionale Warnungen (z.B. '091620000000' für München)."""
+        result = await get_dashboard.asyncio(ars=region_code, client=self.client)
+        return result.to_dict() if result else None
 
     async def get_warning_details(self, warning_id: str) -> Optional[dict]:
         """Detaillierte Warnung nach ID."""
-        async with httpx.AsyncClient() as client:
-            try:
-                response = await client.get(
-                    f"{self.base_url}/warnings/{warning_id}.json"
-                )
-                response.raise_for_status()
-                return response.json()
-            except httpx.HTTPStatusError as e:
-                if e.response.status_code == 404:
-                    return None
-                raise
+        result = await get_warning.asyncio(identifier=warning_id, client=self.client)
+        return result.to_dict() if result else None
 
-    async def get_regional_warnings(self, region_code: str) -> list[dict]:
-        """Regionale Warnungen (z.B. '091620000000' für München)."""
-        async with httpx.AsyncClient() as client:
-            response = await client.get(f"{self.base_url}/dashboard/{region_code}.json")
-            response.raise_for_status()
-            return response.json()
-
-    async def get_weather_warnings(self) -> list[dict]:
-        """Unwetterwarnungen vom DWD."""
-        async with httpx.AsyncClient() as client:
-            response = await client.get(f"{self.base_url}/dwd/warnings.json")
-            response.raise_for_status()
-            return response.json()
+    async def get_covid_rules(self, region_code: str) -> Optional[dict]:
+        """Corona Regelungen für Region."""
+        result = await get_ars_covid_rules.asyncio(ars=region_code, client=self.client)
+        return result.to_dict() if result else None
 
 
 nina_client = NinaClient()
