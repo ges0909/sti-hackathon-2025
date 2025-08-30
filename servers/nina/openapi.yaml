@@ -1,8 +1,8 @@
 openapi: "3.0.0"
 info:
-  description: "Erhalten Sie wichtige Warnmeldungen des Bevölkerungsschutzes für Gefahrenlagen wie zum Beispiel Gefahrstoffausbreitung oder Unwetter per Programmierschnittstelle."
+  description: "Erhalten Sie wichtige Warnmeldungen des BevÃ¶lkerungsschutzes fÃ¼r Gefahrenlagen wie zum Beispiel Gefahrstoffausbreitung oder Unwetter per Programmierschnittstelle."
   version: "1.0.0"
-  title: "Bundesamt für Bevölkerungsschutz: NINA API"
+  title: "Bundesamt fÃ¼r BevÃ¶lkerungsschutz: NINA API"
   contact:
     url: "https://warnung.bund.de/"
 
@@ -19,8 +19,8 @@ paths:
   /dashboard/{ARS}.json:
     get:
       operationId: getDashboard
-      summary: Meldungsübersicht nach ARS
-      description: "Erhalten Sie die aktuellen Warnmeldungen für eine bestimmte Region."
+      summary: MeldungsÃ¼bersicht nach ARS
+      description: "Erhalten Sie die aktuellen Warnmeldungen fÃ¼r eine bestimmte Region."
       tags:
         - Warnings
       responses:
@@ -36,14 +36,14 @@ paths:
           name: ARS
           schema:
             type: string
-          description: Amtlicher Regionalschlüssel - kann z.B. von [hier](https://www.xrepository.de/api/xrepository/urn:de:bund:destatis:bevoelkerungsstatistik:schluessel:rs_2021-07-31/download/Regionalschl_ssel_2021-07-31.json) bezogen werden. Die Letzten 7 Stellen müssen dabei mit "0000000" ersetzt werden, weil die Daten nur auf [Kreisebene](https://de.wikipedia.org/wiki/Amtlicher_Gemeindeschl%C3%BCssel#Regionalschl%C3%BCssel) bereitgestellt werden.
+          description: Amtlicher RegionalschlÃ¼ssel - kann z.B. von [hier](https://www.xrepository.de/api/xrepository/urn:de:bund:destatis:bevoelkerungsstatistik:schluessel:rs_2021-07-31/download/Regionalschl_ssel_2021-07-31.json) bezogen werden. Die Letzten 7 Stellen mÃ¼ssen dabei mit "0000000" ersetzt werden, weil die Daten nur auf [Kreisebene](https://de.wikipedia.org/wiki/Amtlicher_Gemeindeschl%C3%BCssel#Regionalschl%C3%BCssel) bereitgestellt werden.
           example: "091620000000"
 
   /appdata/covid/covidrules/DE/{ARS}.json:
     get:
       operationId: getARSCovidRules
       summary: Corona Regelungen nach ARS
-      description: "Erhalten Sie die aktuellen Corona Regelungen für eine bestimmte Region."
+      description: "Erhalten Sie die aktuellen Corona Regelungen fÃ¼r eine bestimmte Region."
       tags:
         - Covid
       responses:
@@ -59,7 +59,7 @@ paths:
           name: ARS
           schema:
             type: string
-          description: Amtlicher Regionalschlüssel - kann z.B. von [hier](https://www.xrepository.de/api/xrepository/urn:de:bund:destatis:bevoelkerungsstatistik:schluessel:rs_2021-07-31/download/Regionalschl_ssel_2021-07-31.json) bezogen werden. Die Letzten 7 Stellen müssen dabei mit "0000000" ersetzt werden, weil die Daten nur auf [Kreisebene](https://de.wikipedia.org/wiki/Amtlicher_Gemeindeschl%C3%BCssel#Regionalschl%C3%BCssel) bereitgestellt werden.
+          description: Amtlicher RegionalschlÃ¼ssel - kann z.B. von [hier](https://www.xrepository.de/api/xrepository/urn:de:bund:destatis:bevoelkerungsstatistik:schluessel:rs_2021-07-31/download/Regionalschl_ssel_2021-07-31.json) bezogen werden. Die Letzten 7 Stellen mÃ¼ssen dabei mit "0000000" ersetzt werden, weil die Daten nur auf [Kreisebene](https://de.wikipedia.org/wiki/Amtlicher_Gemeindeschl%C3%BCssel#Regionalschl%C3%BCssel) bereitgestellt werden.
           example: "091620000000"
 
   /appdata/covid/covidinfos/DE/covidinfos.json:
@@ -112,14 +112,14 @@ paths:
           name: id
           schema:
             type: string
-          description: Covid-Ticker meldung. Aktuelle Meldungen können über /appdata/covid/covidticker/DE/covidticker.json abgerufen werden.
+          description: Covid-Ticker meldung. Aktuelle Meldungen kÃ¶nnen Ã¼ber /appdata/covid/covidticker/DE/covidticker.json abgerufen werden.
           example: 7eb928fc-4496-4a71-8154-1c64be10ce0a
 
   /appdata/covid/covidmap/DE/covidmap.json:
     get:
       operationId: getCovidMap
-      summary: Kartendaten für Corona-Fallzahlen.
-      description: Die zugehörigen Geometrie-Daten sind über [https://warnung.bund.de/assets/json/converted_corona_kreise.json](https://warnung.bund.de/assets/json/converted_corona_kreise.json) abrufbar.
+      summary: Kartendaten fÃ¼r Corona-Fallzahlen.
+      description: Die zugehÃ¶rigen Geometrie-Daten sind Ã¼ber [https://warnung.bund.de/assets/json/converted_corona_kreise.json](https://warnung.bund.de/assets/json/converted_corona_kreise.json) abrufbar.
       tags:
         - Covid
       responses:
@@ -133,8 +133,8 @@ paths:
   /appdata/gsb/logos/logos.json:
     get:
       operationId: getLogos
-      summary: Liefert Namen und Logos für Sender-IDs
-      description: Liefert Namen und Logos für Sender-IDs
+      summary: Liefert Namen und Logos fÃ¼r Sender-IDs
+      description: Liefert Namen und Logos fÃ¼r Sender-IDs
       tags:
         - default
       responses:
@@ -149,7 +149,7 @@ paths:
     get:
       operationId: getLogo
       summary: Logo-Bilddateien.
-      description: Die verfügbaren Bilddateien und zugehörige Sender-IDs + Namen sind über /appdata/gsb/logos/logos.json abrufbar.
+      description: Die verfÃ¼gbaren Bilddateien und zugehÃ¶rige Sender-IDs + Namen sind Ã¼ber /appdata/gsb/logos/logos.json abrufbar.
       tags:
         - default
       responses:
@@ -177,7 +177,7 @@ paths:
     get:
       operationId: getEventCodes
       summary: Liefert Event Codes und Name der Bilddateien.
-      description: Liefert Event Codes und Name der Bilddateien für verschiedene Event Codes.
+      description: Liefert Event Codes und Name der Bilddateien fÃ¼r verschiedene Event Codes.
       tags:
         - default
       responses:
@@ -192,7 +192,7 @@ paths:
     get:
       operationId: getEventCode
       summary: Event Code Bilddateien.
-      description: Die verfügbaren Bilddateien und zugehörige Event Codes sind über /appdata/gsb/eventCodes/eventCodes.json abrufbar.
+      description: Die verfÃ¼gbaren Bilddateien und zugehÃ¶rige Event Codes sind Ã¼ber /appdata/gsb/eventCodes/eventCodes.json abrufbar.
       tags:
         - default
       responses:
@@ -216,7 +216,7 @@ paths:
     get:
       operationId: getNotfalltipps
       summary: Notfalltipps
-      description: Liefert eine List von Notfalltipps für verschiedene Gefahrenlagen.
+      description: Liefert eine List von Notfalltipps fÃ¼r verschiedene Gefahrenlagen.
       tags:
         - default
       responses:
@@ -307,7 +307,7 @@ paths:
     get:
       operationId: getKatwarnMapData
       summary: Katwarn Meldungen
-      description: Liefert die Katwarn-Meldungen für die Kartenansicht.
+      description: Liefert die Katwarn-Meldungen fÃ¼r die Kartenansicht.
       tags:
         - Warnings
       responses:
@@ -322,7 +322,7 @@ paths:
     get:
       operationId: getBiwappMapData
       summary: Biwapp Meldungen
-      description: Liefert die Biwapp-Meldungen für die Kartenansicht.
+      description: Liefert die Biwapp-Meldungen fÃ¼r die Kartenansicht.
       tags:
         - Warnings
       responses:
@@ -337,7 +337,7 @@ paths:
     get:
       operationId: getMowasMapData
       summary: Mowas Meldungen
-      description: Liefert die Mowas-Meldungen für die Kartenansicht.
+      description: Liefert die Mowas-Meldungen fÃ¼r die Kartenansicht.
       tags:
         - Warnings
       responses:
@@ -352,7 +352,7 @@ paths:
     get:
       operationId: getDwdMapData
       summary: Unwetterwarnungen des Deutschen Wetterdienstes
-      description: Liefert die Unwetterwarnungen des Deutschen Wetterdienstes für die Kartenansicht.
+      description: Liefert die Unwetterwarnungen des Deutschen Wetterdienstes fÃ¼r die Kartenansicht.
       tags:
         - Warnings
       responses:
@@ -366,8 +366,8 @@ paths:
   /lhp/mapData.json:
     get:
       operationId: getLhpMapData
-      summary: "Meldungen des LÃ¤nderübergreifenden Hochwasserportals"
-      description: Liefert die Meldungen des LÃ¤nderübergreifenden Hochwasserportals für die Kartenansicht.
+      summary: "Meldungen des LÃ¤nderÃ¼bergreifenden Hochwasserportals"
+      description: Liefert die Meldungen des LÃ¤nderÃ¼bergreifenden Hochwasserportals fÃ¼r die Kartenansicht.
       tags:
         - Warnings
       responses:
@@ -382,7 +382,7 @@ paths:
     get:
       operationId: getPoliceMapData
       summary: Polizeimeldungen
-      description: Liefert die Polizeimeldungen für die Kartenansicht.
+      description: Liefert die Polizeimeldungen fÃ¼r die Kartenansicht.
       tags:
         - Warnings
       responses:
@@ -459,7 +459,7 @@ paths:
           name: ARS
           schema:
             type: string
-          description: Amtlicher Regionalschlüssel - kann z.B. von [hier](https://www.xrepository.de/api/xrepository/urn:de:bund:destatis:bevoelkerungsstatistik:schluessel:rs_2021-07-31/download/Regionalschl_ssel_2021-07-31.json) bezogen werden. Die Letzten 7 Stellen müssen dabei mit "0000000" ersetzt werden, weil die Daten nur auf [Kreisebene](https://de.wikipedia.org/wiki/Amtlicher_Gemeindeschl%C3%BCssel#Regionalschl%C3%BCssel) bereitgestellt werden.
+          description: Amtlicher RegionalschlÃ¼ssel - kann z.B. von [hier](https://www.xrepository.de/api/xrepository/urn:de:bund:destatis:bevoelkerungsstatistik:schluessel:rs_2021-07-31/download/Regionalschl_ssel_2021-07-31.json) bezogen werden. Die Letzten 7 Stellen mÃ¼ssen dabei mit "0000000" ersetzt werden, weil die Daten nur auf [Kreisebene](https://de.wikipedia.org/wiki/Amtlicher_Gemeindeschl%C3%BCssel#Regionalschl%C3%BCssel) bereitgestellt werden.
           example: "091620000000"
 
 components:
@@ -491,7 +491,7 @@ components:
             properties:
               de:
                 type: string
-                example: "Burgenlandkreis meldet: Warnung Sonderfall. Gültig ab 10.07.2021 11:58."
+                example: "Burgenlandkreis meldet: Warnung Sonderfall. GÃ¼ltig ab 10.07.2021 11:58."
 
     ARSOverviewResult:
       type: array
@@ -522,7 +522,7 @@ components:
                 properties:
                   headline:
                     type: string
-                    example: Coronavirus; Informationen des Bundesministeriums für  Gesundheit
+                    example: Coronavirus; Informationen des Bundesministeriums fÃ¼r  Gesundheit
                   provider:
                     type: string
                     example: MOWAS
@@ -536,7 +536,7 @@ components:
                     type: object
                     properties:
                       event:
-                        description: Event Code, zugehörige Logos können über /appdata/gsb/eventCodes/eventCodes.json abgerufen werden.
+                        description: Event Code, zugehÃ¶rige Logos kÃ¶nnen Ã¼ber /appdata/gsb/eventCodes/eventCodes.json abgerufen werden.
                         type: string
                         example: BBK-EVC-040
                   area:
@@ -553,7 +553,7 @@ components:
             properties:
               de:
                 type: string
-                example: Coronavirus; Informationen des Bundesministeriums für Gesundheit
+                example: Coronavirus; Informationen des Bundesministeriums fÃ¼r Gesundheit
           sent:
             type: string
             format: date-time
@@ -572,7 +572,7 @@ components:
           properties:
             title:
               type: string
-              example: Aktuelle Bevölkerungsschutz-Warnungen (StÃ¤dteregion Aachen)
+              example: Aktuelle BevÃ¶lkerungsschutz-Warnungen (StÃ¤dteregion Aachen)
             link:
               type: string
               format: url
@@ -588,7 +588,7 @@ components:
               properties:
                 title:
                   type: string
-                  example: Aktuelle Bevölkerungsschutz-Warnungen (StÃ¤dteregion Aachen)
+                  example: Aktuelle BevÃ¶lkerungsschutz-Warnungen (StÃ¤dteregion Aachen)
                 link:
                   type: string
                   format: url
@@ -604,7 +604,7 @@ components:
                 properties:
                   title:
                     type: string
-                    example: "Entwarnung: Rauchgase - Eschweiler-Röthgen"
+                    example: "Entwarnung: Rauchgase - Eschweiler-RÃ¶thgen"
                   link:
                     type: string
                     format: url
@@ -623,13 +623,13 @@ components:
                           attribute: true
                   description:
                     type: string
-                    example: 'Dies ist die Entwarnung zur Warnung "Rauchgase - Eschweiler-Röthgen" vom 04.04.2023 18:56:51 gesendet durch LS Aachen, StÃ¤dteregion (DEU, NW, Aachen). (Hier kommen Beschreibung und Handlungsanweisungen)
+                    example: 'Dies ist die Entwarnung zur Warnung "Rauchgase - Eschweiler-RÃ¶thgen" vom 04.04.2023 18:56:51 gesendet durch LS Aachen, StÃ¤dteregion (DEU, NW, Aachen). (Hier kommen Beschreibung und Handlungsanweisungen)
 
       ---
-Diese Warnmeldung stammt aus dem Modularen Warnsystem (MoWaS) des Bundesamtes für Bevölkerungsschutz und Katastrophenhilfe.
+Diese Warnmeldung stammt aus dem Modularen Warnsystem (MoWaS) des Bundesamtes fÃ¼r BevÃ¶lkerungsschutz und Katastrophenhilfe.
 Sie darf nur inhaltlich unverÃ¤ndert und nicht zu gewerblichen Zwecken verwendet werden.
-Um die AuthentizitÃ¤t der Warnmeldung zu überprüfen gehen Sie auf https://warnung.bund.de.
-Eine EinschrÃ¤nkung oder (zeitweise) Einstellung des RSS-Feeds ist z.B. für technische Wartungen jederzeit und ohne vorherige Ankündigung möglich.'
+Um die AuthentizitÃ¤t der Warnmeldung zu Ã¼berprÃ¼fen gehen Sie auf https://warnung.bund.de.
+Eine EinschrÃ¤nkung oder (zeitweise) Einstellung des RSS-Feeds ist z.B. fÃ¼r technische Wartungen jederzeit und ohne vorherige AnkÃ¼ndigung mÃ¶glich.'
 
     ARSCovidRules:
       type: object
@@ -654,7 +654,7 @@ Eine EinschrÃ¤nkung oder (zeitweise) Einstellung des RSS-Feeds ist z.B. für t
               example: "#000000"
         generalInfo:
           type: string
-          example: "<p><span>GrundsÃ¤tzlich gilt: </span></p><p><span>Abstand + Hygiene + Maske im Alltag + Corona-Warn-App + Lüften</span></p><p><span data-stringify-type=paragraph-break/><span>Keine Testpflicht + keine AusgangsbeschrÃ¤nkungen + keine KontaktbeschrÃ¤nkungen für Geimpfte und Genesene</span></p>"
+          example: "<p><span>GrundsÃ¤tzlich gilt: </span></p><p><span>Abstand + Hygiene + Maske im Alltag + Corona-Warn-App + LÃ¼ften</span></p><p><span data-stringify-type=paragraph-break/><span>Keine Testpflicht + keine AusgangsbeschrÃ¤nkungen + keine KontaktbeschrÃ¤nkungen fÃ¼r Geimpfte und Genesene</span></p>"
         rules:
           type: array
           items:
@@ -668,7 +668,7 @@ Eine EinschrÃ¤nkung oder (zeitweise) Einstellung des RSS-Feeds ist z.B. für t
                 example: Impfen
               text:
                 type: string
-                example: <p><span>Keine Priorisierung bei der Corona-Schutzimpfung in Arztpraxen und Impfzentren. NÃ¤here Informationen zur Schutzimpfung gegen das Corona-Virus erhalten Sie über die bundesweite Hotline 116117.</span></p><p><span><a class=RichTextExtLink ExternalLink data-gsb-doc-origin=36a6263b-25b9-40c2-8b51-8cfc1eb76506 href=https://www.stmgp.bayern.de/coronavirus/impfung/>Hier finden Sie Informationen aus Ihrem Bundesland.</a></span></p>
+                example: <p><span>Keine Priorisierung bei der Corona-Schutzimpfung in Arztpraxen und Impfzentren. NÃ¤here Informationen zur Schutzimpfung gegen das Corona-Virus erhalten Sie Ã¼ber die bundesweite Hotline 116117.</span></p><p><span><a class=RichTextExtLink ExternalLink data-gsb-doc-origin=36a6263b-25b9-40c2-8b51-8cfc1eb76506 href=https://www.stmgp.bayern.de/coronavirus/impfung/>Hier finden Sie Informationen aus Ihrem Bundesland.</a></span></p>
               source:
                 type: string
                 example: LAND
@@ -686,7 +686,7 @@ Eine EinschrÃ¤nkung oder (zeitweise) Einstellung des RSS-Feeds ist z.B. für t
           properties:
             validFromUntil:
               type: string
-              example: Gültig von $validFrom bis $validUntil
+              example: GÃ¼ltig von $validFrom bis $validUntil
             sections:
               type: object
               properties:
@@ -769,7 +769,7 @@ Eine EinschrÃ¤nkung oder (zeitweise) Einstellung des RSS-Feeds ist z.B. für t
                 example: Ansprechpartner
               text:
                 type: string
-                example: <p>Quellen sind jeweils die Landesregierungen bzw. die örtlichen Behörden auf Kreisebene oder in den Stadtkreisen. Sollten Sie zu den Verordnungen oder Verfügungen Fragen haben informieren Sie sich bitte auf den Webseiten Ihrer jeweiligen Kreis- oder Stadtverwaltung oder wenden Sie sich bitte an die entsprechenden Bürgerkontakte.</p>
+                example: <p>Quellen sind jeweils die Landesregierungen bzw. die Ã¶rtlichen BehÃ¶rden auf Kreisebene oder in den Stadtkreisen. Sollten Sie zu den Verordnungen oder VerfÃ¼gungen Fragen haben informieren Sie sich bitte auf den Webseiten Ihrer jeweiligen Kreis- oder Stadtverwaltung oder wenden Sie sich bitte an die entsprechenden BÃ¼rgerkontakte.</p>
 
     CovidInfos:
       type: object
@@ -779,7 +779,7 @@ Eine EinschrÃ¤nkung oder (zeitweise) Einstellung des RSS-Feeds ist z.B. für t
         - categories
       properties:
         lastModificationDate:
-          description: Unix-Zeitstempel der letzten Änderung
+          description: Unix-Zeitstempel der letzten Ã„nderung
           type: string
           format: date-time
           example: 2021-06-09T10:36:53+02:00
@@ -806,7 +806,7 @@ Eine EinschrÃ¤nkung oder (zeitweise) Einstellung des RSS-Feeds ist z.B. für t
         image:
           $ref: "#/components/schemas/CovidInfosImage"
         lastModificationDate:
-          description: Unix-Zeitstempel der letzten Änderung
+          description: Unix-Zeitstempel der letzten Ã„nderung
           type: string
           format: date-time
           example: 2021-06-09T10:36:53+02:00
@@ -870,7 +870,7 @@ Eine EinschrÃ¤nkung oder (zeitweise) Einstellung des RSS-Feeds ist z.B. für t
       properties:
         title:
           type: string
-          example: "COVID-19: Die aktuellen Fallzahlen für Deutschland"
+          example: "COVID-19: Die aktuellen Fallzahlen fÃ¼r Deutschland"
         bodyText:
           type: string
           example: "<html><head></head><body><p>Das <strong>Robert-Koch-Institut (RKI)</strong> bereitet ...</p></body></html>"
@@ -898,7 +898,7 @@ Eine EinschrÃ¤nkung oder (zeitweise) Einstellung des RSS-Feeds ist z.B. für t
         - lastModificationDate
       properties:
         id:
-          description: Tickermeldungs-ID, details können über /appdata/covid/covidticker/DE/tickermeldungen/{id}.json abgerufen werden.
+          description: Tickermeldungs-ID, details kÃ¶nnen Ã¼ber /appdata/covid/covidticker/DE/tickermeldungen/{id}.json abgerufen werden.
           type: string
           format: uuid
           example: 06ad3d65-d9f8-4ace-bb5a-cf2ac599a097
@@ -928,13 +928,13 @@ Eine EinschrÃ¤nkung oder (zeitweise) Einstellung des RSS-Feeds ist z.B. für t
           example: 2021-06-09T10:36:53+02:00
         title:
           type: string
-          example: "Bund-LÃ¤nder-Beschluss vom 5. Januar: Neue Corona-Maßnahmen gelten ab heute bundesweit"
+          example: "Bund-LÃ¤nder-Beschluss vom 5. Januar: Neue Corona-MaÃŸnahmen gelten ab heute bundesweit"
         bodyText:
           type: string
-          example: "<html><head></head><body><p>Private Zusammenkünfte mit maximal...</p></body></html>"
+          example: "<html><head></head><body><p>Private ZusammenkÃ¼nfte mit maximal...</p></body></html>"
         teaserText:
           type: string
-          example: "<p>Private Zusammenkünfte mit maximal...</p>"
+          example: "<p>Private ZusammenkÃ¼nfte mit maximal...</p>"
         push:
           type: boolean
           example: false
@@ -948,7 +948,7 @@ Eine EinschrÃ¤nkung oder (zeitweise) Einstellung des RSS-Feeds ist z.B. für t
 
     CovidMap:
       type: object
-      description: Kartendaten für Corona Fallzahlen
+      description: Kartendaten fÃ¼r Corona Fallzahlen
       required:
         - mapLegend
         - mapData
@@ -970,7 +970,7 @@ Eine EinschrÃ¤nkung oder (zeitweise) Einstellung des RSS-Feeds ist z.B. für t
       properties:
         label:
           type: string
-          example: "keine FÃ¤lle übermittelt"
+          example: "keine FÃ¤lle Ã¼bermittelt"
         properties:
           $ref: "#/components/schemas/CovidMapStyle"
 
@@ -1064,7 +1064,7 @@ Eine EinschrÃ¤nkung oder (zeitweise) Einstellung des RSS-Feeds ist z.B. für t
           items:
             $ref: "#/components/schemas/NotfalltippsCategory"
         lastModificationDate:
-          description: Unix-Zeitstempel der letzten Änderung
+          description: Unix-Zeitstempel der letzten Ã„nderung
           type: integer
           format: int64
           example: 1620819849000
@@ -1084,13 +1084,13 @@ Eine EinschrÃ¤nkung oder (zeitweise) Einstellung des RSS-Feeds ist z.B. für t
           items:
             $ref: "#/components/schemas/NotfalltippsTip"
         eventCodes:
-          description: Event Codes, zugehörige Logos können über /appdata/gsb/eventCodes/eventCodes.json abgerufen werden.
+          description: Event Codes, zugehÃ¶rige Logos kÃ¶nnen Ã¼ber /appdata/gsb/eventCodes/eventCodes.json abgerufen werden.
           type: array
           items:
             type: string
             example: BBK-EVC-021
         lastModificationDate:
-          description: Unix-Zeitstempel der letzten Änderung
+          description: Unix-Zeitstempel der letzten Ã„nderung
           type: integer
           format: int64
           example: 1620819849000
@@ -1128,7 +1128,7 @@ Eine EinschrÃ¤nkung oder (zeitweise) Einstellung des RSS-Feeds ist z.B. für t
           type: string
           example: Icon Richtig handeln im Notfall
         lastModificationDate:
-          description: Unix-Zeitstempel der letzten Änderung
+          description: Unix-Zeitstempel der letzten Ã„nderung
           type: integer
           format: int64
           example: 1620819849000
@@ -1148,11 +1148,11 @@ Eine EinschrÃ¤nkung oder (zeitweise) Einstellung des RSS-Feeds ist z.B. für t
           example: "Allgemeine Hinweise"
         bodyText:
           type: string
-          example: "<p>In NotfÃ¤llen und größâ€¦tastrophenhilfe</a>.</p>"
+          example: "<p>In NotfÃ¤llen und grÃ¶ÃŸâ€¦tastrophenhilfe</a>.</p>"
         image:
           $ref: "#/components/schemas/NotfalltippsImage"
         lastModificationDate:
-          description: Unix-Zeitstempel der letzten Änderung
+          description: Unix-Zeitstempel der letzten Ã„nderung
           type: integer
           format: int64
           example: 1620819849000
@@ -1167,7 +1167,7 @@ Eine EinschrÃ¤nkung oder (zeitweise) Einstellung des RSS-Feeds ist z.B. für t
           items:
             $ref: "#/components/schemas/FAQ"
         lastModificationDate:
-          description: Unix-Zeitstempel der letzten Änderung
+          description: Unix-Zeitstempel der letzten Ã„nderung
           type: integer
           format: int64
           example: 1620819849000
@@ -1181,12 +1181,12 @@ Eine EinschrÃ¤nkung oder (zeitweise) Einstellung des RSS-Feeds ist z.B. für t
       properties:
         question:
           type: string
-          example: '<p>Wofür steht die Warn-App <abbr title=\"Notfall-Informations- und Nachrichten-App\">NINA</abbr>?</p>'
+          example: '<p>WofÃ¼r steht die Warn-App <abbr title=\"Notfall-Informations- und Nachrichten-App\">NINA</abbr>?</p>'
         answer:
           type: string
-          example: '<p><abbr title=\"Notfall-Informations- und Nachrichten-App\">NINA</abbr> steht für Notfall-Informations- und Nachrichten-App.</p>'
+          example: '<p><abbr title=\"Notfall-Informations- und Nachrichten-App\">NINA</abbr> steht fÃ¼r Notfall-Informations- und Nachrichten-App.</p>'
         lastModificationDate:
-          description: Unix-Zeitstempel der letzten Änderung
+          description: Unix-Zeitstempel der letzten Ã„nderung
           type: integer
           format: int64
           example: 1620819849000
@@ -1204,7 +1204,7 @@ Eine EinschrÃ¤nkung oder (zeitweise) Einstellung des RSS-Feeds ist z.B. für t
         - logos
       properties:
         lastModificationDate:
-          description: Unix-Zeitstempel der letzten Änderung
+          description: Unix-Zeitstempel der letzten Ã„nderung
           type: integer
           format: int64
           example: 1620819849000
@@ -1236,7 +1236,7 @@ Eine EinschrÃ¤nkung oder (zeitweise) Einstellung des RSS-Feeds ist z.B. für t
           type: string
           example: "1"
         lastModificationDate:
-          description: Unix-Zeitstempel der letzten Änderung
+          description: Unix-Zeitstempel der letzten Ã„nderung
           type: integer
           format: int64
           example: 1620819849000
@@ -1252,7 +1252,7 @@ Eine EinschrÃ¤nkung oder (zeitweise) Einstellung des RSS-Feeds ist z.B. für t
           items:
             $ref: "#/components/schemas/EventCode"
         lastModificationDate:
-          description: Unix-Zeitstempel der letzten Änderung
+          description: Unix-Zeitstempel der letzten Ã„nderung
           type: integer
           format: int64
           example: 1620819849000
@@ -1313,7 +1313,7 @@ Eine EinschrÃ¤nkung oder (zeitweise) Einstellung des RSS-Feeds ist z.B. für t
           type: string
           example: kat.1234567890abcdef12345678_public_topics
         sender:
-          description: Sender-ID, passende logos können über /appdata/gsb/logos/logos.json abgerufen werden
+          description: Sender-ID, passende logos kÃ¶nnen Ã¼ber /appdata/gsb/logos/logos.json abgerufen werden
           type: string
           example: CAP@katwarn.de
         sent:
@@ -1373,10 +1373,10 @@ Eine EinschrÃ¤nkung oder (zeitweise) Einstellung des RSS-Feeds ist z.B. für t
                 example: Feuerwehrleitstelle Musterstadt
               headline:
                 type: string
-                example: "Feuerwehrleitstelle Musterstadt meldet: Warnung Sonderfall.  Gültig ab 01.09.2021, 11:11."
+                example: "Feuerwehrleitstelle Musterstadt meldet: Warnung Sonderfall.  GÃ¼ltig ab 01.09.2021, 11:11."
               description:
                 type: string
-                example: "Es ist etwas passiert<br/>Belastung durch Beispiele Nachgewiesen<br/>Weitere informationen über..."
+                example: "Es ist etwas passiert<br/>Belastung durch Beispiele Nachgewiesen<br/>Weitere informationen Ã¼ber..."
               web:
                 type: string
                 example: "https://bund.dev"
@@ -1427,4 +1427,4 @@ Eine EinschrÃ¤nkung oder (zeitweise) Einstellung des RSS-Feeds ist z.B. für t
                 example: 2023-01-21T11:26:59+01:00
               headline:
                 type: string
-                example: Rauchentwicklung und GeruchsbelÃ¤stigung nach Großbrand - Westerstede, Halsbek
+                example: Rauchentwicklung und GeruchsbelÃ¤stigung nach GroÃŸbrand - Westerstede, Halsbek

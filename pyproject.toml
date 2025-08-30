@@ -27,13 +27,11 @@ default-groups = ["dev"]
 [tool.pytest.ini_options]
 pythonpath = [
     "servers/employee/src",
-    "servers/nina/src",
-    "servers/nina-api-client/src"
+    "servers/nina/src"
 ]
 testpaths = [
     "servers/employee/tests",
-    "servers/nina/src",
-    "servers/nina-api-client/src"
+    "servers/nina/src"
 ]
 #addopts = [
 #    "--verbose",

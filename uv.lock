@@ -5,7 +5,6 @@ requires-python = ">=3.13, <4"
 [manifest]
 members = [
     "nina",
-    "nina-api-client",
     "people-mcp",
     "valantic-sti-hackathon",
 ]
@@ -641,23 +640,6 @@ requires-dist = [
     { name = "fastmcp", specifier = ">=2.11.3" },
     { name = "httpx", specifier = ">=0.27.0" },
     { name = "pyyaml", specifier = ">=6.0" },
-]
-
-[[package]]
-name = "nina-api-client"
-version = "1.0.0"
-source = { editable = "servers/nina-api-client" }
-dependencies = [
-    { name = "attrs" },
-    { name = "httpx" },
-    { name = "python-dateutil" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "attrs", specifier = ">=22.2.0" },
-    { name = "httpx", specifier = ">=0.23.0,<0.29.0" },
-    { name = "python-dateutil", specifier = ">=2.8.0,<3" },
 ]
 
 [[package]]

@@ -1,3 +1,4 @@
+from pathlib import Path
 from unittest.mock import patch
 
 from config import Settings, settings
@@ -7,7 +8,9 @@ def test_settings_default_values():
     """Test Settings class default values."""
     test_settings = Settings()
 
-    assert test_settings.database_url == "sqlite+aiosqlite:///./data/employee.db"
+    assert test_settings.database_url == "sqlite+aiosqlite:///" + str(
+        Path(__file__).parent.parent / "data/employee.db"
+    )
     assert test_settings.log_level == "INFO"
 
 
