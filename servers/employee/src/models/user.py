@@ -8,6 +8,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 if TYPE_CHECKING:
     from models.address import Address
+    from models.work_status import WorkStatus
 
 
 class Gender(Enum):
@@ -28,4 +29,7 @@ class User(Base):
 
     address: Mapped[Address] = relationship(
         "Address", back_populates="user", uselist=False
+    )
+    work_status: Mapped[WorkStatus | None] = relationship(
+        "WorkStatus", back_populates="user", uselist=False
     )

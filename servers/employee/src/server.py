@@ -5,7 +5,7 @@ from contextlib import asynccontextmanager
 from dataclasses import dataclass
 
 from connect import Database
-from models import User, Address, Base
+from models import User, Address, WorkStatus, Base
 from models import Gender
 from config import settings
 from mcp.server.fastmcp import Context, FastMCP
@@ -49,6 +49,9 @@ async def server_lifespan(server: FastMCP) -> AsyncIterator[AppContext]:
                     city=fake.city(),
                     postal_code=fake.postcode(),
                     country_code=fake.country_code(),
+                ),
+                work_status=WorkStatus(
+                    is_home_office=fake.boolean()
                 ),
             )
             for _ in range(settings.initial_users_count)
