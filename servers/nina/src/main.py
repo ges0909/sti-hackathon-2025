@@ -16,7 +16,7 @@ def setup_logging() -> logging.Logger:
     """Configure logging for the application."""
     logging.basicConfig(
         level=logging.INFO,
-        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
     return logging.getLogger(__name__)
 
@@ -39,7 +39,6 @@ def create_mcp_server(spec: Dict[str, Any], base_url: str) -> FastMCP:
 
 
 def main() -> None:
-
     logger = setup_logging()
 
     try:

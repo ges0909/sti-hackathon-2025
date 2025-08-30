@@ -50,9 +50,7 @@ async def server_lifespan(server: FastMCP) -> AsyncIterator[AppContext]:
                     postal_code=fake.postcode(),
                     country_code=fake.country_code(),
                 ),
-                work_status=WorkStatus(
-                    is_home_office=fake.boolean()
-                ),
+                work_status=WorkStatus(is_home_office=fake.boolean()),
             )
             for _ in range(settings.initial_users_count)
         ]
@@ -212,7 +210,10 @@ async def find_address_by_id(
         return await address_service.get_address_by_id(session, address_id)
 
 
-@mcp.tool(name="Add address", description="Add a new address to the database. Use ISO 3166-1 alpha-2 country code (e.g., 'DE', 'US', 'FR').")
+@mcp.tool(
+    name="Add address",
+    description="Add a new address to the database. Use ISO 3166-1 alpha-2 country code (e.g., 'DE', 'US', 'FR').",
+)
 async def add_address(
     ctx: Context[ServerSession, AppContext],
     street: str,
@@ -233,7 +234,10 @@ async def add_address(
         return str(e)
 
 
-@mcp.tool(name="Update address", description="Update an address by ID. Use ISO 3166-1 alpha-2 country code (e.g., 'DE', 'US', 'FR').")
+@mcp.tool(
+    name="Update address",
+    description="Update an address by ID. Use ISO 3166-1 alpha-2 country code (e.g., 'DE', 'US', 'FR').",
+)
 async def update_address(
     ctx: Context[ServerSession, AppContext],
     address_id: int,

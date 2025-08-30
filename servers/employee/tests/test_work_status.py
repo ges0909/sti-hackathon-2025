@@ -1,6 +1,7 @@
 import pytest
 import pytest_asyncio
 from models import Base, User, WorkStatus
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 from sqlalchemy.future import select
 
@@ -39,20 +40,20 @@ async def test_user_with_work_status(async_db_session):
     """Test user with work status relationship."""
     user = User(
         first_name="John",
-        last_name="Doe", 
+        last_name="Doe",
         email="john@test.com",
         age=30,
-        work_status=WorkStatus(is_home_office=False)
+        work_status=WorkStatus(is_home_office=False),
     )
     async_db_session.add(user)
     await async_db_session.commit()
-    
+
     # Query work status directly
     result = await async_db_session.execute(
         select(WorkStatus).where(WorkStatus.user_id == user.id)
     )
     work_status = result.scalars().first()
-    
+
     assert work_status is not None
     assert work_status.is_home_office is False
     assert work_status.user_id == user.id
@@ -65,7 +66,7 @@ async def test_update_work_status(async_db_session):
         first_name="Jane",
         last_name="Smith",
         email="jane@test.com",
-        work_status=WorkStatus(is_home_office=False)
+        work_status=WorkStatus(is_home_office=False),
     )
     async_db_session.add(user)
     await async_db_session.commit()
@@ -89,12 +90,7 @@ async def test_update_work_status(async_db_session):
 @pytest.mark.asyncio
 async def test_user_without_work_status(async_db_session):
     """Test user without work status (optional relationship)."""
-    user = User(
-        first_name="Bob",
-        last_name="Wilson",
-        email="bob@test.com",
-        age=25
-    )
+    user = User(first_name="Bob", last_name="Wilson", email="bob@test.com", age=25)
     async_db_session.add(user)
     await async_db_session.commit()
 
@@ -103,7 +99,7 @@ async def test_user_without_work_status(async_db_session):
         select(WorkStatus).where(WorkStatus.user_id == user.id)
     )
     work_status = result.scalars().first()
-    
+
     assert work_status is None
 
 
@@ -112,13 +108,13 @@ async def test_work_status_unique_constraint(async_db_session):
     """Test that user_id is unique in work_status table."""
     work_status1 = WorkStatus(is_home_office=True, user_id=1)
     work_status2 = WorkStatus(is_home_office=False, user_id=1)
-    
+
     async_db_session.add(work_status1)
     await async_db_session.commit()
-    
+
     async_db_session.add(work_status2)
-    
-    with pytest.raises(Exception):  # Should raise integrity error
+
+    with pytest.raises(IntegrityError):  # Should raise integrity error
         await async_db_session.commit()
 
 

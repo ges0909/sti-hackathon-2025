@@ -71,7 +71,11 @@ async def test_stats_service(async_db_session):
     """Test stats service."""
     user = User(first_name="John", last_name="Doe", email="john@example.com", age=30)
     address = Address(
-        street="123 Main St", city="NYC", postal_code="10001", country_code="US", user_id=1
+        street="123 Main St",
+        city="NYC",
+        postal_code="10001",
+        country_code="US",
+        user_id=1,
     )
     async_db_session.add_all([user, address])
     await async_db_session.commit()
