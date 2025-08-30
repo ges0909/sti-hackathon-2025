@@ -7,7 +7,7 @@ def test_settings_default_values():
     """Test Settings class default values."""
     test_settings = Settings()
 
-    assert test_settings.database_url == "sqlite+aiosqlite:///./data/people.db"
+    assert test_settings.database_url == "sqlite+aiosqlite:///./data/employee.db"
     assert test_settings.log_level == "INFO"
 
 

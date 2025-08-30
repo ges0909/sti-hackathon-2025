@@ -3,6 +3,7 @@ from nina_client import nina_client
 
 mcp = FastMCP("NINA Notfall-Informations- und Nachrichten-App")
 
+
 @mcp.tool(
     name="Regionale Warnungen abrufen",
     description="Ruft Warnungen für eine bestimmte Region ab (ARS-Code erforderlich)",

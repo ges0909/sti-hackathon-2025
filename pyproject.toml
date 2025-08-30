@@ -13,11 +13,11 @@ dev = [
     "pytest-cov>=6.0.0",
     "mypy>=1.17.1",
     "ruff>=0.12.11",
-    "openapi-python-client>=0.26.0",
+    "openapi-python-client>=0.26.0"
 ]
 
 [tool.uv.workspace]
-members = ["people", "nina", "nina-api-client"]
+members = ["servers/employee", "servers/nina", "servers/nina-api-client"]
 exclude = []
 
 # Default groups to be inluded when using run/sync
@@ -25,11 +25,19 @@ exclude = []
 default-groups = ["dev"]
 
 [tool.pytest.ini_options]
-pythonpath = ["people/src"]
-testpaths = ["people/tests"]
+pythonpath = [
+    "servers/employee/src",
+    "servers/nina/src",
+    "servers/nina-api-client/src"
+]
+testpaths = [
+    "servers/employee/tests",
+    "servers/nina/src",
+    "servers/nina-api-client/src"
+]
 #addopts = [
 #    "--verbose",
-#    "--cov=people",
+#    "--cov=employee",
 #    "--cov-report=term-missing",
 #    "--cov-report=html",
 #]

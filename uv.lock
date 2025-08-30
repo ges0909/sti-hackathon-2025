@@ -635,7 +635,7 @@ wheels = [
 [[package]]
 name = "nina-api-client"
 version = "1.0.0"
-source = { editable = "nina-api-client" }
+source = { editable = "servers/nina-api-client" }
 dependencies = [
     { name = "attrs" },
     { name = "httpx" },
@@ -652,7 +652,7 @@ requires-dist = [
 [[package]]
 name = "nina-mcp"
 version = "0.1.0"
-source = { virtual = "nina" }
+source = { virtual = "servers/nina" }
 dependencies = [
     { name = "fastmcp" },
     { name = "nina-api-client" },
@@ -667,7 +667,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "fastmcp", specifier = ">=2.11.3" },
-    { name = "nina-api-client", editable = "nina-api-client" },
+    { name = "nina-api-client", editable = "servers/nina-api-client" },
     { name = "pydantic", specifier = ">=2.0.0" },
 ]
 
@@ -811,7 +811,7 @@ wheels = [
 [[package]]
 name = "people-mcp"
 version = "0.1.0"
-source = { virtual = "people" }
+source = { virtual = "servers/employee" }
 dependencies = [
     { name = "aiosqlite" },
     { name = "faker" },

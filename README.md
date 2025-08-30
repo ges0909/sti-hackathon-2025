@@ -54,8 +54,7 @@ INITIAL_USERS_COUNT=10
 ## Run MCP server
 
 ```bash
-uv run people/src/main.py
-uv run --package people-database-mcp-server people/src/main.py
+uv run employee/src/main.py
 ```
 
 ## Run tests
@@ -83,25 +82,6 @@ ruff check --select F,E,W,B src # Only important rules
 Install [Gemini CLI](https://github.com/google-gemini/gemini-cli?tab=readme-ov-file#-installation).
 
 Test installation by running the `gemini` command.
-
-Add the following snippet to `$HOME/.gemini/settings.json`.
-
-```json
-{
-  "mcpServers": {
-    "STI valantic Hackathon MCP Demo": {
-      "command": "uv",
-      "args": [
-        "run",
-        "src/main.py"
-      ],
-      "cwd": "$HOME/PycharmProjects/sti-hackathon-2025/people",
-      "timeout": 30000,
-      "trust": true
-    }
-  }
-}
-```
 
 | Command  | Description                   |
 |----------|-------------------------------|

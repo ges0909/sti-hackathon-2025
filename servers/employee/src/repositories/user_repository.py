@@ -33,9 +33,9 @@ class UserRepository(BaseRepository[User]):
                 gender=gender,
             )
             await self.add(session, user)
-        except IntegrityError:
+        except IntegrityError as err:
             await session.rollback()
-            raise ValueError("Email already exists")
+            raise ValueError("Email already exists") from err
 
     async def update_by_last_name(
         self,
@@ -62,9 +62,9 @@ class UserRepository(BaseRepository[User]):
         try:
             await session.commit()
             return True
-        except IntegrityError:
+        except IntegrityError as err:
             await session.rollback()
-            raise ValueError("Email already exists")
+            raise ValueError("Email already exists") from err
 
     async def delete_by_last_name(self, session: AsyncSession, last_name: str) -> bool:
         result = await session.execute(delete(User).where(User.last_name == last_name))
