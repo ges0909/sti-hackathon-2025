@@ -4,8 +4,8 @@ requires-python = ">=3.13, <4"
 
 [manifest]
 members = [
+    "nina",
     "nina-api-client",
-    "nina-mcp",
     "people-mcp",
     "valantic-sti-hackathon",
 ]
@@ -573,12 +573,6 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/19/3f/d085c7f49ade6d273b185d61ec9405e672b6433f710ea64a90135a8dd445/mcp-1.13.1-py3-none-any.whl", hash = "sha256:c314e7c8bd477a23ba3ef472ee5a32880316c42d03e06dcfa31a1cc7a73b65df", size = 161494, upload-time = "2025-08-22T09:22:14.705Z" },
 ]
 
-[package.optional-dependencies]
-cli = [
-    { name = "python-dotenv" },
-    { name = "typer" },
-]
-
 [[package]]
 name = "mdurl"
 version = "0.1.2"
@@ -633,6 +627,23 @@ wheels = [
 ]
 
 [[package]]
+name = "nina"
+version = "0.1.0"
+source = { virtual = "servers/nina" }
+dependencies = [
+    { name = "fastmcp" },
+    { name = "httpx" },
+    { name = "pyyaml" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "fastmcp", specifier = ">=2.11.3" },
+    { name = "httpx", specifier = ">=0.27.0" },
+    { name = "pyyaml", specifier = ">=6.0" },
+]
+
+[[package]]
 name = "nina-api-client"
 version = "1.0.0"
 source = { editable = "servers/nina-api-client" }
@@ -648,31 +659,6 @@ requires-dist = [
     { name = "httpx", specifier = ">=0.23.0,<0.29.0" },
     { name = "python-dateutil", specifier = ">=2.8.0,<3" },
 ]
-
-[[package]]
-name = "nina-mcp"
-version = "0.1.0"
-source = { virtual = "servers/nina" }
-dependencies = [
-    { name = "fastmcp" },
-    { name = "nina-api-client" },
-    { name = "pydantic" },
-]
-
-[package.dev-dependencies]
-dev = [
-    { name = "openapi-mcp-generator" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "fastmcp", specifier = ">=2.11.3" },
-    { name = "nina-api-client", editable = "servers/nina-api-client" },
-    { name = "pydantic", specifier = ">=2.0.0" },
-]
-
-[package.metadata.requires-dev]
-dev = [{ name = "openapi-mcp-generator", specifier = ">=0.1.1" }]
 
 [[package]]
 name = "openapi-core"
@@ -692,21 +678,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/b1/35/1acaa5f2fcc6e54eded34a2ec74b479439c4e469fc4e8d0e803fda0234db/openapi_core-0.19.5.tar.gz", hash = "sha256:421e753da56c391704454e66afe4803a290108590ac8fa6f4a4487f4ec11f2d3", size = 103264, upload-time = "2025-03-20T20:17:28.193Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/27/6f/83ead0e2e30a90445ee4fc0135f43741aebc30cca5b43f20968b603e30b6/openapi_core-0.19.5-py3-none-any.whl", hash = "sha256:ef7210e83a59394f46ce282639d8d26ad6fc8094aa904c9c16eb1bac8908911f", size = 106595, upload-time = "2025-03-20T20:17:26.77Z" },
-]
-
-[[package]]
-name = "openapi-mcp-generator"
-version = "0.1.1"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "httpx" },
-    { name = "jinja2" },
-    { name = "mcp", extra = ["cli"] },
-    { name = "pyyaml" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/8d/bb/01164fdcbf667e3513a87c4045850550055ce3500bc88fcd912e40fca281/openapi_mcp_generator-0.1.1.tar.gz", hash = "sha256:8842dd3a8379e3d8b1de3a09c065531a704751b47434a6d22047f1890a69abb2", size = 20261, upload-time = "2025-05-23T23:35:34.218Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/d9/f6/2aa32e59fb31ad4580bd222c430947f54ab381def1bce0d54303ffcb45b9/openapi_mcp_generator-0.1.1-py3-none-any.whl", hash = "sha256:f483a513098991e77593b2e925f242903501f41539d3181b72e1736249407889", size = 20365, upload-time = "2025-05-23T23:35:32.746Z" },
 ]
 
 [[package]]

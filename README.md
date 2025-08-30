@@ -31,6 +31,7 @@ uv self update
 
 | Command                            | Description                                    |
 |------------------------------------|------------------------------------------------|
+| `uv init nina`                     | Initialize new project                         |
 | `uv sync`                          | Install dependencies                           |
 | `uv sync --all-packages`           | Install all dependencies including workspaces  |
 | `uv add fastmcp`                   | Add new dependency                             |
@@ -43,7 +44,7 @@ uv self update
 ## `.env` file (optional)
 
 ```properties
-DATABASE_URL=sqlite+aiosqlite:///./data/people.db
+DATABASE_URL=sqlite+aiosqlite:///./data/employee.db
 LOG_LEVEL=INFO
 INITIAL_USERS_COUNT=10
 ```
