@@ -110,7 +110,7 @@ async def test_find_all_addresses_empty(mock_context):
 @pytest.mark.asyncio
 async def test_add_address_success(mock_context, async_db_session):
     result = await add_address(
-        mock_context, "123 Main St", "Test City", "12345", "Test Country", 1
+        mock_context, "123 Main St", "Test City", "12345", "DE", 1
     )
     assert "added" in result
 
@@ -127,7 +127,7 @@ async def test_find_address_by_id_found(mock_context, async_db_session):
         street="123 Main St",
         city="Test City",
         postal_code="12345",
-        country="Test Country",
+        country_code="DE",
         user_id=1,
     )
     async_db_session.add(address)
@@ -146,7 +146,7 @@ async def test_get_database_stats(mock_context, async_db_session):
         street="123 Main St",
         city="Test City",
         postal_code="12345",
-        country="Test Country",
+        country_code="DE",
         user_id=1,
     )
     async_db_session.add_all([user, address])

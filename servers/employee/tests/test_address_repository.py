@@ -29,7 +29,7 @@ async def test_create_and_get_address(async_db_session):
         street="123 Main St",
         city="Test City",
         postal_code="12345",
-        country="Test Country",
+        country_code="DE",
         user_id=1,
     )
 
@@ -40,7 +40,7 @@ async def test_create_and_get_address(async_db_session):
     assert address.street == "123 Main St"
     assert address.city == "Test City"
     assert address.postal_code == "12345"
-    assert address.country == "Test Country"
+    assert address.country_code == "DE"
     assert address.user_id == 1
 
 
@@ -52,7 +52,7 @@ async def test_get_address_by_id(async_db_session):
         street="456 Oak Ave",
         city="Another City",
         postal_code="67890",
-        country="Another Country",
+        country_code="US",
         user_id=2,
     )
 
@@ -72,7 +72,7 @@ async def test_update_address(async_db_session):
         street="789 Pine St",
         city="Old City",
         postal_code="11111",
-        country="Old Country",
+        country_code="FR",
         user_id=3,
     )
 
@@ -83,14 +83,14 @@ async def test_update_address(async_db_session):
         async_db_session,
         address_id=address_id,
         city="New City",
-        country="New Country",
+        country_code="GB",
     )
     assert updated is True
 
     address = await address_repository.get_by_id(async_db_session, address_id)
     assert address.street == "789 Pine St"  # unchanged
     assert address.city == "New City"  # updated
-    assert address.country == "New Country"  # updated
+    assert address.country_code == "GB"  # updated
 
 
 @pytest.mark.asyncio
@@ -101,7 +101,7 @@ async def test_delete_address(async_db_session):
         street="Delete St",
         city="Delete City",
         postal_code="99999",
-        country="Delete Country",
+        country_code="AT",
         user_id=4,
     )
 
@@ -123,7 +123,7 @@ async def test_get_address_by_user_id(async_db_session):
         street="User St",
         city="User City",
         postal_code="55555",
-        country="User Country",
+        country_code="CH",
         user_id=5,
     )
 

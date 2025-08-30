@@ -22,14 +22,14 @@ class AddressRepository(BaseRepository[Address]):
         street: str,
         city: str,
         postal_code: str,
-        country: str,
+        country_code: str,
         user_id: int,
     ) -> None:
         address = Address(
             street=street,
             city=city,
             postal_code=postal_code,
-            country=country,
+            country_code=country_code,
             user_id=user_id,
         )
         await self.add(session, address)
@@ -41,7 +41,7 @@ class AddressRepository(BaseRepository[Address]):
         street: str = None,
         city: str = None,
         postal_code: str = None,
-        country: str = None,
+        country_code: str = None,
     ) -> bool:
         address = await self.get_by_id(session, address_id)
         if not address:
@@ -53,8 +53,8 @@ class AddressRepository(BaseRepository[Address]):
             address.city = city
         if postal_code is not None:
             address.postal_code = postal_code
-        if country is not None:
-            address.country = country
+        if country_code is not None:
+            address.country_code = country_code
 
         await session.commit()
         return True

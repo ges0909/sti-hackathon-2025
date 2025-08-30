@@ -26,7 +26,7 @@ class AddressBase(BaseModel):
     street: Annotated[str, Field(min_length=1, max_length=255)]
     city: Annotated[str, Field(min_length=1, max_length=100)]
     postal_code: Annotated[str, Field(min_length=1, max_length=20)]
-    country: Annotated[str, Field(min_length=1, max_length=100)]
+    country_code: Annotated[str, Field(min_length=2, max_length=2)]
     user_id: int
 
 

@@ -20,7 +20,7 @@ class AddressService:
         street: str,
         city: str,
         postal_code: str,
-        country: str,
+        country_code: str,
         user_id: int,
     ) -> str:
         await address_repository.create(
@@ -28,7 +28,7 @@ class AddressService:
             street=street,
             city=city,
             postal_code=postal_code,
-            country=country,
+            country_code=country_code,
             user_id=user_id,
         )
         return f"Address '{street}, {city}' added"
@@ -40,7 +40,7 @@ class AddressService:
         street: str = None,
         city: str = None,
         postal_code: str = None,
-        country: str = None,
+        country_code: str = None,
     ) -> str:
         updated = await address_repository.update_by_id(
             session,
@@ -48,7 +48,7 @@ class AddressService:
             street=street,
             city=city,
             postal_code=postal_code,
-            country=country,
+            country_code=country_code,
         )
         if updated:
             return f"Address ID {address_id} updated"

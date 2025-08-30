@@ -48,7 +48,7 @@ async def server_lifespan(server: FastMCP) -> AsyncIterator[AppContext]:
                     street=fake.street_address(),
                     city=fake.city(),
                     postal_code=fake.postcode(),
-                    country=fake.country(),
+                    country_code=fake.country_code(),
                 ),
             )
             for _ in range(settings.initial_users_count)
@@ -209,19 +209,19 @@ async def find_address_by_id(
         return await address_service.get_address_by_id(session, address_id)
 
 
-@mcp.tool(name="Add address", description="Add a new address to the database.")
+@mcp.tool(name="Add address", description="Add a new address to the database. Use ISO 3166-1 alpha-2 country code (e.g., 'DE', 'US', 'FR').")
 async def add_address(
     ctx: Context[ServerSession, AppContext],
     street: str,
     city: str,
     postal_code: str,
-    country: str,
+    country_code: str,
     user_id: int,
 ) -> str:
     try:
         async with _get_db(ctx).get_async_session() as session:
             result = await address_service.create_address(
-                session, street, city, postal_code, country, user_id
+                session, street, city, postal_code, country_code, user_id
             )
             logger.info(f"✅ {result}")
             return result
@@ -230,19 +230,19 @@ async def add_address(
         return str(e)
 
 
-@mcp.tool(name="Update address", description="Update an address by ID.")
+@mcp.tool(name="Update address", description="Update an address by ID. Use ISO 3166-1 alpha-2 country code (e.g., 'DE', 'US', 'FR').")
 async def update_address(
     ctx: Context[ServerSession, AppContext],
     address_id: int,
     street: str = None,
     city: str = None,
     postal_code: str = None,
-    country: str = None,
+    country_code: str = None,
 ) -> str:
     try:
         async with _get_db(ctx).get_async_session() as session:
             result = await address_service.update_address(
-                session, address_id, street, city, postal_code, country
+                session, address_id, street, city, postal_code, country_code
             )
             if "updated" in result:
                 logger.info(f"✅ {result}")
