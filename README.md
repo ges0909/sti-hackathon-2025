@@ -17,11 +17,8 @@ git clone git@github.com:ges0909/sti-hackathon-2025.git
 winget install astral-sh.uv
 ```
 
-Other installation options.
-
-```http
-https://github.com/astral-sh/uv?tab=readme-ov-file#installation
-```
+For other installation options
+see [Installation](https://github.com/astral-sh/uv?tab=readme-ov-file#installation).
 
 Restart terminal and check installation.
 
