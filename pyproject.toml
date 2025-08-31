@@ -17,7 +17,12 @@ dev = [
 ]
 
 [tool.uv.workspace]
-members = ["servers/employee", "servers/nina", "servers/nina-api-client"]
+members = [
+    "servers/employee",
+    "servers/nina",
+    "servers/nina-api-client",
+    "client",
+]
 exclude = []
 
 # Default groups to be inluded when using run/sync

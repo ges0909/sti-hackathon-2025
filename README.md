@@ -81,11 +81,12 @@ Install [Gemini CLI](https://github.com/google-gemini/gemini-cli?tab=readme-ov-f
 
 Test installation by running the `gemini` command.
 
-| Command  | Description                   |
-|----------|-------------------------------|
-| `/about` | Show information about Gemini |
-| `/mcp`   | Show connected MCP servers    |
-| `/quit`  | Quit _Gemini_                 |
+| Command        | Description                |
+|----------------|----------------------------|
+| `/about`       | Show about Gemini CLI      |
+| `/mcp`         | Show connected MCP servers |
+| `/mcp refresh` | Restart MCP servers        |
+| `/quit`        | Exit Gemini                |
 
 ## FastMCP
 

@@ -38,6 +38,7 @@ def create_mcp_server(spec: Dict[str, Any], base_url: str) -> FastMCP:
 
     api_client = httpx.AsyncClient(base_url=base_url)
     mcp = FastMCP.from_openapi(openapi_spec=spec, client=api_client)
+    # mcp = FastMCP.from_openapi(openapi_spec=spec, client=api_client, port=8000)
 
     @mcp.resource("ars://codes")
     async def get_ags_codes() -> List[Dict[str, str]]:
@@ -54,7 +55,7 @@ def create_mcp_server(spec: Dict[str, Any], base_url: str) -> FastMCP:
             for municipality, ars in municipality_data.items()
         ]
 
-    @mcp.resource("ars://municipality/{municipality}")
+    @mcp.resource("ars://codes/{municipality}")
     async def get_ags_code_by_municipality(municipality: str) -> str:
         """Get ARS code for a specific municipality name"""
 
@@ -71,6 +72,15 @@ def create_mcp_server(spec: Dict[str, Any], base_url: str) -> FastMCP:
                 return ars_code  # Return immediately when found
 
         return ""  # Municipality not found
+
+    @mcp.prompt("emergency-response")
+    async def emergency_response_prompt(
+        warning_type: str, severity: str = "medium"
+    ) -> str:
+        """Generate emergency response prompt."""
+        return (
+            f"Create emergency response plan for {warning_type} (severity: {severity})"
+        )
 
     return mcp
 
@@ -90,6 +100,7 @@ def main() -> None:
         logger.info(f"✅ Created MCP server with base URL: {BASE_URL}")
 
         mcp.run()
+        # mcp.run(transport="streamable-http")
 
     except Exception as e:
         logger.error(f"❌ Failed to start server: {e}")
