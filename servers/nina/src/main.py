@@ -1,15 +1,16 @@
 import logging
 import sys
 from pathlib import Path
-from typing import Dict, Any
+from typing import Dict, Any, List
 
 import httpx
 import yaml
 from fastmcp import FastMCP
 
-# Configuration
+from ags_service import AgsService
+
 BASE_URL = "https://warnung.bund.de/api31"
-OPENAPI_SPEC_PATH = Path("openapi.yaml")
+OPENAPI_SPEC_PATH = Path(__file__).parent.parent / "openapi.yaml"
 
 
 def setup_logging() -> logging.Logger:
@@ -33,9 +34,45 @@ def load_openapi_spec(file_path: Path) -> Dict[str, Any]:
 
 
 def create_mcp_server(spec: Dict[str, Any], base_url: str) -> FastMCP:
-    """Create MCP server from OpenAPI specification."""
+    """Create MCP server from OpenAPI specification and adds AGS resource queries."""
+
     api_client = httpx.AsyncClient(base_url=base_url)
-    return FastMCP.from_openapi(openapi_spec=spec, client=api_client)
+    mcp = FastMCP.from_openapi(openapi_spec=spec, client=api_client)
+
+    @mcp.resource("ars://codes")
+    async def get_ags_codes() -> List[Dict[str, str]]:
+        """Returns all ARS codes with the name of their municipality."""
+        ags_file = Path(__file__).parent.parent / "resources" / "GV100AD_31082025.txt"
+
+        if not ags_file.exists():
+            return []
+
+        municipality_data = AgsService.parse_file(ags_file)
+
+        return [
+            {"municipality": municipality, "ars": ars}
+            for municipality, ars in municipality_data.items()
+        ]
+
+    @mcp.resource("ars://municipality/{municipality}")
+    async def get_ags_code_by_municipality(municipality: str) -> str:
+        """Get ARS code for a specific municipality name"""
+
+        ags_file = Path(__file__).parent.parent / "resources" / "GV100AD_31082025.txt"
+
+        if not ags_file.exists():
+            return ""
+
+        municipality_data = AgsService.parse_file(ags_file)
+
+        # Search for municipality (case-insensitive)
+        for municipality_name, ars_code in municipality_data.items():
+            if municipality_name.lower() == municipality.lower():
+                return ars_code  # Return immediately when found
+
+        return ""  # Municipality not found
+
+    return mcp
 
 
 def main() -> None:
