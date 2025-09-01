@@ -1,12 +1,11 @@
-from abc import ABC
-from typing import Generic, TypeVar, Type
+from typing import TypeVar, Type, Optional, Protocol
 from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 T = TypeVar("T")
 
 
-class BaseRepository(Generic[T], ABC):
+class Repository(Protocol[T]):
     def __init__(self, model: Type[T]):
         self.model = model
 
@@ -14,7 +13,7 @@ class BaseRepository(Generic[T], ABC):
         result = await session.execute(select(self.model))
         return list(result.scalars().all())
 
-    async def get_by_id(self, session: AsyncSession, id: int) -> T | None:
+    async def get_by_id(self, session: AsyncSession, id: int) -> Optional[T]:
         result = await session.execute(select(self.model).where(self.model.id == id))
         return result.scalars().first()
 

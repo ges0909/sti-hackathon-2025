@@ -1,10 +1,10 @@
 from models.address import Address
-from repositories.base_repository import BaseRepository
+from repositories.repository import Repository
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
-class AddressRepository(BaseRepository[Address]):
+class AddressRepository(Repository[Address]):
     def __init__(self):
         super().__init__(Address)
 

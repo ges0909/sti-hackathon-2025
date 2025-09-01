@@ -48,7 +48,7 @@ async def main():
         for prompt in prompts:
             print(f"💬 Name: {prompt.name}")
             print(f"📝 Description: {prompt.description}")
-            if hasattr(prompt, 'arguments'):
+            if hasattr(prompt, "arguments"):
                 print(f"📋 Arguments: {prompt.arguments}")
             print()
 

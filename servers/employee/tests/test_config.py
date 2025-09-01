@@ -9,7 +9,7 @@ def test_settings_default_values():
     test_settings = Settings()
 
     assert test_settings.database_url == "sqlite+aiosqlite:///" + str(
-        Path(__file__).parent.parent / "data/employee.db"
+        Path(__file__).parent.parent.parent.parent / "data/employee.db"
     )
     assert test_settings.log_level == "INFO"
 

@@ -1,11 +1,11 @@
 from models.user import User
-from repositories.base_repository import BaseRepository
+from repositories.repository import Repository
 from sqlalchemy import delete, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
-class UserRepository(BaseRepository[User]):
+class UserRepository(Repository[User]):
     def __init__(self):
         super().__init__(User)
 

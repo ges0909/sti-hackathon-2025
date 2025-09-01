@@ -14,7 +14,14 @@ class Database:
     async def connect(cls) -> "Database":
         logger.info("🔌 Start SQLAlchemy Engine...")
         _create_db_directory(settings.database_url)
-        cls.engine = create_async_engine(settings.database_url, echo=False)
+        cls.engine = create_async_engine(
+            settings.database_url,
+            pool_size=20,
+            max_overflow=30,
+            pool_pre_ping=True,
+            pool_recycle=3600,
+            echo=settings.log_level == "DEBUG",
+        )
         cls.async_session_local = async_sessionmaker(
             bind=cls.engine, expire_on_commit=False
         )

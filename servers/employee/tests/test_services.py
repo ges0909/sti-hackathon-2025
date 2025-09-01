@@ -27,7 +27,7 @@ async def async_db_session():
 async def test_user_service_create_user(async_db_session):
     """Test creating user through service."""
     result = await user_service.create_user(
-        async_db_session, "John", "Doe", "john@example.com", 30
+        async_db_session, "John", "Doe", "john@example.com", 30, "MALE"
     )
     assert result == "User 'John Doe' added"
 
@@ -52,7 +52,10 @@ async def test_user_service_update_user(async_db_session):
     await async_db_session.commit()
 
     result = await user_service.update_user(
-        async_db_session, "Doe", first_name="Johnny", age=31
+        async_db_session,
+        "Doe",
+        first_name="Johnny",
+        age=31,
     )
     assert result == "User 'Doe' updated"
 

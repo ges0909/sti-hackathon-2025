@@ -3,7 +3,7 @@ from enum import Enum
 from typing import TYPE_CHECKING
 
 from models.base import Base
-from sqlalchemy import String, Enum as SQLEnum
+from sqlalchemy import Index, String, Enum as SQLEnum
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 if TYPE_CHECKING:
@@ -32,4 +32,8 @@ class User(Base):
     )
     work_status: Mapped[WorkStatus | None] = relationship(
         "WorkStatus", back_populates="user", uselist=False
+    )
+
+    __table_args__ = (
+        Index("idx_user_email_lastname", "email", "last_name"),  # Composite index
     )
