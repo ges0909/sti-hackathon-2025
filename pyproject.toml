@@ -4,6 +4,9 @@ version = "0.1.0"
 description = "Valantic STI Hackathon 2025"
 readme = "README.md"
 requires-python = ">=3.13"
+dependencies = [
+    "fastmcp>=2.11.3",
+]
 
 # Common dev tools, will be installed locally, but not published
 [dependency-groups]
