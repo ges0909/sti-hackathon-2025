@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "fastmcp>=2.11.3",
+    "pycountry>=24.6.1",
 ]
 
 # Common dev tools, installed locally, but not published

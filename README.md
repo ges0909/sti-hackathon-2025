@@ -73,6 +73,7 @@ uvx ruff format
 ruff check --select ALL .
 ruff check --select F,E,W,B .
 ruff check --select F,E,W,B src # Only important rules
+ruff check --fix
 ```
 
 ## Gemini CLI

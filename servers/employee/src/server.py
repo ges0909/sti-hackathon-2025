@@ -5,17 +5,13 @@ from contextlib import asynccontextmanager
 from dataclasses import dataclass
 
 from connect import Database
-from models import User, Address, WorkStatus, Base
-from models import Gender
-from config import settings
+from models import Base
 from mcp.server.fastmcp import Context, FastMCP
 from mcp.server.session import ServerSession
 from schemas import UserDto, AddressDto
 from validation import CreateUserRequest, UpdateUserRequest
 from services.user_service import user_service
 from services.address_service import address_service
-from services.stats_service import stats_service
-from faker import Faker
 from pydantic import ValidationError
 
 logger = logging.getLogger(__name__)
@@ -35,39 +31,39 @@ async def server_lifespan(server: FastMCP) -> AsyncIterator[AppContext]:
         await conn.run_sync(Base.metadata.create_all)
     logger.info("✅ Tables created")
 
-    async with db.get_async_session() as session:
-        fake = Faker()
-        users = [
-            User(
-                first_name=fake.first_name(),
-                last_name=fake.last_name(),
-                email=fake.email(),
-                age=fake.random_int(18, 80),
-                gender=fake.random_element([Gender.MALE, Gender.FEMALE, Gender.OTHER]),
-                address=Address(
-                    street=fake.street_address(),
-                    city=fake.city(),
-                    postal_code=fake.postcode(),
-                    country_code=fake.country_code(),
-                ),
-                work_status=WorkStatus(is_home_office=fake.boolean()),
-            )
-            for _ in range(settings.initial_users_count)
-        ]
-        session.add_all(users)
-        await session.commit()
-    logger.info(f"✅ {len(users)} users added")
+    # async with db.get_async_session() as session:
+    #     fake = Faker()
+    #     users = [
+    #         User(
+    #             first_name=fake.first_name(),
+    #             last_name=fake.last_name(),
+    #             email=fake.email(),
+    #             age=fake.random_int(18, 80),
+    #             gender=fake.random_element([Gender.MALE, Gender.FEMALE, Gender.OTHER]),
+    #             address=Address(
+    #                 street=fake.street_address(),
+    #                 city=fake.city(),
+    #                 postal_code=fake.postcode(),
+    #                 country_code=fake.country_code(),
+    #             ),
+    #             work_status=WorkStatus(is_home_office=fake.boolean()),
+    #         )
+    #         for _ in range(settings.initial_users_count)
+    #     ]
+    #     session.add_all(users)
+    #     await session.commit()
+    # logger.info(f"✅ {len(users)} users added")
 
     try:
         yield AppContext(db=db)
     except (CancelledError, Exception):
         logger.warning("⚠️ Server interrupted")
-        try:
-            async with db.engine.begin() as conn:
-                await conn.run_sync(User.metadata.drop_all)
-                logger.info("✅ Tables dropped")
-        except (CancelledError, Exception):
-            pass
+        # try:
+        #     async with db.engine.begin() as conn:
+        #         await conn.run_sync(User.metadata.drop_all)
+        #         logger.info("✅ Tables dropped")
+        # except (CancelledError, Exception):
+        #     pass
         await db.disconnect()
         logger.info("✅ Database disconnected")
 
@@ -274,28 +270,29 @@ async def delete_address_by_id(
         return result
 
 
-@mcp.tool(name="Get database stats", description="Get current database statistics.")
-async def get_database_stats(ctx: Context[ServerSession, AppContext]) -> str:
-    async with _get_db(ctx).get_async_session() as session:
-        return await stats_service.get_database_stats(session)
+@mcp.prompt("zeige-mitarbeiter-anzahl")
+async def get_number_of_employees():
+    return """Wie viele Mitarbeiter sind aktuell in der Datenbank gespeichert?
+    Zeige das Ergebnis zunächst sortiert nach Länderkennung und die dann die
+    Gesamtzahl aller Mitarbeiter!
+    """
 
 
-@mcp.prompt("analyze-user")
-async def analyze_user_prompt(name: str) -> str:
-    return f"""Analyze this user profile for: {name}
+@mcp.prompt("zeige-mitarbeiter")
+async def list_employees() -> str:
+    return """Gib eine Liste aller Mitarbeiter zurück, die in der Datenbank
+    gespeichert sind!
 
-    Please provide insights on:
-    User behavior patterns
-    - Engagement metrics
-    - Recommendations"""
-
-
-@mcp.prompt("zeige-alle-datenbank-nutzer")
-async def list_database() -> str:
-    return """Gebe eine Liste aller Nutzer in der People-Datenbank zurück
-
-    1. Ermittle die Liste aller Nutzer in der People-Datenbank
-    2. Formatiere das Ergebnis so, dass pro Nutzer eine Zeile angezeigt wird,
-       wobei die einzelnen Werte durch Komma voneinander getrennt sein sollen
+    1. Hole zunächst alle Mitarbeiter mit ihrer Adresse aus der Datenbank.
+    2. Formatiere das Ergebnis, so dass pro Mitarbeiter eine Zeile angezeigt
+       wird und tenne die einzelnen Daten durch Komma voneinander.
     3. Stelle jeder Zeile eine fortlaufende Nummer voran, die rechtsbündig
-       ausgerichtet sein soll"""
+       ausgerichtet ist.
+       """
+
+
+@mcp.prompt("erzeuge-mitarbeiter")
+def employee_database_populate(anzahl: int, land: str):
+    return f"""Füge {anzahl} Mitarbeiter in die Mitarbeiter-Datenbank ein,
+    die ihren Wohnsitz ausschliesslich in {land} haben!
+    """

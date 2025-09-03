@@ -1,4 +1,4 @@
-from typing import TypeVar, Type, Optional, Any
+from typing import TypeVar, Type, Optional
 from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 

@@ -72,24 +72,16 @@ def create_mcp_server(spec: Dict[str, Any], base_url: str) -> FastMCP:
 
         return ""  # Municipality not found
 
-    @mcp.prompt("mitarbeiter-erzeugen")
-    def employee_database_populate(anzahl: int):
-        return """Füge {anzahl} Mitarbeiter ind die Mitarbeiter-Datenbank ein!
-
-1. Erstelle selbstständig {anzahl} Mitarbeiter in der Mitarbeiterdatenbank, die ihren Wohnsitz in Deutschland haben.
-2. Wenn du alle Mitarbeiter gespeichert hast, gebe die Anzahl der neu angelegten Mitarbeiter zurück.
-"""
-
     @mcp.prompt("mitarbeiter-notfall-warnungen-erstellen")
     async def emergency_response_prompt(country: str) -> str:
         """Generate emergency response prompt."""
         return f"""Prüfe auf Notfall-Warnungen für alle Mitarbeiter am Standort {country}!
 
-1. Ermittle alle Mitarbeiter in der Mitarbeiterdatenbank, die ihren Wohnsitz in Deutschland.
-2. Ermittle für jeden Wohnort den Amtliche Regionalschlüssel ARS mit Hilfe der Ressource @ars://codes/.
-3. Verwende den ARS um nach aktuellen Warnungen für die Wohnortgemeinde der Mitarbeite zu suchen.
-4. Geben den Namen des Mitarbeiters mit Adresse und amtlicher Warnung aus.
-"""
+    1. Ermittle alle Mitarbeiter in der Mitarbeiterdatenbank, die ihren Wohnsitz in Deutschland.
+    2. Ermittle für jeden Wohnort den Amtliche Regionalschlüssel ARS mit Hilfe der Ressource @ars://codes/.
+    3. Verwende den ARS um nach aktuellen Warnungen für die Wohnortgemeinde der Mitarbeite zu suchen.
+    4. Geben den Namen des Mitarbeiters mit Adresse und amtlicher Warnung aus.
+    """
 
     return mcp
 

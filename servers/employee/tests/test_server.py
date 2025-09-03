@@ -16,8 +16,6 @@ from server import (
     find_all_addresses,
     find_address_by_id,
     add_address,
-    get_database_stats,
-    analyze_user_prompt,
 )
 
 TEST_DATABASE_URL = "sqlite+aiosqlite:///:memory:"
@@ -137,28 +135,3 @@ async def test_find_address_by_id_found(mock_context, async_db_session):
     result = await find_address_by_id(mock_context, address.id)
     assert result is not None
     assert result.street == "123 Main St"
-
-
-@pytest.mark.asyncio
-async def test_get_database_stats(mock_context, async_db_session):
-    user = User(first_name="John", last_name="Doe", email="john@test.com", age=30)
-    address = Address(
-        street="123 Main St",
-        city="Test City",
-        postal_code="12345",
-        country_code="DE",
-        user_id=1,
-    )
-    async_db_session.add_all([user, address])
-    await async_db_session.commit()
-
-    result = await get_database_stats(mock_context)
-    assert "Total users: 1" in result
-    assert "Total addresses: 1" in result
-
-
-@pytest.mark.asyncio
-async def test_analyze_user_prompt():
-    result = await analyze_user_prompt("John Doe")
-    assert "John Doe" in result
-    assert "User behavior patterns" in result
