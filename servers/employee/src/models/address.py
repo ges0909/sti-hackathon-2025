@@ -278,7 +278,7 @@ VALID_COUNTRY_CODES = {
 
 
 @event.listens_for(Address.country_code, "set")
-def validate_country_code(target, value, oldvalue, initiator):
+def validate_country_code(target, value, old_value, initiator):
     """Validate ISO 3166-1 alpha-2 country code."""
     if value is not None and value.upper() not in VALID_COUNTRY_CODES:
         raise ValueError(

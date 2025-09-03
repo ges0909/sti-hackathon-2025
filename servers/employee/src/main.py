@@ -8,9 +8,8 @@ logging.basicConfig(
     level=settings.log_level,
     format="[%(asctime)s] %(levelname)-8s %(message)s",
     datefmt="%d.%m.%y %H:%M:%S",
-    # Any previously configured loggers get reconfigured with the
-    # timestamp format. This will make all log messages show the
-    # date and time consistently.
+    # Loggers get reconfigured with the timestamp format. This will
+    # make all log messages show the date and time consistently.
     force=True,
 )
 

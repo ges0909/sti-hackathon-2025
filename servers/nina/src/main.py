@@ -1,13 +1,13 @@
 import logging
 import sys
 from pathlib import Path
-from typing import Dict, Any, List
+from typing import Dict, Any
 
 import httpx
 import yaml
 from fastmcp import FastMCP
 
-from ags_service import AgsService
+from ars_code_service import ArsCodeService
 
 BASE_URL = "https://warnung.bund.de/api31"
 OPENAPI_SPEC_PATH = Path(__file__).parent.parent / "openapi.yaml"
@@ -34,53 +34,62 @@ def load_openapi_spec(file_path: Path) -> Dict[str, Any]:
 
 
 def create_mcp_server(spec: Dict[str, Any], base_url: str) -> FastMCP:
-    """Create MCP server from OpenAPI specification and adds AGS resource queries."""
+    """Create MCP server from OpenAPI spec and adds AGS resource queries."""
 
     api_client = httpx.AsyncClient(base_url=base_url)
     mcp = FastMCP.from_openapi(openapi_spec=spec, client=api_client)
     # mcp = FastMCP.from_openapi(openapi_spec=spec, client=api_client, port=8000)
 
-    @mcp.resource("ars://codes")
-    async def get_ags_codes() -> List[Dict[str, str]]:
+    @mcp.resource(
+        uri="ars://codes",
+        name="amtliche_regionalschlüssel",
+        description="Gibt alle Amtlichen Regionalschlüssel (ARS) zurück.",
+        tags={"ARS"},
+    )
+    async def get_ars_codes() -> Dict[str, str]:
         """Returns all ARS codes with the name of their municipality."""
-        ags_file = Path(__file__).parent.parent / "resources" / "GV100AD_31082025.txt"
+        gemeinde_verzeichnis = (
+            Path(__file__).parent.parent / "resources" / "GV100AD_31082025.txt"
+        )
+        return ArsCodeService.parse_file(gemeinde_verzeichnis)
 
-        if not ags_file.exists():
-            return []
-
-        municipality_data = AgsService.parse_file(ags_file)
-
-        return [
-            {"municipality": municipality, "ars": ars}
-            for municipality, ars in municipality_data.items()
-        ]
-
-    @mcp.resource("ars://codes/{municipality}")
-    async def get_ags_code_by_municipality(municipality: str) -> str:
+    @mcp.resource(
+        uri="ars://codes/{gemeinde}",
+        name="amtlicher_regionalschlüssel",
+        description="Gibt den Amtlichen Regionalschlüssel (ARS) für eine Gemeinde zurück.",
+        tags={"ARS"},
+    )
+    async def get_ars_code_by_municipality(gemeinde: str) -> str:
         """Get ARS code for a specific municipality name"""
-
-        ags_file = Path(__file__).parent.parent / "resources" / "GV100AD_31082025.txt"
-
-        if not ags_file.exists():
-            return ""
-
-        municipality_data = AgsService.parse_file(ags_file)
-
-        # Search for municipality (case-insensitive)
-        for municipality_name, ars_code in municipality_data.items():
-            if municipality_name.lower() == municipality.lower():
+        gemeinde_verzeichnis = (
+            Path(__file__).parent.parent / "resources" / "GV100AD_31082025.txt"
+        )
+        ars_codes = ArsCodeService.parse_file(gemeinde_verzeichnis)
+        # Search for a municipality (case-insensitive)
+        for municipality_name, ars_code in ars_codes.items():
+            if municipality_name.lower() == gemeinde.lower():
                 return ars_code  # Return immediately when found
 
         return ""  # Municipality not found
 
-    @mcp.prompt("emergency-response")
-    async def emergency_response_prompt(
-        warning_type: str, severity: str = "medium"
-    ) -> str:
+    @mcp.prompt("mitarbeiter-erzeugen")
+    def employee_database_populate(anzahl: int):
+        return """Füge {anzahl} Mitarbeiter ind die Mitarbeiter-Datenbank ein!
+
+1. Erstelle selbstständig {anzahl} Mitarbeiter in der Mitarbeiterdatenbank, die ihren Wohnsitz in Deutschland haben.
+2. Wenn du alle Mitarbeiter gespeichert hast, gebe die Anzahl der neu angelegten Mitarbeiter zurück.
+"""
+
+    @mcp.prompt("mitarbeiter-notfall-warnungen-erstellen")
+    async def emergency_response_prompt(country: str) -> str:
         """Generate emergency response prompt."""
-        return (
-            f"Create emergency response plan for {warning_type} (severity: {severity})"
-        )
+        return f"""Prüfe auf Notfall-Warnungen für alle Mitarbeiter am Standort {country}!
+
+1. Ermittle alle Mitarbeiter in der Mitarbeiterdatenbank, die ihren Wohnsitz in Deutschland.
+2. Ermittle für jeden Wohnort den Amtliche Regionalschlüssel ARS mit Hilfe der Ressource @ars://codes/.
+3. Verwende den ARS um nach aktuellen Warnungen für die Wohnortgemeinde der Mitarbeite zu suchen.
+4. Geben den Namen des Mitarbeiters mit Adresse und amtlicher Warnung aus.
+"""
 
     return mcp
 

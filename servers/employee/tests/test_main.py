@@ -25,7 +25,5 @@ def test_main_other_exception():
 def test_main_entry_point():
     """Test main entry point execution."""
     with patch("main.main") as mock_main_func, patch("__main__.__name__", "__main__"):
-        # This would normally execute main() when run as script
-        # We just test the function exists and can be called
         mock_main_func()
         mock_main_func.assert_called_once()

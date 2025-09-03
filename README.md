@@ -1,7 +1,7 @@
-# 🏆 Valantic STI Hackathon 2025
+# 🏆 STI Hackathon
 
-This project demonstrates the use of a `FastMCP` server with _lifespan_
-management to interact with a user database.
+The project demonstrates a `FastMCP` server with _lifespan_ management to
+interact with a user database.
 
 ## Get the project
 
@@ -92,4 +92,10 @@ Test installation by running the `gemini` command.
 
 ```bash
 uv run fastmcp version
+```
+
+## Run MCP Inspector
+
+```bash
+mcp dev servers/employee/src/main.py 
 ```

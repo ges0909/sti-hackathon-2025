@@ -4,7 +4,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
-class AddressRepository(Repository[Address]):
+class AddressRepository(Repository):
     def __init__(self):
         super().__init__(Address)
 

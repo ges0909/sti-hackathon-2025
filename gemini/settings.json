@@ -2,23 +2,23 @@
   "theme": "Default",
   "selectedAuthType": "oauth-personal",
   "mcpServers": {
-    "valantic STI Hackathon: Mitarbeiter Datenbank": {
+    "STI Hackathon: Mitarbeiter Datenbank": {
       "command": "uv",
       "args": [
         "run",
         "src/main.py"
       ],
-      "cwd": "$HOME/PycharmProjects/sti-hackathon-2025/servers/employee",
+      "cwd": "$PYCHARM_PROJECTS/sti-hackathon-2025/servers/employee",
       "timeout": 30000,
       "trust": true
     },
-    "valantic STI Hackathon: NINA API": {
+    "STI Hackathon: NINA API": {
       "command": "uv",
       "args": [
         "run",
         "src/main.py"
       ],
-      "cwd": "$HOME/PycharmProjects/sti-hackathon-2025/servers/nina",
+      "cwd": "$PYCHARM_PROJECTS/sti-hackathon-2025/servers/nina",
       "timeout": 30000,
       "trust": true
     }

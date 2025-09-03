@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 TEST_DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 
 
-class UserRepositoryForTesting(Repository[User]):
+class UserRepositoryForTesting(Repository):
     def __init__(self):
         super().__init__(User)
 
@@ -27,7 +27,7 @@ async def async_db_session():
 
 
 @pytest.mark.asyncio
-async def test_base_repository_get_all(async_db_session):
+async def test_repository_get_all(async_db_session):
     """Test BaseRepository get_all method."""
     repo = UserRepositoryForTesting()
 

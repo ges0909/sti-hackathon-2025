@@ -2,7 +2,7 @@ from pathlib import Path
 from typing import Dict
 
 
-class AgsService:
+class ArsCodeService:
     RECORD_TYPE_START = 0
     RECORD_TYPE_END = 2
     ARS_START = 10
@@ -21,16 +21,23 @@ class AgsService:
         """
         result: Dict[str, str] = {}
 
+        if not file_path.exists():
+            return {}
+
         with open(file_path, "r", encoding="utf-8") as file:
             for line in file:
                 if (
-                    len(line) >= AgsService.MIN_LINE_LENGTH
-                    and line[AgsService.RECORD_TYPE_START : AgsService.RECORD_TYPE_END]
-                    == AgsService.TARGET_RECORD_TYPE
+                    len(line) >= ArsCodeService.MIN_LINE_LENGTH
+                    and line[
+                        ArsCodeService.RECORD_TYPE_START : ArsCodeService.RECORD_TYPE_END
+                    ]
+                    == ArsCodeService.TARGET_RECORD_TYPE
                 ):
-                    ars = line[AgsService.ARS_START : AgsService.ARS_END].strip()
+                    ars = line[
+                        ArsCodeService.ARS_START : ArsCodeService.ARS_END
+                    ].strip()
                     municipality = line[
-                        AgsService.MUNICIPALITY_START : AgsService.MUNICIPALITY_END
+                        ArsCodeService.MUNICIPALITY_START : ArsCodeService.MUNICIPALITY_END
                     ].strip()
 
                     if municipality:  # Only add if municipality name exists

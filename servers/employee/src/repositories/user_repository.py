@@ -5,7 +5,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
-class UserRepository(Repository[User]):
+class UserRepository(Repository):
     def __init__(self):
         super().__init__(User)
 
