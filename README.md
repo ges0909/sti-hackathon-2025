@@ -1,7 +1,6 @@
 # 🏆 STI Hackathon
 
-The project demonstrates a `FastMCP` server with _lifespan_ management to
-interact with a user database.
+Demonstrates a `FastMCP` server with _lifespan_ management to interact with a user database.
 
 ## Get the project
 
@@ -9,7 +8,7 @@ interact with a user database.
 git clone git@github.com:ges0909/sti-hackathon-2025.git
 ```
 
-## Install `uv`
+## Install 'uv'
 
 > _An extremely fast Python package and project manager, written in Rust_.
 
@@ -17,8 +16,7 @@ git clone git@github.com:ges0909/sti-hackathon-2025.git
 winget install astral-sh.uv
 ```
 
-For other installation options
-see [Installation](https://github.com/astral-sh/uv?tab=readme-ov-file#installation).
+For other installation options see [Installation](https://github.com/astral-sh/uv?tab=readme-ov-file#installation).
 
 Restart terminal and check installation.
 
@@ -31,7 +29,7 @@ uv self update
 
 | Command                            | Description                                    |
 |------------------------------------|------------------------------------------------|
-| `uv init nina`                     | Initialize new project                         |
+| `uv init nina`                     | Initialize new project in folder 'nina'        |
 | `uv sync`                          | Install dependencies                           |
 | `uv sync --all-packages`           | Install all dependencies including workspaces  |
 | `uv add fastmcp`                   | Add new dependency                             |
@@ -49,32 +47,36 @@ LOG_LEVEL=INFO
 INITIAL_USERS_COUNT=10
 ```
 
-## Run MCP server
+## MCP server
+
+| Command                                 | Description                           |
+|-----------------------------------------|---------------------------------------|
+| `uv run servers/employee/src/main.py`   | Run your custom MCP server            |
+| `uv run pytest`                         | Run unit tests                        |
+| `uvx ruff format`                       | Format sources                        |
+| `ruff check`                            | Check sources                         |
+| `ruff check --fix`                      | Check and fix sources                 |
+| `mcp dev servers/employee/src/main.py ` | Run MCP Inspector to debug MCP server |
+
+## Open WebUI
+
+### How to install
 
 ```bash
-uv run employee/src/main.py
+uv venv --python 3.11 --seed open-webui
+cd open-webui
+source ./Scripts/activate
+pip install open-webui
 ```
 
-## Run tests
+### How to run
 
 ```bash
-uv run pytest
+source ./Scripts/activate
+open-webui serve
 ```
 
-## Formatting
-
-```bash
-uvx ruff format
-```
-
-## Linting
-
-```bash
-ruff check --select ALL .
-ruff check --select F,E,W,B .
-ruff check --select F,E,W,B src # Only important rules
-ruff check --fix
-```
+Navigate to [http://localhost:8080](http://localhost:8080).
 
 ## Gemini CLI
 
@@ -88,15 +90,3 @@ Test installation by running the `gemini` command.
 | `/mcp`         | Show connected MCP servers |
 | `/mcp refresh` | Restart MCP servers        |
 | `/quit`        | Exit Gemini                |
-
-## FastMCP
-
-```bash
-uv run fastmcp version
-```
-
-## Run MCP Inspector
-
-```bash
-mcp dev servers/employee/src/main.py 
-```

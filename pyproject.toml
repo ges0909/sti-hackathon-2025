@@ -71,6 +71,7 @@ indent-style = "space"
 line-ending = "auto"
 
 [tool.ruff.lint]
+# Only important rules
 # F - Pyflakes errors (undefined names, unused imports, etc.)
 # E - pycodestyle errors (PEP 8 style violations)
 # W - pycodestyle warnings (PEP 8 style warnings)
