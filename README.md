@@ -49,18 +49,18 @@ INITIAL_USERS_COUNT=10
 
 ## MCP server
 
-| Command                                 | Description                           |
-|-----------------------------------------|---------------------------------------|
-| `uv run servers/employee/src/main.py`   | Run your custom MCP server            |
-| `uv run pytest`                         | Run unit tests                        |
-| `uvx ruff format`                       | Format sources                        |
-| `ruff check`                            | Check sources                         |
-| `ruff check --fix`                      | Check and fix sources                 |
-| `mcp dev servers/employee/src/main.py ` | Run MCP Inspector to debug MCP server |
+| Command                                | Description                           |
+|----------------------------------------|---------------------------------------|
+| `uv run servers/employee/src/main.py`  | Run your custom MCP server            |
+| `uv run pytest`                        | Run unit tests                        |
+| `uvx ruff format`                      | Format sources                        |
+| `ruff check`                           | Check sources                         |
+| `ruff check --fix`                     | Check and fix sources                 |
+| `mcp dev servers/employee/src/main.py` | Run MCP Inspector to debug MCP server |
 
 ## Open WebUI
 
-### How to install
+### 1. Install _Open WebUI_
 
 ```bash
 uv venv --python 3.11 --seed open-webui
@@ -69,7 +69,20 @@ source ./Scripts/activate
 pip install open-webui
 ```
 
-### How to run
+### 2. Install and run a model
+
+| Command                        |                                   |
+|--------------------------------|-----------------------------------|
+| `winget install Ollama.Ollama` | Install oolama                    |
+| `ollama --version`             | Check installation a new terminal |
+| `ollama pull phi3:mini`        | Download a model                  |
+| `ollama pull llama3.2:3b`      |                                   |
+| `ollama run phi3:mini`         | Run model                         |
+| `ollama run llama3.2:3b`       |                                   |
+| `oolama rm phi3:mini`          | Remove model                      |
+| `oolama rm llama3.2:3b`        |                                   |
+
+### 3. Run _Open WebUI_
 
 ```bash
 source ./Scripts/activate
