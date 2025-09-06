@@ -5,7 +5,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    project_root: Path = Path(__file__).parent.parent.parent.parent
+    project_root: Path = Path(__file__).parent.parent.parent.parent.parent
     default_database_url: str = "sqlite+aiosqlite:///" + str(
         project_root / "data" / "mitarbeiter.db"
     )

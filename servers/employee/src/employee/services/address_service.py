@@ -1,7 +1,7 @@
 from typing import Optional
 from sqlalchemy.ext.asyncio import AsyncSession
-from repositories.address_repository import address_repository
-from schemas import AddressDto
+from employee.repositories.address_repository import address_repository
+from employee.schemas import AddressDto
 
 
 class AddressService:

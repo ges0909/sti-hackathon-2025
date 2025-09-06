@@ -1,7 +1,7 @@
 from typing import Optional
 from sqlalchemy.ext.asyncio import AsyncSession
-from repositories.user_repository import user_repository
-from schemas import Gender, UserDto
+from employee.repositories.user_repository import user_repository
+from employee.schemas import Gender, UserDto
 
 
 class UserService:

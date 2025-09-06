@@ -2,13 +2,13 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from models.base import Base
+from employee.models.base import Base
 from sqlalchemy import String, ForeignKey, event
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 import pycountry
 
 if TYPE_CHECKING:
-    from models.user import User
+    from employee.models.user import User
 
 
 class Address(Base):

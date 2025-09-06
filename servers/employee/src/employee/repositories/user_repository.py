@@ -1,11 +1,11 @@
 from typing import Optional
-from models.user import User
-from repositories.repository import Repository
+from employee.models.user import User
+from employee.repositories.repository import Repository
 from sqlalchemy import delete, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from schemas import Gender
+from employee.schemas import Gender
 
 
 class UserRepository(Repository):

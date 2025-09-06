@@ -1,4 +1,4 @@
-from models import User
+from employee.models.user import User
 
 
 def test_user_creation():

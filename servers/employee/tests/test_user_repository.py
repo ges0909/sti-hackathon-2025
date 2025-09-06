@@ -1,7 +1,9 @@
 import pytest
 import pytest_asyncio
-from repositories.user_repository import user_repository
-from models import Base, Gender
+
+from employee.models.base import Base
+from employee.models.user import Gender
+from employee.repositories.user_repository import user_repository
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 from sqlalchemy.ext.asyncio.session import AsyncSession
 

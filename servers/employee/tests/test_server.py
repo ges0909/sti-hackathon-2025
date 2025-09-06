@@ -1,12 +1,13 @@
 import pytest
 import pytest_asyncio
 from unittest.mock import MagicMock
-from models import Base
-from models import User, Gender
-from models import Address
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 from sqlalchemy.future import select
-from server import (
+
+from employee.models.address import Address
+from employee.models.base import Base
+from employee.models.user import User, Gender
+from employee.server import (
     AppContext,
     find_all_users,
     find_user_by_last_name,

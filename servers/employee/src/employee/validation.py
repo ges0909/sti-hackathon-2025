@@ -1,7 +1,8 @@
 from typing import Optional
 
 from pydantic import BaseModel, field_validator
-from schemas import Gender
+
+from employee.schemas import Gender
 
 
 class CreateUserRequest(BaseModel):

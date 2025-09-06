@@ -1,6 +1,6 @@
 from typing import Optional
-from models.address import Address
-from repositories.repository import Repository
+from employee.models.address import Address
+from employee.repositories.repository import Repository
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 

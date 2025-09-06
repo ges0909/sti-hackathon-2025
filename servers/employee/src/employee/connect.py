@@ -4,7 +4,7 @@ from urllib.parse import urlparse
 
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 
-from config import settings
+from employee.config import settings
 
 logger = logging.getLogger(__name__)
 

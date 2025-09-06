@@ -1,8 +1,8 @@
 import logging
 import sys
 
-from config import settings
-from server import mcp
+from employee.config import settings
+from employee.server import mcp
 
 logging.basicConfig(
     level=settings.log_level,

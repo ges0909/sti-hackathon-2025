@@ -1,11 +1,12 @@
 import pytest
 import pytest_asyncio
-from models import Base
-from models import User
-from models import Address
-from services.user_service import user_service
-from services.address_service import address_service
-from services.stats_service import stats_service
+
+from employee.models.address import Address
+from employee.models.base import Base
+from employee.models.user import User
+from employee.services.user_service import user_service
+from employee.services.address_service import address_service
+from employee.services.stats_service import stats_service
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
 TEST_DATABASE_URL = "sqlite+aiosqlite:///:memory:"

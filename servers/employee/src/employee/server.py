@@ -7,15 +7,19 @@ from typing import Optional
 
 from faker import Faker
 
-from config import settings
-from connect import Database
-from models import Base, User, Address, WorkStatus
+from employee.connect import Database
 from mcp.server.fastmcp import Context, FastMCP
 from mcp.server.session import ServerSession
-from schemas import Gender, UserDto, AddressDto
-from validation import CreateUserRequest, UpdateUserRequest
-from services.user_service import user_service
-from services.address_service import address_service
+
+from employee.config import settings
+from employee.models.address import Address
+from employee.models.base import Base
+from employee.models.user import User, Gender
+from employee.models.work_status import WorkStatus
+from employee.schemas import UserDto, AddressDto
+from employee.validation import CreateUserRequest, UpdateUserRequest
+from employee.services.user_service import user_service
+from employee.services.address_service import address_service
 from pydantic import ValidationError
 
 logger = logging.getLogger(__name__)

@@ -1,9 +1,12 @@
 import pytest
 import pytest_asyncio
-from models import Base, User, WorkStatus
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 from sqlalchemy.future import select
+
+from employee.models.base import Base
+from employee.models.user import User
+from employee.models.work_status import WorkStatus
 
 TEST_DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 

@@ -1,6 +1,6 @@
 import pytest
 from pydantic import ValidationError
-from schemas import UserBase, UserDto
+from employee.schemas import UserBase, UserDto
 
 
 class TestUserBase:

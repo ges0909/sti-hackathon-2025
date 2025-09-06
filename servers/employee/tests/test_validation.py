@@ -1,8 +1,8 @@
 import pytest
 from pydantic import ValidationError
 
-from schemas import Gender
-from validation import CreateUserRequest, UpdateUserRequest
+from employee.schemas import Gender
+from employee.validation import CreateUserRequest, UpdateUserRequest
 
 
 def test_create_user_request_valid():
