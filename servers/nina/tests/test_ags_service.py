@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import Dict
 
-from ars_code_service import ArsCodeService
+from nina.ars_code_service import ArsCodeService
 
 
 def test_parse_ags_file():

@@ -40,7 +40,7 @@ pythonpath = [
 ]
 testpaths = [
     "servers/employee/tests",
-    "servers/nina/src"
+    "servers/nina/tests"
 ]
 #addopts = [
 #    "--verbose",

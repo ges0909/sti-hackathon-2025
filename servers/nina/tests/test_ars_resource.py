@@ -1,10 +1,6 @@
-import sys
 from pathlib import Path
 
-# Add src to path
-sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
-
-from ars_code_service import ArsCodeService
+from nina.ars_code_service import ArsCodeService
 
 GEMEINDE_FILE = Path(__file__).parent.parent / "resources" / "GV100AD_31082025.txt"
 

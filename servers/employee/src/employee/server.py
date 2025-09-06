@@ -3,7 +3,6 @@ from asyncio import CancelledError
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from dataclasses import dataclass
-from typing import Optional
 
 from faker import Faker
 
@@ -118,7 +117,7 @@ async def add_user(
     last_name: str,
     email: str,
     age: int,
-    gender: Optional[Gender] = None,
+    gender: str = "other",
 ) -> str:
     try:
         request = CreateUserRequest(
@@ -126,7 +125,7 @@ async def add_user(
             last_name=last_name,
             email=email,
             age=age,
-            gender=gender,
+            gender=Gender(gender) if gender != "other" else None,
         )
         async with _get_db(ctx).get_async_session() as session:
             result = await user_service.create_user(
@@ -152,18 +151,18 @@ async def add_user(
 async def update_user(
     ctx: Context[ServerSession, AppContext],
     last_name: str,
-    first_name: Optional[str] = None,
-    email: Optional[str] = None,
-    age: Optional[int] = None,
-    gender: Optional[Gender] = None,
+    first_name: str = "",
+    email: str = "",
+    age: int = 0,
+    gender: str = "",
 ) -> str:
     try:
         request = UpdateUserRequest(
             last_name=last_name,
-            first_name=first_name,
-            email=email,
-            age=age,
-            gender=gender,
+            first_name=first_name if first_name else None,
+            email=email if email else None,
+            age=age if age > 0 else None,
+            gender=Gender(gender) if gender else None,
         )
         async with _get_db(ctx).get_async_session() as session:
             result = await user_service.update_user(
@@ -257,10 +256,10 @@ async def add_address(
 async def update_address(
     ctx: Context[ServerSession, AppContext],
     address_id: int,
-    street: str = None,
-    city: str = None,
-    postal_code: str = None,
-    country_code: str = None,
+    street: str = "",
+    city: str = "",
+    postal_code: str = "",
+    country_code: str = "",
 ) -> str:
     try:
         async with _get_db(ctx).get_async_session() as session:

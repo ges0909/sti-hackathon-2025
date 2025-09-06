@@ -7,12 +7,12 @@ import httpx
 import yaml
 from fastmcp import FastMCP
 
-from ars_code_service import ArsCodeService
+from nina.ars_code_service import ArsCodeService
 
 logger = logging.getLogger(__name__)
 
 BASE_URL = "https://warnung.bund.de/api31"
-OPENAPI_SPEC_PATH = Path(__file__).parent.parent / "openapi.yaml"
+OPENAPI_SPEC_PATH = Path(__file__).parent.parent.parent / "openapi.yaml"
 GEMEINDE_FILE = Path(__file__).parent.parent / "resources" / "GV100AD_31082025.txt"
 
 with open(OPENAPI_SPEC_PATH, "r", encoding="utf-8") as f:

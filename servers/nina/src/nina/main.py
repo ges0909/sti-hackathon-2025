@@ -1,7 +1,7 @@
 import logging
 import sys
 
-from server import mcp
+from nina.server import mcp
 
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"

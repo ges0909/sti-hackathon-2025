@@ -10,7 +10,7 @@ git clone git@github.com:ges0909/sti-hackathon-2025.git
 
 ## Install 'uv'
 
-> _An extremely fast Python package and project manager, written in Rust_.
+A fast Python package and project manager, written in _Rust_.
 
 ```bash
 winget install astral-sh.uv
@@ -51,10 +51,12 @@ INITIAL_USERS_COUNT=10
 | Command                                | Description                           |
 |----------------------------------------|---------------------------------------|
 | `uv run servers/employee/src/main.py`  | Run your custom MCP server            |
+| `uv run -m employee.main`              |                                       |
 | `uv run pytest`                        | Run unit tests                        |
 | `uvx ruff format`                      | Format sources                        |
 | `ruff check`                           | Check sources                         |
 | `ruff check --fix`                     | Check and fix sources                 |
+| `ruff clean`                           | Clear caches                          |
 | `mcp dev servers/employee/src/main.py` | Run MCP Inspector to debug MCP server |
 
 ## Open WebUI
@@ -102,3 +104,36 @@ Test installation by running the `gemini` command.
 | `/mcp`         | Show connected MCP servers |
 | `/mcp refresh` | Restart MCP servers        |
 | `/quit`        | Exit Gemini                |
+
+### MCP Servers
+
+Configure MCP servers in `.gemini/settings.json` by adding:
+
+```json
+{
+  "mcpServers": {
+    "STI Hackathon: Mitarbeiter Datenbank": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--module",
+        "employee.main"
+      ],
+      "cwd": "$PYTHON_PROJECT_PATH/sti-hackathon-2025/servers/employee/src/",
+      "timeout": 30000,
+      "trust": true
+    },
+    "STI Hackathon: NINA API": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--module",
+        "nina.main"
+      ],
+      "cwd": "$PYTHON_PROJECT_PATH/sti-hackathon-2025/servers/nina/src/",
+      "timeout": 30000,
+      "trust": true
+    }
+  }
+}
+```
