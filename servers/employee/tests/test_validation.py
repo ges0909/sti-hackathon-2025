@@ -31,7 +31,7 @@ def test_create_user_request_gender_case_insensitive():
 
 
 def test_create_user_request_gender_none():
-    """Test gender can be None."""
+    """Test gender on None."""
     request = CreateUserRequest(
         first_name="Alex", last_name="Smith", email="alex@example.com", age=28
     )
@@ -84,4 +84,4 @@ def test_all_gender_values():
             age=25,
             gender=gender_value,
         )
-        assert request.gender == Gender[gender_value.upper()]
+        assert request.gender == getattr(Gender, gender_value.upper())

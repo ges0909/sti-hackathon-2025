@@ -9,16 +9,16 @@ class CreateUserRequest(BaseModel):
     last_name: str
     email: str
     age: int
-    gender: str | None = None
+    gender: Gender | None = None
 
-    @field_validator("gender")
+    @field_validator("gender", mode="before")
     @classmethod
-    def validate_gender(cls, v: str | None) -> Optional[str]:
+    def validate_gender(cls, v: str | None) -> Optional[Gender]:
         if v is None:
             return None
         try:
-            return Gender[v.upper()]
-        except KeyError as error:
+            return Gender(v.lower())
+        except ValueError as error:
             valid_options = [g.value for g in Gender]
             raise ValueError(
                 f"Invalid gender '{v}'. Valid options: {', '.join(valid_options)}"
@@ -30,16 +30,16 @@ class UpdateUserRequest(BaseModel):
     first_name: str | None = None
     email: str | None = None
     age: int | None = None
-    gender: str | None = None
+    gender: Gender | None = None
 
-    @field_validator("gender")
+    @field_validator("gender", mode="before")
     @classmethod
-    def validate_gender(cls, v: str | None) -> Optional[str]:
+    def validate_gender(cls, v: str | None) -> Optional[Gender]:
         if v is None:
             return None
         try:
-            return Gender[v.upper()]
-        except KeyError as error:
+            return Gender(v.lower())
+        except ValueError as error:
             valid_options = [g.value for g in Gender]
             raise ValueError(
                 f"Invalid gender '{v}'. Valid options: {', '.join(valid_options)}"

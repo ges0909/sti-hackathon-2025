@@ -5,8 +5,11 @@ from contextlib import asynccontextmanager
 from dataclasses import dataclass
 from typing import Optional
 
+from faker import Faker
+
+from config import settings
 from connect import Database
-from models import Base
+from models import Base, User, Address, WorkStatus
 from mcp.server.fastmcp import Context, FastMCP
 from mcp.server.session import ServerSession
 from schemas import Gender, UserDto, AddressDto
@@ -32,44 +35,54 @@ async def server_lifespan(server: FastMCP) -> AsyncIterator[AppContext]:
         await conn.run_sync(Base.metadata.create_all)
     logger.info("✅ Tables created")
 
-    # async with db.get_async_session() as session:
-    #     fake = Faker()
-    #     users = [
-    #         User(
-    #             first_name=fake.first_name(),
-    #             last_name=fake.last_name(),
-    #             email=fake.email(),
-    #             age=fake.random_int(18, 80),
-    #             gender=fake.random_element([Gender.MALE, Gender.FEMALE, Gender.OTHER]),
-    #             address=Address(
-    #                 street=fake.street_address(),
-    #                 city=fake.city(),
-    #                 postal_code=fake.postcode(),
-    #                 country_code=fake.country_code(),
-    #             ),
-    #             work_status=WorkStatus(is_home_office=fake.boolean()),
-    #         )
-    #         for _ in range(settings.initial_users_count)
-    #     ]
-    #     session.add_all(users)
-    #     await session.commit()
-    # logger.info(f"✅ {len(users)} users added")
+    # await _setup(db)
 
     try:
         yield AppContext(db=db)
     except (CancelledError, Exception):
         logger.warning("⚠️ Server interrupted")
-        # try:
-        #     async with db.engine.begin() as conn:
-        #         await conn.run_sync(User.metadata.drop_all)
-        #         logger.info("✅ Tables dropped")
-        # except (CancelledError, Exception):
-        #     pass
+
+        # await _cleanup(db)
+
         await db.disconnect()
         logger.info("✅ Database disconnected")
 
 
-mcp = FastMCP("Employee Demo", lifespan=server_lifespan)
+async def _setup(db: "Database"):
+    async with db.get_async_session() as session:
+        fake = Faker()
+        users = [
+            User(
+                first_name=fake.first_name(),
+                last_name=fake.last_name(),
+                email=fake.email(),
+                age=fake.random_int(18, 80),
+                gender=fake.random_element([Gender.MALE, Gender.FEMALE, Gender.OTHER]),
+                address=Address(
+                    street=fake.street_address(),
+                    city=fake.city(),
+                    postal_code=fake.postcode(),
+                    country_code=fake.country_code(),
+                ),
+                work_status=WorkStatus(is_home_office=fake.boolean()),
+            )
+            for _ in range(settings.initial_users_count)
+        ]
+        session.add_all(users)
+        await session.commit()
+    logger.info(f"✅ {len(users)} users added")
+
+
+async def _cleanup(db: "Database"):
+    try:
+        async with db.engine.begin() as conn:
+            await conn.run_sync(User.metadata.drop_all)
+            logger.info("✅ Tables dropped")
+    except (CancelledError, Exception):
+        pass
+
+
+mcp = FastMCP("Employee Database Demo", lifespan=server_lifespan)
 
 
 def _get_db(ctx: Context[ServerSession, AppContext]) -> Database:
