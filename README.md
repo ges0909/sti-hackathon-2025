@@ -22,7 +22,6 @@ Restart terminal and check installation.
 
 ```bash
 uv --version 
-uv self update
 ```
 
 ## Manage dependencies

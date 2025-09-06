@@ -17,13 +17,15 @@ class Repository:
         result = await session.execute(select(self.model).where(self.model.id == id_))  # type: ignore
         return result.scalars().first()
 
-    async def add(self, session: AsyncSession, entity: T) -> T:
+    @staticmethod
+    async def add(session: AsyncSession, entity: T) -> T:
         session.add(entity)
         await session.commit()
         await session.refresh(entity)
         return entity
 
-    async def update(self, session: AsyncSession, entity: T) -> T:
+    @staticmethod
+    async def update(session: AsyncSession, entity: T) -> T:
         await session.merge(entity)
         await session.commit()
         await session.refresh(entity)

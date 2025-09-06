@@ -3,13 +3,13 @@ from typing import Dict
 
 
 class ArsCodeService:
-    RECORD_TYPE_START = 0
-    RECORD_TYPE_END = 2
+    TYPE_START = 0
+    TYPE_END = 2
     ARS_START = 10
     ARS_END = 18
     MUNICIPALITY_START = 22
     MUNICIPALITY_END = 72
-    MIN_LINE_LENGTH = 72
+    MIN_LINE_LENGTH = MUNICIPALITY_END
 
     TARGET_RECORD_TYPE = "60"
 
@@ -28,9 +28,7 @@ class ArsCodeService:
             for line in file:
                 if (
                     len(line) >= ArsCodeService.MIN_LINE_LENGTH
-                    and line[
-                        ArsCodeService.RECORD_TYPE_START : ArsCodeService.RECORD_TYPE_END
-                    ]
+                    and line[ArsCodeService.TYPE_START : ArsCodeService.TYPE_END]
                     == ArsCodeService.TARGET_RECORD_TYPE
                 ):
                     ars = line[

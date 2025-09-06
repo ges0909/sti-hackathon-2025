@@ -29,6 +29,7 @@ def validate_country_code(target, value, old_value, initiator):
     """Validate ISO 3166-1 alpha-2 country code."""
     if value is not None and not pycountry.countries.get(alpha_2=value.upper()):
         raise ValueError(
-            f"Invalid country code '{value}'. Must be ISO 3166-1 alpha-2 format (e.g., 'DE', 'US', 'FR')."
+            f"Invalid country code '{value}'. Must be ISO 3166-1 alpha-2 "
+            f"format (e.g., 'DE', 'US', 'FR')."
         )
     return value.upper() if value else value

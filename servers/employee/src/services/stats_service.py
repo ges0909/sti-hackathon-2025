@@ -4,7 +4,8 @@ from repositories.address_repository import address_repository
 
 
 class StatsService:
-    async def get_database_stats(self, session: AsyncSession) -> str:
+    @staticmethod
+    async def get_database_stats(session: AsyncSession) -> str:
         users = await user_repository.get_all(session)
         addresses = await address_repository.get_all(session)
         user_count = len(users)

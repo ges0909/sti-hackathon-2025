@@ -1,3 +1,4 @@
+from typing import Optional
 from models.address import Address
 from repositories.repository import Repository
 from sqlalchemy import select
@@ -8,9 +9,8 @@ class AddressRepository(Repository):
     def __init__(self):
         super().__init__(Address)
 
-    async def get_by_user_id(
-        self, session: AsyncSession, user_id: int
-    ) -> Address | None:
+    @staticmethod
+    async def get_by_user_id(session: AsyncSession, user_id: int) -> Address | None:
         result = await session.execute(
             select(Address).where(Address.user_id == user_id)
         )
@@ -38,10 +38,10 @@ class AddressRepository(Repository):
         self,
         session: AsyncSession,
         address_id: int,
-        street: str = None,
-        city: str = None,
-        postal_code: str = None,
-        country_code: str = None,
+        street: Optional[str] = None,
+        city: Optional[str] = None,
+        postal_code: Optional[str] = None,
+        country_code: Optional[str] = None,
     ) -> bool:
         address = await self.get_by_id(session, address_id)
         if not address:

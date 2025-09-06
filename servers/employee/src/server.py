@@ -3,12 +3,13 @@ from asyncio import CancelledError
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from dataclasses import dataclass
+from typing import Optional
 
 from connect import Database
 from models import Base
 from mcp.server.fastmcp import Context, FastMCP
 from mcp.server.session import ServerSession
-from schemas import UserDto, AddressDto
+from schemas import Gender, UserDto, AddressDto
 from validation import CreateUserRequest, UpdateUserRequest
 from services.user_service import user_service
 from services.address_service import address_service
@@ -68,7 +69,7 @@ async def server_lifespan(server: FastMCP) -> AsyncIterator[AppContext]:
         logger.info("✅ Database disconnected")
 
 
-mcp = FastMCP("Lifespan Demo", lifespan=server_lifespan)
+mcp = FastMCP("Employee Demo", lifespan=server_lifespan)
 
 
 def _get_db(ctx: Context[ServerSession, AppContext]) -> Database:
@@ -91,8 +92,8 @@ async def find_user_by_last_name(
 
 @mcp.tool(
     name="Add a user",
-    description="""
-    Add a user with name, email, age and gender (male/female/other) to the database.""",
+    description="Add a user with name, email, age and gender "
+    "(male/female/other) to the database.",
 )
 async def add_user(
     ctx: Context[ServerSession, AppContext],
@@ -100,7 +101,7 @@ async def add_user(
     last_name: str,
     email: str,
     age: int,
-    gender: str = None,
+    gender: Optional[Gender] = None,
 ) -> str:
     try:
         request = CreateUserRequest(
@@ -134,10 +135,10 @@ async def add_user(
 async def update_user(
     ctx: Context[ServerSession, AppContext],
     last_name: str,
-    first_name: str = None,
-    email: str = None,
-    age: int = None,
-    gender: str = None,
+    first_name: Optional[str] = None,
+    email: Optional[str] = None,
+    age: Optional[int] = None,
+    gender: Optional[Gender] = None,
 ) -> str:
     try:
         request = UpdateUserRequest(
@@ -208,7 +209,8 @@ async def find_address_by_id(
 
 @mcp.tool(
     name="Add address",
-    description="Add a new address to the database. Use ISO 3166-1 alpha-2 country code (e.g., 'DE', 'US', 'FR').",
+    description="Add a new address to the database. Use ISO 3166-1 alpha-2 "
+    "country code (e.g., 'DE', 'US', 'FR').",
 )
 async def add_address(
     ctx: Context[ServerSession, AppContext],
@@ -232,7 +234,8 @@ async def add_address(
 
 @mcp.tool(
     name="Update address",
-    description="Update an address by ID. Use ISO 3166-1 alpha-2 country code (e.g., 'DE', 'US', 'FR').",
+    description="Update an address by ID. Use ISO 3166-1 alpha-2 "
+    "country code (e.g., 'DE', 'US', 'FR').",
 )
 async def update_address(
     ctx: Context[ServerSession, AppContext],

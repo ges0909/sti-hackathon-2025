@@ -1,21 +1,13 @@
 import logging
 import sys
-from pathlib import Path
 
-import yaml
-from server import create_server
-
-BASE_URL = "https://warnung.bund.de/api31"
-OPENAPI_SPEC_PATH = Path(__file__).parent.parent / "openapi.yaml"
+from server import mcp
 
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
 )
-logger = logging.getLogger(__name__)
 
-with open(OPENAPI_SPEC_PATH, "r", encoding="utf-8") as f:
-    spec = yaml.safe_load(f)
-mcp = create_server(spec, BASE_URL)
+logger = logging.getLogger(__name__)
 
 
 def main() -> None:

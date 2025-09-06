@@ -1,7 +1,8 @@
 import pytest
 from pydantic import ValidationError
+
+from schemas import Gender
 from validation import CreateUserRequest, UpdateUserRequest
-from models import Gender
 
 
 def test_create_user_request_valid():
@@ -18,7 +19,7 @@ def test_create_user_request_valid():
 
 
 def test_create_user_request_gender_case_insensitive():
-    """Test gender validation is case insensitive."""
+    """Test gender validation on case-insensitivity."""
     request = CreateUserRequest(
         first_name="Jane",
         last_name="Doe",

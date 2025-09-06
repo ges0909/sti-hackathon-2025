@@ -1,17 +1,19 @@
+from typing import Optional
 from models.user import User
 from repositories.repository import Repository
 from sqlalchemy import delete, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from schemas import Gender
+
 
 class UserRepository(Repository):
     def __init__(self):
         super().__init__(User)
 
-    async def get_by_last_name(
-        self, session: AsyncSession, last_name: str
-    ) -> User | None:
+    @staticmethod
+    async def get_by_last_name(session: AsyncSession, last_name: str) -> User | None:
         result = await session.execute(select(User).where(User.last_name == last_name))
         return result.scalars().first()
 
@@ -22,7 +24,7 @@ class UserRepository(Repository):
         last_name: str,
         email: str,
         age: int,
-        gender: str = None,
+        gender: str | None = None,
     ) -> None:
         try:
             user = User(
@@ -41,10 +43,10 @@ class UserRepository(Repository):
         self,
         session: AsyncSession,
         last_name: str,
-        first_name: str = None,
-        email: str = None,
-        age: int = None,
-        gender: str = None,
+        first_name: Optional[str] = None,
+        email: Optional[str] = None,
+        age: Optional[int] = None,
+        gender: Optional[Gender] = None,
     ) -> bool:
         user = await self.get_by_last_name(session, last_name)
         if not user:
@@ -66,7 +68,8 @@ class UserRepository(Repository):
             await session.rollback()
             raise ValueError("Email already exists") from err
 
-    async def delete_by_last_name(self, session: AsyncSession, last_name: str) -> bool:
+    @staticmethod
+    async def delete_by_last_name(session: AsyncSession, last_name: str) -> bool:
         result = await session.execute(delete(User).where(User.last_name == last_name))
         await session.commit()
         return result.rowcount > 0

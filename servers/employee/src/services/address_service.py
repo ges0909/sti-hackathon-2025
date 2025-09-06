@@ -1,21 +1,22 @@
+from typing import Optional
 from sqlalchemy.ext.asyncio import AsyncSession
 from repositories.address_repository import address_repository
 from schemas import AddressDto
 
 
 class AddressService:
-    async def get_all_addresses(self, session: AsyncSession) -> list[AddressDto]:
+    @staticmethod
+    async def get_all_addresses(session: AsyncSession) -> list[AddressDto]:
         addresses = await address_repository.get_all(session)
         return [AddressDto.model_validate(addr) for addr in addresses]
 
-    async def get_address_by_id(
-        self, session: AsyncSession, address_id: int
-    ) -> AddressDto:
+    @staticmethod
+    async def get_address_by_id(session: AsyncSession, address_id: int) -> AddressDto:
         address = await address_repository.get_by_id(session, address_id)
         return AddressDto.model_validate(address) if address else None
 
+    @staticmethod
     async def create_address(
-        self,
         session: AsyncSession,
         street: str,
         city: str,
@@ -33,14 +34,14 @@ class AddressService:
         )
         return f"Address '{street}, {city}' added"
 
+    @staticmethod
     async def update_address(
-        self,
         session: AsyncSession,
         address_id: int,
-        street: str = None,
-        city: str = None,
-        postal_code: str = None,
-        country_code: str = None,
+        street: Optional[str] = None,
+        city: Optional[str] = None,
+        postal_code: Optional[str] = None,
+        country_code: Optional[str] = None,
     ) -> str:
         updated = await address_repository.update_by_id(
             session,
@@ -54,7 +55,8 @@ class AddressService:
             return f"Address ID {address_id} updated"
         return f"Address ID {address_id} not found"
 
-    async def delete_address_by_id(self, session: AsyncSession, address_id: int) -> str:
+    @staticmethod
+    async def delete_address_by_id(session: AsyncSession, address_id: int) -> str:
         deleted = await address_repository.delete_by_id(session, address_id)
         if deleted:
             return f"Address ID {address_id} deleted"

@@ -1,5 +1,7 @@
+from typing import Optional
+
 from pydantic import BaseModel, field_validator
-from models import Gender
+from schemas import Gender
 
 
 class CreateUserRequest(BaseModel):
@@ -11,7 +13,7 @@ class CreateUserRequest(BaseModel):
 
     @field_validator("gender")
     @classmethod
-    def validate_gender(cls, v: str | None) -> Gender | None:
+    def validate_gender(cls, v: str | None) -> Optional[str]:
         if v is None:
             return None
         try:
@@ -32,7 +34,7 @@ class UpdateUserRequest(BaseModel):
 
     @field_validator("gender")
     @classmethod
-    def validate_gender(cls, v: str | None) -> Gender | None:
+    def validate_gender(cls, v: str | None) -> Optional[str]:
         if v is None:
             return None
         try:
