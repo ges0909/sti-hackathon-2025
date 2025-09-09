@@ -1,0 +1,15 @@
+[project]
+name = "gmaps"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13, <4"
+dependencies = [
+    "googlemaps>=4.10.0",
+    "webbrowser-open>=0.3.0",
+]
+
+[dependency-groups]
+dev = [
+    "dotenv>=0.9.9",
+]

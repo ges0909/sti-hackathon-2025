@@ -24,6 +24,7 @@ dev = [
 members = [
     "servers/employee",
     "servers/nina",
+    "servers/gmaps",
     "servers/nina-api-client",
     "client",
 ]

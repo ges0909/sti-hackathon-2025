@@ -5,6 +5,7 @@ requires-python = ">=3.13, <4"
 [manifest]
 members = [
     "client",
+    "gmaps",
     "nina",
     "people-mcp",
     "sti-hackathon",
@@ -290,6 +291,17 @@ wheels = [
 ]
 
 [[package]]
+name = "dotenv"
+version = "0.9.9"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "python-dotenv" },
+]
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b2/b7/545d2c10c1fc15e48653c91efde329a790f2eecfbbf2bd16003b5db2bab0/dotenv-0.9.9-py2.py3-none-any.whl", hash = "sha256:29cf74a087b31dafdb5a446b6d7e11cbce8ed2741540e2339c69fbef92c94ce9", size = 1892, upload-time = "2025-02-19T22:15:01.647Z" },
+]
+
+[[package]]
 name = "email-validator"
 version = "2.3.0"
 source = { registry = "https://pypi.org/simple" }
@@ -344,6 +356,38 @@ sdist = { url = "https://files.pythonhosted.org/packages/35/8a/c46759bb41a531871
 wheels = [
     { url = "https://files.pythonhosted.org/packages/5c/0a/7a8d564b1b9909dbfc36eb93d76410a4acfada6b1e13ee451a753bb6dbc2/fastmcp-2.12.2-py3-none-any.whl", hash = "sha256:0b58d68e819c82078d1fd51989d3d81f2be7382d527308b06df55f4d0a4ec94f", size = 312029, upload-time = "2025-09-03T21:28:08.62Z" },
 ]
+
+[[package]]
+name = "gmaps"
+version = "0.1.0"
+source = { virtual = "servers/gmaps" }
+dependencies = [
+    { name = "googlemaps" },
+    { name = "webbrowser-open" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "dotenv" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "googlemaps", specifier = ">=4.10.0" },
+    { name = "webbrowser-open", specifier = ">=0.3.0" },
+]
+
+[package.metadata.requires-dev]
+dev = [{ name = "dotenv", specifier = ">=0.9.9" }]
+
+[[package]]
+name = "googlemaps"
+version = "4.10.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "requests" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/fe/26/bca4d737a9acea25e94c19940a780bbf0be64a691f7caf3a68467d3a5838/googlemaps-4.10.0.tar.gz", hash = "sha256:3055fcbb1aa262a9159b589b5e6af762b10e80634ae11c59495bd44867e47d88", size = 33056, upload-time = "2023-01-26T16:45:02.501Z" }
 
 [[package]]
 name = "greenlet"
@@ -1361,6 +1405,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/5e/42/e0e305207bb88c6b8d3061399c6a961ffe5fbb7e2aa63c9234df7259e9cd/uvicorn-0.35.0.tar.gz", hash = "sha256:bc662f087f7cf2ce11a1d7fd70b90c9f98ef2e2831556dd078d131b96cc94a01", size = 78473, upload-time = "2025-06-28T16:15:46.058Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/d2/e2/dc81b1bd1dcfe91735810265e9d26bc8ec5da45b4c0f6237e286819194c3/uvicorn-0.35.0-py3-none-any.whl", hash = "sha256:197535216b25ff9b785e29a0b79199f55222193d47f820816e7da751e9bc8d4a", size = 66406, upload-time = "2025-06-28T16:15:44.816Z" },
+]
+
+[[package]]
+name = "webbrowser-open"
+version = "0.3.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/48/40/2e6eb1c513b60fe489da49bbdfca3e0d8c4ae5657352c90dad1dde2cc3c4/webbrowser_open-0.3.0.tar.gz", hash = "sha256:d751dd76e888d105d786b86ac890b9c0dd7b273d6f39e67c57a1cc7ddefe03a2", size = 14657, upload-time = "2025-02-27T12:09:16.143Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/2d/0e/16fa8d77cfefd4f09c7c21e518e8f7cc5d0c1b80c57048a38deabc13b96b/webbrowser_open-0.3.0-py3-none-any.whl", hash = "sha256:bd44ce80df1db634df3156f6b56ec2b445812e7bcff82d9f22b2217acaede23f", size = 9315, upload-time = "2025-02-27T12:09:14.089Z" },
 ]
 
 [[package]]

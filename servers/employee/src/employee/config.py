@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 from pydantic import Field, field_validator
@@ -5,16 +6,11 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    project_root: Path = Path(__file__).parent.parent.parent.parent.parent
-    default_database_url: str = "sqlite+aiosqlite:///" + str(
-        project_root / "data" / "mitarbeiter.db"
-    )
-
-    database_url: str = Field(default=default_database_url)
+    database_url: str = Field(default=None)
     log_level: str = Field(default="INFO")
     initial_users_count: int = Field(default=10)
 
-    model_config = SettingsConfigDict(env_file="./.env")
+    model_config = SettingsConfigDict(env_file=Path.home() / ".env")
 
     @field_validator("database_url")
     @classmethod
