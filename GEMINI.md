@@ -1,4 +1,4 @@
-# STI Hackathon
+# Project Rules
 
 - When generating Python code, follow the existing coding style.
 - Use type hints.

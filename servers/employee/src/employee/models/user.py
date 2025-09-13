@@ -27,7 +27,7 @@ class User(Base):
     age: Mapped[int | None]
     gender: Mapped[Gender | None] = mapped_column(SQLEnum(Gender))
 
-    address: Mapped[Address] = relationship(
+    address: Mapped[Address | None] = relationship(
         "Address", back_populates="user", uselist=False
     )
     work_status: Mapped[WorkStatus | None] = relationship(

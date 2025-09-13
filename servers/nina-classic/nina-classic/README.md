@@ -25,7 +25,7 @@ Integrate MCP server in Gemini with `$HOME/.gemini/settings.json`.
         "run",
         "src/main.py"
       ],
-      "cwd": "$HOME/PycharmProjects/sti-hackathon-2025/servers/nina",
+      "cwd": "$HOME/PycharmProjects/trip-planner-mcp-server/servers/nina",
       "timeout": 30000,
       "trust": true
     }

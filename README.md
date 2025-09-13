@@ -1,27 +1,25 @@
-# 🏆 STI Hackathon
+# 🏆 Trip Planner MCP Server
 
-Demonstrates a `FastMCP` server with _lifespan_ management to interact with a user database.
+## Quick start
 
-## Get the project
-
-```bash
-git clone git@github.com:ges0909/sti-hackathon-2025.git
-```
-
-## Install 'uv'
-
-A fast Python package and project manager, written in _Rust_.
+Install [uv](https://github.com/astral-sh/uv).
 
 ```bash
 winget install astral-sh.uv
 ```
 
-For other installation options see [Installation](https://github.com/astral-sh/uv?tab=readme-ov-file#installation).
-
 Restart terminal and check installation.
 
 ```bash
 uv --version 
+```
+
+Other installation options: [Installation](https://github.com/astral-sh/uv?tab=readme-ov-file#installation).
+
+Clone repository.
+
+```bash
+git clone git@github.com:ges0909/trip-planer-mcp-server.git
 ```
 
 ## Manage dependencies
@@ -105,35 +103,3 @@ Test installation by running the `gemini` command.
 | `/mcp refresh` | Restart MCP servers        |
 | `/quit`        | Exit Gemini                |
 
-### MCP Servers
-
-Configure MCP servers in `.gemini/settings.json` by adding:
-
-```json
-{
-  "mcpServers": {
-    "STI Hackathon: Mitarbeiter Datenbank": {
-      "command": "uv",
-      "args": [
-        "run",
-        "--module",
-        "employee.main"
-      ],
-      "cwd": "$PYTHON_PROJECT_PATH/sti-hackathon-2025/servers/employee/src/",
-      "timeout": 30000,
-      "trust": true
-    },
-    "STI Hackathon: NINA API": {
-      "command": "uv",
-      "args": [
-        "run",
-        "--module",
-        "nina.main"
-      ],
-      "cwd": "$PYTHON_PROJECT_PATH/sti-hackathon-2025/servers/nina/src/",
-      "timeout": 30000,
-      "trust": true
-    }
-  }
-}
-```

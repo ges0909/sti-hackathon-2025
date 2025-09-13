@@ -1,7 +1,7 @@
 [project]
-name = "sti-hackathon"
+name = "trip-planer-mcp-server"
 version = "0.1.0"
-description = "STI Hackathon"
+description = "Trip Planer MCP Server"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
